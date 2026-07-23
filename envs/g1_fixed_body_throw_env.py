@@ -9,20 +9,24 @@ from gymnasium import spaces
 
 class G1FixedBodyThrowEnv(gym.Env):
     metadata = {"render_modes": []}
-    def __init__(self, xml_path=None, episode_time=1.8, control_dt=0.02, action_scale=0.5, learned_release=False, scripted_release_time=0.65, target_pos=(2.0,-0.25,1.0)):
+    def __init__(self, xml_path=None, episode_time=1.8, control_dt=0.02, action_scale=0.5, learned_release=False, scripted_release_time=0.65, target_pos=None):
         super().__init__()
-        if xml_path is None: xml_path=Path(__file__).resolve().parents[1]/'assets'/'unitree_g1_throw'/'scene_throw.xml'
+        if xml_path is None: xml_path=Path(__file__).resolve().parents[1]/'assets'/'scene_throw.xml'
         self.xml_path=Path(xml_path)
         self.model=mujoco.MjModel.from_xml_path(str(self.xml_path)); self.data=mujoco.MjData(self.model)
         self.episode_time=float(episode_time); self.control_dt=float(control_dt); self.frame_skip=max(1,int(round(self.control_dt/self.model.opt.timestep)))
-        self.action_scale=float(action_scale); self.learned_release=bool(learned_release); self.scripted_release_time=float(scripted_release_time); self.target_pos=np.array(target_pos,dtype=np.float64)
+        self.action_scale=float(action_scale); self.learned_release=bool(learned_release); self.scripted_release_time=float(scripted_release_time)
         self.ball_body_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_BODY,'throw_ball'); self.target_body_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_BODY,'throw_target'); self.hold_eq_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_EQUALITY,'hold_throw_ball'); self.ball_joint_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_JOINT,'throw_ball_free')
+        self.ball_geom_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_GEOM,'throw_ball_geom'); self.floor_geom_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_GEOM,'floor'); self.target_geom_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_GEOM,'throw_target_geom')
+        self.torso_body_id=mujoco.mj_name2id(self.model,mujoco.mjtObj.mjOBJ_BODY,'torso_link')
         missing=[]
         if self.ball_body_id<0: missing.append('throw_ball')
         if self.target_body_id<0: missing.append('throw_target')
         if self.hold_eq_id<0: missing.append('hold_throw_ball')
         if self.ball_joint_id<0: missing.append('throw_ball_free')
         if missing: raise RuntimeError('Missing from G1 throwing scene: '+', '.join(missing)+'. Run scripts/create_g1_throw_scene.py first.')
+        self.target_pos=np.array(self.model.body_pos[self.target_body_id] if target_pos is None else target_pos,dtype=np.float64)
+        self.success_radius=float(self.model.geom_size[self.target_geom_id,0])
         self.hold_body_id=int(self.model.eq_obj1id[self.hold_eq_id]); self.ball_qpos_adr=int(self.model.jnt_qposadr[self.ball_joint_id]); self.ball_qvel_adr=int(self.model.jnt_dofadr[self.ball_joint_id]); self.hold_relpose=self._load_hold_relpose()
         self.arm_joint_names=self._find_right_arm_joint_names()
         if not self.arm_joint_names: raise RuntimeError('Could not find right arm joints. Run scripts/inspect_g1.py and edit envs/g1_fixed_body_throw_env.py.')
@@ -32,7 +36,7 @@ class G1FixedBodyThrowEnv(gym.Env):
         self.action_space=spaces.Box(-1,1,shape=(self.n_arm+1,),dtype=np.float32)
         obs_dim=self.n_arm+self.n_arm+3+3+3+(self.n_arm+1)+1+1; self.observation_space=spaces.Box(-np.inf,np.inf,shape=(obs_dim,),dtype=np.float32)
         self.prev_action=np.zeros(self.n_arm+1); self.nominal_qpos=np.zeros(self.model.nq); self.nominal_ctrl=np.zeros(self.model.nu); self._init_nominal_pose()
-        self.step_count=0; self.released=False; self.release_time=None; self.best_dist=np.inf
+        self.step_count=0; self.released=False; self.release_time=None; self.best_dist=np.inf; self.landed=False; self.landing_pos=None
     def _find_right_arm_joint_names(self):
         all_names=[mujoco.mj_id2name(self.model,mujoco.mjtObj.mjOBJ_JOINT,i) for i in range(self.model.njnt)]; all_names=[n for n in all_names if n]
         preferred=['right_shoulder_pitch_joint','right_shoulder_roll_joint','right_shoulder_yaw_joint','right_elbow_joint','right_wrist_roll_joint','right_wrist_pitch_joint','right_wrist_yaw_joint']
@@ -79,7 +83,7 @@ class G1FixedBodyThrowEnv(gym.Env):
         self.data.ctrl[:]=self.nominal_ctrl; self.data.qpos[self.arm_qpos_adr]+=self.np_random.uniform(-0.03,0.03,self.n_arm)
         if self.hold_eq_id>=0: self.data.eq_active[self.hold_eq_id]=1
         mujoco.mj_forward(self.model,self.data); self._place_ball_in_hand(); self.model.body_pos[self.target_body_id]=self.target_pos; mujoco.mj_forward(self.model,self.data)
-        self.step_count=0; self.released=False; self.release_time=None; self.best_dist=np.inf; self.prev_action=np.zeros(self.n_arm+1)
+        self.step_count=0; self.released=False; self.release_time=None; self.best_dist=np.inf; self.landed=False; self.landing_pos=None; self.prev_action=np.zeros(self.n_arm+1)
         return self._get_obs(), {}
     def step(self, action):
         action=np.clip(np.asarray(action,dtype=np.float64),-1,1); self.data.ctrl[:]=self.nominal_ctrl
@@ -91,10 +95,19 @@ class G1FixedBodyThrowEnv(gym.Env):
                 if self.hold_eq_id>=0: self.data.eq_active[self.hold_eq_id]=0
                 self.released=True; self.release_time=t
         for _ in range(self.frame_skip): mujoco.mj_step(self.model,self.data)
+        self._update_landing()
         self.step_count+=1; obs=self._get_obs(); reward=self._compute_reward(action); dist=np.linalg.norm(self._ball_pos()-self.target_pos); self.best_dist=min(self.best_dist,dist)
-        terminated=bool(self._ball_pos()[2]<0.05 or self._ball_pos()[0]>4.0); truncated=bool(self.step_count*self.control_dt>=self.episode_time)
-        info={'dist_to_target':float(dist),'best_dist':float(self.best_dist),'released':self.released,'release_time':self.release_time,'arm_joint_names':self.arm_joint_names}
+        landing_error=None if self.landing_pos is None else float(np.linalg.norm(self.landing_pos[:2]-self.target_pos[:2]))
+        torso_height=float(self.data.xpos[self.torso_body_id,2]); torso_up=float(np.clip(self.data.xmat[self.torso_body_id].reshape(3,3)[2,2],-1.0,1.0)); torso_tilt_deg=float(np.degrees(np.arccos(torso_up))); has_fallen=bool(torso_height<0.60 or torso_tilt_deg>45.0)
+        terminated=bool(self.landed or has_fallen or self._ball_pos()[0]>4.0); truncated=bool(self.step_count*self.control_dt>=self.episode_time)
+        info={'dist_to_target':float(dist),'best_dist':float(self.best_dist),'released':self.released,'release_time':self.release_time,'arm_joint_names':self.arm_joint_names,'landed':self.landed,'landing_pos':None if self.landing_pos is None else self.landing_pos.copy(),'landing_error_xy':landing_error,'success':bool(landing_error is not None and landing_error<=self.success_radius and not has_fallen),'success_radius':self.success_radius,'stability_evaluable':True,'has_fallen':has_fallen,'torso_height_m':torso_height,'torso_tilt_deg':torso_tilt_deg}
         self.prev_action=action.copy(); return obs,float(reward),terminated,truncated,info
+    def _update_landing(self):
+        if self.landed or not self.released: return
+        for i in range(self.data.ncon):
+            contact=self.data.contact[i]
+            if {int(contact.geom1),int(contact.geom2)}=={self.ball_geom_id,self.floor_geom_id}:
+                self.landed=True; self.landing_pos=self._ball_pos(); return
     def _compute_reward(self, action):
         ball_pos=self._ball_pos(); ball_vel=self._ball_vel(); to_target=self.target_pos-ball_pos; dist=np.linalg.norm(to_target)+1e-6; direction=to_target/dist
         vtt=np.dot(ball_vel,direction); acc=np.exp(-2.5*dist); r=0.03*max(vtt,0.0) if not self.released else 1.5*acc+0.02*max(vtt,0.0)
@@ -106,4 +119,4 @@ class G1FixedBodyThrowEnv(gym.Env):
         return np.concatenate([self.data.qpos[self.arm_qpos_adr], self.data.qvel[self.arm_qvel_adr], self._ball_pos(), self._ball_vel(), self.target_pos, self.prev_action, [1.0 if self.released else 0.0], [max(0.0,self.episode_time-self.step_count*self.control_dt)]]).astype(np.float32)
     def _ball_pos(self): return self.data.xpos[self.ball_body_id].copy()
     def _ball_vel(self):
-        vel=np.zeros(6); mujoco.mj_objectVelocity(self.model,self.data,mujoco.mjtObj.mjOBJ_BODY,self.ball_body_id,vel,0); return vel[:3].copy()
+        vel=np.zeros(6); mujoco.mj_objectVelocity(self.model,self.data,mujoco.mjtObj.mjOBJ_BODY,self.ball_body_id,vel,0); return vel[3:].copy()
