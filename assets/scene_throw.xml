@@ -1,6 +1,8 @@
 <mujoco model="g1_29dof_rev_1_0 scene">
   <include file="g1.xml"/>
 
+  <option density="1.2" viscosity="0.000018"/>
+
   <visual>
     <headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1" specular="0.9 0.9 0.9"/>
     <rgba haze="0.15 0.25 0.35 1"/>
