@@ -32,38 +32,26 @@ class OptionBRandomPolicy:
         return self.action_space.sample(), None
     
 class OptionCSwingPolicy:
-    def __init__(self, env, total_swing_steps=40): 
+    def __init__(self, env, total_swing_steps=34):
         self.action_shape = env.action_space.shape
         self.step_count = 0
         self.total_swing_steps = total_swing_steps
         
-        self.shoulder_idx = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_ACTUATOR, "right_shoulder_pitch_joint")
-        if self.shoulder_idx == -1 or self.shoulder_idx >= self.action_shape[0]:
-            self.shoulder_idx = 0 
-            
-        joint_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_JOINT, "right_shoulder_pitch_joint")
-        low_rad = env.model.jnt_range[joint_id][0]
-        high_rad = env.model.jnt_range[joint_id][1]
-        
-        # FIX: Pushing the end angle further back to -135 degrees to achieve a perfectly horizontal arm!
-        # (Change this number to -125 or -145 if you want it slightly lower or higher)
-        start_rad = np.radians(90.0)
-        end_rad = np.radians(-270.0) 
-        
-        self.start_angle = 2.0 * (start_rad - low_rad) / (high_rad - low_rad) - 1.0
-        self.end_angle = 2.0 * (end_rad - low_rad) / (high_rad - low_rad) - 1.0
+        # A shoulder-led throw with neutral wrist joints. Keeping the wrist
+        # straight avoids the visibly twisted motion of the earlier fit.
+        self.start_actions = np.array([
+            0.9318, -0.7911, 0.0491, -0.1425, 0.0, 0.0, 0.0
+        ])
+        self.end_actions = np.array([
+            -1.0, 0.0964, 0.0072, -1.0, 0.0, 0.0, 0.0
+        ])
 
     def predict(self, obs):
         action = np.zeros(self.action_shape)
         
         progress = min(1.0, self.step_count / self.total_swing_steps)
-        current_shoulder_target = self.start_angle + progress * (self.end_angle - self.start_angle)
+        action[:7] = self.start_actions + progress * (self.end_actions - self.start_actions)
         
-        action[self.shoulder_idx] = current_shoulder_target
-        
-        if len(action) > 7 and progress >= 1.0:
-            action[-1] = 1.0  
-            
         self.step_count += 1
         return action, None
 
@@ -73,10 +61,10 @@ class OptionCSwingPolicy:
 # ==========================================
 
 def view_baseline():
-    xml_path = str(ROOT / 'assets' / 'unitree_g1' / 'scene_throw.xml')
+    xml_path = str(ROOT / 'assets' / 'scene_throw.xml')
 
     with open(xml_path, 'r') as f:
-        assert "right_hand_middle_0_link" in f.read(), "Error: The ball is not attached to the hand in the XML!"
+        assert "right_wrist_yaw_link" in f.read(), "Error: The ball is not attached to the right wrist in the XML!"
 
     env = G1FixedBodyThrowEnv(xml_path=xml_path)
     policy = OptionCSwingPolicy(env) 
@@ -85,15 +73,13 @@ def view_baseline():
     print("Opening MuJoCo Viewer... Close the window to stop.")
     with mujoco.viewer.launch_passive(env.model, env.data) as viewer:
         
-        for episode in range(5): 
+        episode = 0
+        while viewer.is_running():
             obs, _ = env.reset()
             policy.reset() 
             done = False
             
-            target_body_id = env.model.body("throw_target").id
-            env.model.body_pos[target_body_id] = [0.55, 0.0, 0.0]
-            
-            # PHASE 1: THE REINFORCEMENT LEARNING SWING
+            # PHASE 1: SCRIPTED NON-LEARNING SWING
             while not done and viewer.is_running():
                 action, _ = policy.predict(obs)
                 obs, reward, terminated, truncated, info = env.step(action)
@@ -122,8 +108,10 @@ def view_baseline():
                 viewer.sync()
                 time.sleep(getattr(env, 'control_dt', 0.02)) 
             
-            # PHASE 2: LET GRAVITY DO ITS JOB
-            if viewer.is_running():
+            # The environment stops at first ground contact. Do not advance an
+            # additional 1.5 seconds after landing, because that only displays
+            # post-task rolling and obscures the measured landing point.
+            if viewer.is_running() and not info.get("landed", False):
                 print("Episode finished. Letting the ball drop to the floor...")
                 
                 # FIX: Calculate exact micro-steps to prevent the ball from tunnelling through the floor
@@ -153,11 +141,9 @@ def view_baseline():
             if not viewer.is_running():
                 break 
             
-            dist = np.linalg.norm(target_pos - ball_pos)
-            print(f"Final distance to target: {dist:.3f}m\n")
-
-        if viewer.is_running():
-            viewer.close() 
+            landing_error = info.get("landing_error_xy")
+            print(f"First-contact landing error: {landing_error:.3f}m\n" if landing_error is not None else "No landing recorded.\n")
+            episode += 1
 
     env.close()
 
