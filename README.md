@@ -27,6 +27,9 @@ View the continuously looping scripted non-learning baseline:
 .\run_baseline.ps1
 ```
 
+On Windows, `run_baseline.bat` can also be double-clicked from Explorer or
+the VS Code file tree after the environment has been installed.
+
 Evaluate 100 deterministic episodes:
 
 ```powershell
