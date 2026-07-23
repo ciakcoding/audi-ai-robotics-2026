@@ -1,0 +1,35 @@
+{
+  "task1_commit": "7a370663cbcc1aa96438dffc9f6331d3bf4ef35c",
+  "task1_tag": "task1-baseline-v1.0",
+  "timesteps": 1000000,
+  "config": {
+    "algorithm": "PPO",
+    "policy": "MlpPolicy",
+    "learning_rate": 0.0001,
+    "n_steps": 256,
+    "batch_size": 256,
+    "n_epochs": 5,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_range": 0.15,
+    "ent_coef": 0.001,
+    "vf_coef": 0.5,
+    "max_grad_norm": 0.5,
+    "policy_net": [
+      256,
+      256
+    ],
+    "n_envs": 8,
+    "device": "cuda",
+    "residual_scale": 0.2,
+    "extra_initial_joint_noise": 0.08,
+    "checkpoint_freq": 100000,
+    "eval_freq": 25000,
+    "eval_episodes": 100,
+    "seed": 2026
+  },
+  "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "training_status": "completed",
+  "wall_time_seconds": 1076.6534624099731
+}
