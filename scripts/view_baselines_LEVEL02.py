@@ -71,7 +71,7 @@ class OptionCSwingPolicy:
 # ==========================================
 
 def view_baseline():
-    xml_path = str(ROOT / 'assets' / 'scene_throw.xml')
+    xml_path = str(ROOT / 'assets' / 'unitree_g1' / 'scene_throw.xml')
 
     with open(xml_path, 'r') as f:
         assert "right_wrist_yaw_link" in f.read(), "Error: The ball is not attached to the right wrist in the XML!"
