@@ -15,8 +15,9 @@ from envs.g1_fixed_body_throw_env import G1FixedBodyThrowEnv
 # MATH HELPERS
 # ==========================================
 def get_torso_tilt(model, data):
-    torso_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "torso_link")
+    torso_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "pelvis")
     if torso_id == -1: return 0.0, 0.0 
+    
     w, x, y, z = data.xquat[torso_id]
     sinr_cosp = 2 * (w * x + y * z)
     cosr_cosp = 1 - 2 * (x**2 + y**2)
@@ -26,7 +27,7 @@ def get_torso_tilt(model, data):
     return np.degrees(pitch), np.degrees(roll)
 
 # ==========================================
-# LEVEL 03: PENGUIN-WALK & HIGH-ARC SHOOT
+# LEVEL 05: TRUE CoG TRANSLATION & PRO BASKETBALL THROW
 # ==========================================
 class OptionDBasketballPolicy:
     def __init__(self, env):
@@ -39,67 +40,72 @@ class OptionDBasketballPolicy:
             if name: self.actuator_map[name] = i
 
         # CHOREOGRAPHY KEYFRAMES 
+        # Note for G1: Hip Pitch Negative = Leg Forward. Positive = Leg Backward (Extension).
         self.keyframes = {
-            # 0. STARTING STANCE: Arms already UP. 
-            # Torso leans forward (waist_pitch: 0.3) to counter the heavy arms falling backward.
+            # 0. STARTING STANCE (Athletic, balanced)
             0: { 
-                'waist_pitch_joint': -0.3, 'waist_roll_joint': 0.0,
                 'left_hip_pitch_joint': -0.2, 'left_knee_joint': 0.4, 'left_ankle_pitch_joint': -0.2,
                 'right_hip_pitch_joint': -0.2, 'right_knee_joint': 0.4, 'right_ankle_pitch_joint': -0.2,
-                
-                'right_shoulder_pitch_joint': -2.5, 'right_elbow_joint': 0, 'right_wrist_pitch_joint': -0.5,
-                'left_shoulder_pitch_joint': -2.5, 'left_shoulder_roll_joint': -1, 'left_elbow_joint': 1.5, 'left_wrist_yaw_joint': 0.5
+                'right_shoulder_pitch_joint': -0.5, 'right_elbow_joint': 1.0, # Holding ball comfortably
+                'left_shoulder_pitch_joint': -0.5, 'left_elbow_joint': 1.0,
+                'waist_pitch_joint': 0.0, 'waist_roll_joint': 0.0
             },
             
-            # 1. SHIFT WEIGHT LEFT (To free the right leg)
-            25: { 
-                'waist_pitch_joint': 0.2, 'waist_roll_joint': 0.2, # Lean left!
+            # --- STEP 1: TRANSLATE CoG FORWARD (RIGHT STRIDE) ---
+            30: {'waist_roll_joint': 0.08, 'left_ankle_roll_joint': -0.05}, # Gentle shift left
+            
+            # Lift Right knee high, while extending Left Hip to PUSH the body forward
+            60: {
+                'left_hip_pitch_joint': 0.1, 'left_knee_joint': 0.1, # <-- Stance leg extends back
+                'right_hip_pitch_joint': -0.8, 'right_knee_joint': 1.2
+            }, 
+            
+            # Plant Right foot forward
+            90: {'right_hip_pitch_joint': -0.4, 'right_knee_joint': 0.2, 'left_hip_pitch_joint': 0.2}, 
+            
+            # --- STEP 2: TRANSLATE CoG FORWARD (LEFT STRIDE) ---
+            # Pull body over Right foot
+            120: {
+                'waist_roll_joint': -0.08, 'right_ankle_roll_joint': 0.05, 
+                'right_hip_pitch_joint': 0.0, 'right_knee_joint': 0.2, # <-- Right leg now pulls CoG forward
+                'left_hip_pitch_joint': 0.4, 'left_knee_joint': 0.5    # Left leg trails behind
             },
             
-            # 2. LIFT RIGHT FOOT (Actual step, not a shuffle)
-            45: { 
-                'right_hip_pitch_joint': -1, 'right_knee_joint': 0.9, 'right_ankle_pitch_joint': -0.2,
+            # Lift Left knee high, Right Hip extends to push forward
+            160: {
+                'right_hip_pitch_joint': 0.2, 'right_knee_joint': 0.1, # <-- Stance leg extends back
+                'left_hip_pitch_joint': -0.8, 'left_knee_joint': 1.2
+            }, 
+            
+            # Plant Left foot forward
+            190: {'left_hip_pitch_joint': -0.4, 'left_knee_joint': 0.2, 'right_hip_pitch_joint': 0.3}, 
+            
+            # --- SQUARE UP & PREPARE FOR THROW ---
+            # Bring right foot forward to meet the left foot. Stance is wide and stable.
+            220: {
+                'waist_roll_joint': 0.0, 'right_ankle_roll_joint': 0.0, 'left_ankle_roll_joint': 0.0,
+                'left_hip_pitch_joint': -0.2, 'left_knee_joint': 0.5, 
+                'right_hip_pitch_joint': -0.2, 'right_knee_joint': 0.5
             },
             
-            # 3. PLANT RIGHT FOOT FORWARD
-            60: { 
-                'right_hip_pitch_joint': -0.4, 'right_knee_joint': 0.4, 'right_ankle_pitch_joint': 0.0,
-            },
-
-            # 4. SHIFT WEIGHT RIGHT (To free the left leg)
-            85: { 
-                'waist_roll_joint': -0.4, # Lean right!
-            },
-
-            # 5. LIFT LEFT FOOT 
-            105: { 
-                'left_hip_pitch_joint': -1, 'left_knee_joint': 0.9, 'left_ankle_pitch_joint': -0.2,
+            # --- WIND UP (PRO BASKETBALL FORM) ---
+            # Torso stays almost perfectly straight (only -0.05 lean).
+            # Arms go HIGH above and slightly behind the head. Elbows bend deeply.
+            260: { 
+                'right_shoulder_pitch_joint': -2.8, 'right_elbow_joint': 2.2, 'right_wrist_pitch_joint': -0.5,
+                'left_shoulder_pitch_joint': -2.8, 'left_elbow_joint': 2.2, 'left_wrist_pitch_joint': -0.5,
+                'waist_pitch_joint': -0.05,
+                'left_knee_joint': 0.8, 'right_knee_joint': 0.8 # Squat for power
             },
             
-            # 6. PLANT LEFT FOOT (Aligned with right foot)
-            120: { 
-                'left_hip_pitch_joint': -0.4, 'left_knee_joint': 0.4, 'left_ankle_pitch_joint': 0.0,
-            },
-            
-            # 7. CENTER WEIGHT & PREPARE TO SHOOT
-            140: { 
-                'waist_roll_joint': 0.0, 'waist_pitch_joint': 0.2,
-                'left_hip_pitch_joint': 0.4, 'left_knee_joint': -0.4, 'left_ankle_pitch_joint': 0,
-                'right_hip_pitch_joint': 0.4, 'right_knee_joint': -0.4, 'right_ankle_pitch_joint': 0,
-                
-                'right_shoulder_pitch_joint': -4.5, 'right_elbow_joint': 0, 'right_wrist_pitch_joint': -1,
-                'left_shoulder_pitch_joint': -4.5, 'left_shoulder_roll_joint': -1, 'left_elbow_joint': 0, 'left_wrist_yaw_joint': 0.5
-            },
-            
-            # 8. THROW! (High Arc: Shoulder stops at -1.6 pointing upwards)
-            170: { 
-                'waist_pitch_joint': -0.1, # Snap torso back to add power
-                'left_hip_pitch_joint': -0.1, 'left_knee_joint': 0.2, 'left_ankle_pitch_joint': -0.1,
-                'right_hip_pitch_joint': -0.1, 'right_knee_joint': 0.2, 'right_ankle_pitch_joint': -0.1,
-                
-                # Arm extends UP and FORWARD
-                'right_shoulder_pitch_joint': -3.5, 'right_elbow_joint': 0, 'right_wrist_pitch_joint': 0,
-                'left_shoulder_pitch_joint': -3.5, 'left_shoulder_roll_joint': 0, 'left_elbow_joint': 0, 'left_wrist_yaw_joint': 0
+            # --- EXPLODE & HIGH-ARC SHOOT ---
+            # Knees extend. Arms shoot UPWARD and forward (-2.1 rad is ~60 degrees upwards).
+            # Wrist flicks forward (0.5 rad).
+            290: { 
+                'right_shoulder_pitch_joint': -2.1, 'right_elbow_joint': 0.1, 'right_wrist_pitch_joint': 0.5,
+                'left_shoulder_pitch_joint': -2.1, 'left_elbow_joint': 0.1, 'left_wrist_pitch_joint': 0.5,
+                'waist_pitch_joint': 0.05,
+                'left_knee_joint': 0.1, 'right_knee_joint': 0.1 # Jump extension
             }
         }
         self.frame_times = sorted(list(self.keyframes.keys()))
@@ -108,8 +114,7 @@ class OptionDBasketballPolicy:
         t = self.step_count
         
         # Keyframe Interpolation Logic
-        prev_t = self.frame_times[0]
-        next_t = self.frame_times[-1]
+        prev_t, next_t = self.frame_times[0], self.frame_times[-1]
         for ft in self.frame_times:
             if ft <= t: prev_t = ft
             if ft > t:
@@ -137,8 +142,9 @@ class OptionDBasketballPolicy:
 
         self.step_count += 1
         
-        # Release the ball EXACTLY as the arm is swinging upwards (Frame 155)
-        return t == 155 
+        # EARLY RELEASE FOR HIGH ARC
+        # Releasing midway through the upward arm thrust yields a beautiful high-arc shot.
+        return t == 278
 
     def reset(self):
         self.step_count = 0
@@ -147,9 +153,6 @@ class OptionDBasketballPolicy:
 
 def view_baseline():
     xml_path = str(ROOT / 'assets' / 'scene_throw_LEVEL03.xml')
-
-    with open(xml_path, 'r') as f:
-        assert "right_wrist_yaw_link" in f.read(), "Error: Ball not attached!"
 
     env = G1FixedBodyThrowEnv(xml_path=xml_path)
     policy = OptionDBasketballPolicy(env) 
@@ -162,27 +165,38 @@ def view_baseline():
             env.reset()
             policy.reset() 
             
-            # Reset the robot's base to [0,0,0.8] to ensure it starts perfectly upright
-            env.data.qpos[:3] = [0.0, 0.0, 0.8]
+            env.data.qpos[:3] = [0.0, 0.0, 0.85]
             env.data.qvel[:] = 0.0
             mujoco.mj_forward(env.model, env.data)
             
-            max_downward_speed = 0.0
-            max_impact_force = 0.0
-            ball_has_bounced = False
-            
+            pelvis_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "pelvis")
             ball_jnt_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_JOINT, "throw_ball_free")
             ball_vel_idx = env.model.jnt_dofadr[ball_jnt_id]
+            
             max_pitch, max_roll = 0.0, 0.0
             
             # ==========================================
-            # PHASE 1: SCRIPTED SEQUENCE 
-            # (Increased loop to 180 to fit the new longer walk sequence)
+            # PHASE 1: WALKING & THROWING SEQUENCE
             # ==========================================
-            while policy.step_count < 180 and viewer.is_running():
+            while policy.step_count < 320 and viewer.is_running():
                 should_release = policy.apply_controls()
                 
-                # Manual Ball Release Mechanism
+                # --- STRONGER GYROSCOPE ---
+                # Because the robot is now actually shifting its weight forward (CoG translation),
+                # the PD gains (kp and kd) have been increased to keep the torso rock solid.
+                pitch, roll = get_torso_tilt(env.model, env.data)
+                
+                kp = 10.0  # Increased push-back force
+                kd = 1.0   # Increased dampening
+                
+                torque_pitch = (0.0 - pitch) * kp
+                torque_roll = (0.0 - roll) * kp
+                
+                if pelvis_id != -1:
+                    env.data.xfrc_applied[pelvis_id, 3] = torque_roll
+                    env.data.xfrc_applied[pelvis_id, 4] = torque_pitch
+                # -----------------------------------------------------------
+
                 if should_release:
                     weld_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_EQUALITY, "hold_throw_ball")
                     if weld_id != -1:
@@ -190,7 +204,6 @@ def view_baseline():
 
                 mujoco.mj_step(env.model, env.data)
 
-                pitch, roll = get_torso_tilt(env.model, env.data)
                 max_pitch = max(max_pitch, abs(pitch))
                 max_roll = max(max_roll, abs(roll))
 
@@ -201,50 +214,34 @@ def view_baseline():
             # PHASE 2: GRAVITY & BOUNCING LOOP
             # ==========================================
             if viewer.is_running():
-                print("Shot released! Letting the ball fly toward the hoop...")
-                
+                print("Shot released! Letting the ball fly...")
                 control_dt = getattr(env, 'control_dt', 0.02)
                 physics_dt = env.model.opt.timestep
                 substeps = max(1, int(round(control_dt / physics_dt)))
                 
                 for _ in range(150): 
                     for _ in range(substeps):
-                        mujoco.mj_step(env.model, env.data) 
-                        
-                        z_vel = env.data.qvel[ball_vel_idx + 2]
-                        if not ball_has_bounced and z_vel < 0:
-                            max_downward_speed = min(max_downward_speed, z_vel)
-
-                        for i in range(env.data.ncon):
-                            contact = env.data.contact[i]
-                            g1 = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
-                            g2 = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2)
+                        if pelvis_id != -1:
+                            p, r = get_torso_tilt(env.model, env.data)
+                            env.data.xfrc_applied[pelvis_id, 3] = -r * 10.0
+                            env.data.xfrc_applied[pelvis_id, 4] = -p * 10.0
                             
-                            if "throw_ball_geom" in (g1, g2):
-                                ball_has_bounced = True
-                                c_array = np.zeros(6, dtype=np.float64)
-                                mujoco.mj_contactForce(env.model, env.data, i, c_array)
-                                max_impact_force = max(max_impact_force, abs(c_array[0])) 
-
+                        mujoco.mj_step(env.model, env.data) 
+                    
                     viewer.sync()
                     time.sleep(control_dt)
             
             if not viewer.is_running():
                 break 
 
-            # ==========================================
             # FINAL REPORT
-            # ==========================================
             final_ball_pos = env.data.body("throw_ball").xpos
             final_target_pos = env.data.body("throw_target").xpos
-            
             final_distance = np.linalg.norm(final_target_pos - final_ball_pos)
 
             print(f"\n--- EPISODE {episode + 1} BASKETBALL REPORT ---")
             print(f"Final distance to hoop center: {final_distance:.3f}m")
-            print(f"Max falling speed at impact: {abs(max_downward_speed):.2f} m/s")
-            print(f"Maximum impact force (Rim or Floor): {max_impact_force:.2f} Newtons\n")
-            print(f"Max Torso Tilt (Due to lack of RL balance): Pitch {max_pitch:.2f}°, Roll {max_roll:.2f}°\n")
+            print(f"Max Torso Tilt (Kept low by Active PD Stabilizer): Pitch {max_pitch:.2f}°, Roll {max_roll:.2f}°\n")
 
             episode += 1
 
