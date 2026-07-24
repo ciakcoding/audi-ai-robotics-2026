@@ -2,10 +2,12 @@
 """Side-by-side: CLEAN vs NOISY — close both windows to exit."""
 
 import time, threading, numpy as np, mujoco, mujoco.viewer
+from pathlib import Path
 from stable_baselines3 import PPO
 from envs.g1_robustness_env import G1RobustnessEnv
 
-model = PPO.load("outputs/models/selected/best/best_model.zip")
+ROOT = Path(__file__).resolve().parents[1]
+model = PPO.load(str(ROOT / "outputs" / "models" / "selected" / "best" / "best_model.zip"))
 
 
 def run(env, label, x):
