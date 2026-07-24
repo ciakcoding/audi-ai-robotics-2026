@@ -1,0 +1,32 @@
+{
+  "clean": {
+    "label": "CLEAN",
+    "episodes": 100,
+    "mean_best_dist": 0.019935189084813402,
+    "median_best_dist": 0.019909990068409992,
+    "min_best_dist": 0.018713106487856065,
+    "max_best_dist": 0.02118224507078531,
+    "std_best_dist": 0.0006197381537875157,
+    "mean_final_dist": 0.019935189084813402,
+    "hit_rate_30cm": 100.0,
+    "hit_rate_50cm": 100.0,
+    "mean_release_time": 0.66,
+    "landing_x_std": 0.0004335000520578816,
+    "landing_y_std": 0.0007192341361752733
+  },
+  "noisy": {
+    "label": "NOISY",
+    "episodes": 100,
+    "mean_best_dist": 0.10256579297791686,
+    "median_best_dist": 0.09675402801093724,
+    "min_best_dist": 0.011115714781008264,
+    "max_best_dist": 0.2058733492750332,
+    "std_best_dist": 0.04560477318783572,
+    "mean_final_dist": 0.10256579297791686,
+    "hit_rate_30cm": 100.0,
+    "hit_rate_50cm": 100.0,
+    "mean_release_time": 0.66,
+    "landing_x_std": 0.019249116346298625,
+    "landing_y_std": 0.01193361517929963
+  }
+}
