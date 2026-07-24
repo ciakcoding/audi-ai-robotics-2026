@@ -17,12 +17,12 @@
   </asset>
 
   <worldbody>
-    <!-- FIX: Added contype, conaffinity, and condim="3" for hard 3D physics collisions -->
+    <!-- Added contype, conaffinity, and condim="3" for hard 3D physics collisions -->
     <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" contype="1" conaffinity="1" condim="3"/>
   
     <body name="throw_ball" pos="0.35 -0.30 1.20">
       <freejoint name="throw_ball_free"/>
-      <!-- FIX: Added collision tags here too so it acts like a rock solid object -->
+      <!-- Added collision tags here too so it acts like a rock solid object -->
       <geom name="throw_ball_geom" type="sphere" size="0.04" mass="0.05" rgba="0.9 0.2 0.1 1" contype="1" conaffinity="1" condim="3"/>
     </body>
 
@@ -90,7 +90,7 @@
          Completely freezes the torso to prevent tilting 
     <weld name="freeze_torso" body1="pelvis" body2="torso_link"/>
 
-    ADD THIS: Glues the entire robot to the world so it cannot tilt, fall, or slide
+    Glues the entire robot to the world so it cannot tilt, fall, or slide
     <weld name="glue_robot_to_world" body1="pelvis"/> 
 
   </equality>
