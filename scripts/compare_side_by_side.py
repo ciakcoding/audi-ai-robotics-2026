@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Side-by-side: CLEAN vs NOISY — close both windows to exit."""
 
-import time, threading, numpy as np, mujoco, mujoco.viewer
+import sys, time, threading
 from pathlib import Path
-from stable_baselines3 import PPO
-from envs.g1_robustness_env import G1RobustnessEnv
+import numpy as np, mujoco, mujoco.viewer
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from stable_baselines3 import PPO
+from envs.g1_robustness_env import G1RobustnessEnv
 model = PPO.load(str(ROOT / "outputs" / "models" / "selected" / "best" / "best_model.zip"))
 
 
