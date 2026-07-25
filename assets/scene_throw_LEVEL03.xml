@@ -27,13 +27,30 @@
 
     <!-- NEW: Basketball Hoop Construction -->
     <body name="throw_target" pos="1.5 0 1.6">
-      <!-- Transparent Backboard -->
-      <geom type="box" size="0.02 0.6 0.45" pos="0.25 0 0.3" rgba="0.8 0.9 1.0 0.4" contype="1" conaffinity="1" condim="3"/>
-      <!-- Orange Rim (Solid torus to allow bounces) -->
-      <geom type="cylinder" size="0.22 0.02" pos="0 0 0" rgba="1 0.3 0 1" contype="1" conaffinity="1" condim="3"/>
-      <!-- Ghost Target Zone inside the rim for scoring -->
-      <geom name="throw_target_geom" type="sphere" size="0.10" contype="0" conaffinity="0" rgba="0.1 0.8 0.2 0.45"/>
-    </body>
+       <!-- Transparent Backboard -->
+      <geom type="box" size="0.02 0.6 0.45" pos="0.2 0 0.3" rgba="0.8 0.9 1.0 1" contype="1" conaffinity="1" condim="3"/>
+       <!-- Orange Rim (Solid torus to allow bounces)  -->
+      <geom type="cylinder" size="0.15 0.02" pos="0 0 0" rgba="0 1 0 0.2" contype="0" conaffinity="0" /> contype="1" conaffinity="1" condim="3"
+       <!-- Ghost Target Zone inside the rim for scoring  -->
+      <!-- <geom name="throw_target_geom" type="sphere" size="0.10" contype="0" conaffinity="0" rgba="0.1 0.8 0.2 0.45"/> -->
+      
+      <!-- The Physical Rim (Octagon) using 'fromto' to guarantee it is perfectly horizontal -->
+      <geom name="rim_1" type="capsule" fromto=" 0.150  0.000 0   0.106  0.106 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_2" type="capsule" fromto=" 0.106  0.106 0   0.000  0.150 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_3" type="capsule" fromto=" 0.000  0.150 0  -0.106  0.106 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_4" type="capsule" fromto="-0.106  0.106 0  -0.150  0.000 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_5" type="capsule" fromto="-0.150  0.000 0  -0.106 -0.106 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_6" type="capsule" fromto="-0.106 -0.106 0   0.000 -0.150 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_7" type="capsule" fromto=" 0.000 -0.150 0   0.106 -0.106 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_8" type="capsule" fromto=" 0.106 -0.106 0   0.150  0.000 0" size="0.015" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      
+      <!-- The Physical Rim (Hollow, using 4 capsules) -->
+      <!-- <geom name="rim_1" type="capsule" pos="0.15 0 0" size="0.015 0.15" euler="90 -90 0" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_2" type="capsule" pos="-0.15 0 0" size="0.015 0.15" euler="90 -90 0" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_3" type="capsule" pos="0 0.15 0" size="0.015 0.15" euler="-90 90 0" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/>
+      <geom name="rim_4" type="capsule" pos="0 -0.15 0" size="0.015 0.15" euler="-90 90 0" contype="1" conaffinity="1" rgba="0.8 0.2 0.1 1"/> -->
+    </body> 
+
   </worldbody>
 
   <equality>
