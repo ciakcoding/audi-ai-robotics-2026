@@ -28,7 +28,7 @@
 
     <body name="throw_target" pos="0.55 0 0">
       <geom name="throw_target_geom" type="sphere" size="0.10"
-            contype="0" conaffinity="0" rgba="0.1 0.8 0.2 0.45"/>
+            contype="0" conaffinity="0" rgba="0.1 0.8 0.2 0.1"/>
     </body>
 
   </worldbody>
