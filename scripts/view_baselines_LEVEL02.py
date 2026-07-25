@@ -104,6 +104,12 @@ def view_baseline():
             # ==========================================
             # PHASE 1: SCRIPTED NON-LEARNING SWING
             # ==========================================
+
+            import json
+            import os
+            os.makedirs(str(ROOT / "outputs"), exist_ok=True)
+            telemetry = {"time": [], "ball_x": [], "ball_z": [], "pitch": []}
+
             while not done and viewer.is_running():
                 action, _ = policy.predict(obs)
                 obs, reward, terminated, truncated, info = env.step(action)
@@ -113,6 +119,12 @@ def view_baseline():
                 pitch, roll = get_torso_tilt(env.model, env.data)
                 max_pitch = max(max_pitch, abs(pitch))
                 max_roll = max(max_roll, abs(roll))
+
+                # --- RECORD TELEMETRY ---
+                telemetry["time"].append(float(env.data.time))
+                telemetry["ball_x"].append(float(env.data.body("throw_ball").xpos[0]))
+                telemetry["ball_z"].append(float(env.data.body("throw_ball").xpos[2]))
+                telemetry["pitch"].append(float(pitch))
                 
                 if policy.step_count == policy.total_swing_steps:
                     release_time = env.data.time
@@ -244,6 +256,15 @@ def view_baseline():
                 print(f"Time to Stability -> {stability_time:.2f}s after release\n")
 
             episode += 1
+
+            # --- SAVE TELEMETRY & EXIT ---
+            telemetry["metrics"] = {
+                "final_distance": float(final_distance),
+                "max_impact_force": float(max_impact_force)
+            }
+            with open(str(ROOT / "outputs" / "level02_telemetry.json"), "w") as f:
+                json.dump(telemetry, f)
+            # break # Exit after 1 episode for the plots
 
     env.close()
 
