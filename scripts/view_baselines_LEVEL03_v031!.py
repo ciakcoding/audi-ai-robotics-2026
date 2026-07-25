@@ -153,6 +153,12 @@ def view_baseline():
     print("Opening MuJoCo Viewer... Close the window to stop.")
     with mujoco.viewer.launch_passive(env.model, env.data) as viewer:
         episode = 0
+
+        import json
+        import os
+        os.makedirs(str(ROOT / "outputs"), exist_ok=True)
+        telemetry = {"time": [], "ball_x": [], "ball_z": [], "pitch": []}
+
         while viewer.is_running():
             env.reset()
             policy.reset() 
@@ -205,6 +211,12 @@ def view_baseline():
                     env.data.xfrc_applied[pelvis_id, 1] = force_y
 
                 mujoco.mj_step(env.model, env.data)
+
+                # --- RECORD TELEMETRY ---
+                telemetry["time"].append(float(env.data.time))
+                telemetry["ball_x"].append(float(env.data.body("throw_ball").xpos[0]))
+                telemetry["ball_z"].append(float(env.data.body("throw_ball").xpos[2]))
+                telemetry["pitch"].append(float(pitch))
                 
                 # --- NEW HOOP ANALYTICS TRACKING ---
                 current_time = env.data.time
@@ -268,6 +280,15 @@ def view_baseline():
             print(f"Max Torso Tilt (Anti-Drift + Gyro): Pitch {max_pitch:.2f}°, Roll {max_roll:.2f}°, Yaw {max_yaw:.2f}°\n")
 
             episode += 1
+
+            # --- SAVE TELEMETRY & EXIT ---
+            telemetry["metrics"] = {
+                "final_distance": float(final_distance),
+                "max_impact_force": float(max_hoop_impact_force)
+            }
+            with open(str(ROOT / "outputs" / "level03_telemetry.json"), "w") as f:
+                json.dump(telemetry, f)
+            # break # Exit after 1 episode for the plots
 
     env.close()
 
