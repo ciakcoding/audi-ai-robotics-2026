@@ -22,6 +22,7 @@ import time
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Iterator, Union
 
 import imageio.v2 as imageio
 import mujoco
@@ -81,6 +82,30 @@ class EpisodeResult:
     release_time_s: float | None
 
 
+@dataclass
+class EpisodeMetrics:
+    landing_error_cm: float | None
+    success: bool
+    has_fallen: bool
+    reward_sum: float
+    steps: int
+    release_time_s: float | None
+    seed: int
+
+
+@dataclass
+class StreamFrame:
+    image: np.ndarray
+
+
+@dataclass
+class StreamDone:
+    metrics: EpisodeMetrics
+
+
+StreamEvent = Union[StreamFrame, StreamDone]
+
+
 class SimulationRunner:
     """Loads the env + policy once and reuses them across requests."""
 
@@ -136,3 +161,49 @@ class SimulationRunner:
             steps=env.step_count,
             release_time_s=info.get("release_time"),
         )
+
+    def run_episode_stream(self, seed: int | None = None) -> Iterator[StreamEvent]:
+        """Like run_episode, but yields each frame as it's rendered (paced to
+        real time via env.control_dt) instead of assembling an MP4. Used by
+        the /ws/run websocket for live playback."""
+        seed = DEFAULT_SEED if seed is None else seed
+        env = self.env
+        obs, _ = env.reset(seed=seed)
+        terminated = truncated = False
+        info: dict = {}
+        reward_sum = 0.0
+        start_time = time.monotonic()
+        frame_idx = 0
+
+        def next_frame() -> StreamFrame:
+            nonlocal frame_idx
+            due_at = start_time + frame_idx * env.control_dt
+            remaining = due_at - time.monotonic()
+            if remaining > 0:
+                time.sleep(remaining)
+            frame_idx += 1
+            return StreamFrame(self._frame())
+
+        yield next_frame()
+        while not (terminated or truncated):
+            action, _ = self.model.predict(obs, deterministic=True)
+            obs, reward, terminated, truncated, info = env.step(action)
+            reward_sum += float(reward)
+            yield next_frame()
+
+        for _ in range(TAIL_STEPS):
+            for _ in range(env.frame_skip):
+                mujoco.mj_step(env.model, env.data)
+            yield next_frame()
+
+        landing_error = info.get("landing_error_xy")
+        metrics = EpisodeMetrics(
+            landing_error_cm=None if landing_error is None else float(landing_error) * 100.0,
+            success=bool(info.get("success", False)),
+            has_fallen=bool(info.get("has_fallen", False)),
+            reward_sum=reward_sum,
+            steps=env.step_count,
+            release_time_s=info.get("release_time"),
+            seed=seed,
+        )
+        yield StreamDone(metrics)

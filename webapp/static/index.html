@@ -2,28 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>G1 Ball-Throw Demo</title>
+<title>Audi AI Robotics — G1 Ball-Throw Demo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
   :root {
-    color-scheme: light dark;
-    --bg: #0f1115;
-    --panel: #1a1d24;
-    --text: #e8e9ec;
-    --muted: #9aa0ab;
-    --accent: #4f8cff;
-    --ok: #35c76a;
-    --bad: #e5484d;
-    --border: #2a2e37;
-  }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #f5f6f8;
-      --panel: #ffffff;
-      --text: #1a1d24;
-      --muted: #5b616e;
-      --border: #e2e4e9;
-    }
+    --audi-red: #bb0a30;
+    --audi-red-bright: #e2001a;
+    --bg: #0a0a0a;
+    --panel: #141414;
+    --panel-border: #2a2a2a;
+    --text: #f2f2f2;
+    --muted: #8c8c8c;
+    --ok: #2fbf71;
+    --bad: var(--audi-red-bright);
   }
   * { box-sizing: border-box; }
   body {
@@ -31,7 +22,7 @@
     min-height: 100vh;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,33 +30,92 @@
   }
   .card {
     width: 100%;
-    max-width: 720px;
+    max-width: 760px;
     background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    padding: 2.25rem;
+    position: relative;
+    overflow: hidden;
   }
-  h1 { font-size: 1.35rem; margin: 0 0 0.25rem; }
-  p.sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.9rem; }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--audi-red);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+  .rings {
+    display: flex;
+  }
+  .rings svg { display: block; }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .brand-text .make {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .brand-text .project {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  h1 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 0.3rem;
+    color: var(--text);
+  }
+  p.sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.88rem; }
   button {
-    background: var(--accent);
+    background: var(--audi-red);
     color: white;
     border: none;
-    border-radius: 10px;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: 3px;
+    padding: 0.8rem 1.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     cursor: pointer;
+    transition: background 0.15s ease;
   }
-  button:disabled { opacity: 0.55; cursor: progress; }
-  .video-wrap {
+  button:hover:not(:disabled) { background: var(--audi-red-bright); }
+  button:disabled { opacity: 0.45; cursor: progress; }
+  .stage-wrap {
     margin-top: 1.5rem;
-    border-radius: 12px;
+    border-radius: 4px;
     overflow: hidden;
-    background: black;
+    background: #000;
     display: none;
+    border: 1px solid var(--panel-border);
+    position: relative;
   }
-  video { width: 100%; display: block; }
+  .stage-wrap.live::after {
+    content: "LIVE";
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    background: var(--audi-red-bright);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+  canvas { width: 100%; display: block; }
   .metrics {
     display: none;
     margin-top: 1.25rem;
@@ -73,25 +123,42 @@
     gap: 0.75rem;
   }
   .metric {
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    border: 1px solid var(--panel-border);
+    border-left: 3px solid var(--audi-red);
+    border-radius: 3px;
     padding: 0.75rem 1rem;
+    background: #101010;
   }
-  .metric .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .metric .label { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
   .metric .value { font-size: 1.3rem; font-weight: 700; margin-top: 0.2rem; }
   .value.ok { color: var(--ok); }
   .value.bad { color: var(--bad); }
-  .status { margin-top: 1rem; color: var(--muted); font-size: 0.9rem; min-height: 1.2em; }
+  .status { margin-top: 1rem; color: var(--muted); font-size: 0.85rem; min-height: 1.2em; }
 </style>
 </head>
 <body>
   <div class="card">
-    <h1>G1 Ball-Throw Policy Demo</h1>
-    <p class="sub">Runs one episode of the trained residual PPO policy in MuJoCo and plays back the result.</p>
+    <div class="brand">
+      <span class="rings">
+        <svg width="86" height="24" viewBox="0 0 86 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+          <circle cx="30" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+          <circle cx="48" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+          <circle cx="66" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <span class="make">Audi AI Robotics</span>
+        <span class="project">Development Camp 2026</span>
+      </span>
+    </div>
+
+    <h1>G1 Ball-Throw Policy — Live Simulation</h1>
+    <p class="sub">Runs the trained residual PPO policy live in MuJoCo and streams it to the browser frame by frame.</p>
     <button id="runBtn">Run Simulation</button>
     <div class="status" id="status"></div>
-    <div class="video-wrap" id="videoWrap">
-      <video id="video" controls autoplay loop></video>
+    <div class="stage-wrap" id="stageWrap">
+      <canvas id="stage" width="640" height="480"></canvas>
     </div>
     <div class="metrics" id="metrics"></div>
   </div>
@@ -99,41 +166,69 @@
 <script>
 const runBtn = document.getElementById('runBtn');
 const statusEl = document.getElementById('status');
-const videoWrap = document.getElementById('videoWrap');
-const video = document.getElementById('video');
+const stageWrap = document.getElementById('stageWrap');
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
 const metricsEl = document.getElementById('metrics');
 
 function metricCard(label, value, cls) {
   return `<div class="metric"><div class="label">${label}</div><div class="value ${cls || ''}">${value}</div></div>`;
 }
 
-runBtn.addEventListener('click', async () => {
+function wsUrl(path) {
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  return `${proto}//${location.host}${path}`;
+}
+
+runBtn.addEventListener('click', () => {
   runBtn.disabled = true;
-  statusEl.textContent = 'Running episode in MuJoCo…';
+  statusEl.textContent = 'Connecting…';
   metricsEl.style.display = 'none';
-  videoWrap.style.display = 'none';
-  try {
-    const res = await fetch('/run', { method: 'POST' });
-    if (!res.ok) throw new Error(`Server error ${res.status}`);
-    const data = await res.json();
+  stageWrap.style.display = 'block';
+  stageWrap.classList.add('live');
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    video.src = data.video_url;
-    videoWrap.style.display = 'block';
+  const socket = new WebSocket(wsUrl('/ws/run'));
+  socket.binaryType = 'arraybuffer';
 
-    const errText = data.landing_error_cm === null ? 'no landing' : `${data.landing_error_cm.toFixed(2)} cm`;
-    metricsEl.innerHTML =
-      metricCard('Landing error', errText) +
-      metricCard('Success', data.success ? 'Yes' : 'No', data.success ? 'ok' : 'bad') +
-      metricCard('Fell over', data.has_fallen ? 'Yes' : 'No', data.has_fallen ? 'bad' : 'ok') +
-      metricCard('Episode reward', data.reward_sum.toFixed(2)) +
-      metricCard('Seed', data.seed);
-    metricsEl.style.display = 'grid';
-    statusEl.textContent = 'Done.';
-  } catch (err) {
-    statusEl.textContent = `Failed: ${err.message}`;
-  } finally {
+  socket.addEventListener('open', () => {
+    statusEl.textContent = 'Streaming live from MuJoCo…';
+  });
+
+  socket.addEventListener('message', async (event) => {
+    if (typeof event.data === 'string') {
+      const msg = JSON.parse(event.data);
+      if (msg.type === 'done') {
+        stageWrap.classList.remove('live');
+        const errText = msg.landing_error_cm === null ? 'no landing' : `${msg.landing_error_cm.toFixed(2)} cm`;
+        metricsEl.innerHTML =
+          metricCard('Landing error', errText) +
+          metricCard('Success', msg.success ? 'Yes' : 'No', msg.success ? 'ok' : 'bad') +
+          metricCard('Fell over', msg.has_fallen ? 'Yes' : 'No', msg.has_fallen ? 'bad' : 'ok') +
+          metricCard('Episode reward', msg.reward_sum.toFixed(2)) +
+          metricCard('Seed', msg.seed);
+        metricsEl.style.display = 'grid';
+        statusEl.textContent = 'Done.';
+      }
+      return;
+    }
+    const blob = new Blob([event.data], { type: 'image/jpeg' });
+    const bitmap = await createImageBitmap(blob);
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+  });
+
+  socket.addEventListener('close', () => {
+    stageWrap.classList.remove('live');
     runBtn.disabled = false;
-  }
+  });
+
+  socket.addEventListener('error', () => {
+    statusEl.textContent = 'Connection failed.';
+    stageWrap.classList.remove('live');
+    runBtn.disabled = false;
+  });
 });
 </script>
 </body>
