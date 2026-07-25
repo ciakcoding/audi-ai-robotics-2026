@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>G1 Ball-Throw Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #0f1115;
+    --panel: #1a1d24;
+    --text: #e8e9ec;
+    --muted: #9aa0ab;
+    --accent: #4f8cff;
+    --ok: #35c76a;
+    --bad: #e5484d;
+    --border: #2a2e37;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6f8;
+      --panel: #ffffff;
+      --text: #1a1d24;
+      --muted: #5b616e;
+      --border: #e2e4e9;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .card {
+    width: 100%;
+    max-width: 720px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  h1 { font-size: 1.35rem; margin: 0 0 0.25rem; }
+  p.sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.9rem; }
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.55; cursor: progress; }
+  .video-wrap {
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+    background: black;
+    display: none;
+  }
+  video { width: 100%; display: block; }
+  .metrics {
+    display: none;
+    margin-top: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+  .metric {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+  }
+  .metric .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .metric .value { font-size: 1.3rem; font-weight: 700; margin-top: 0.2rem; }
+  .value.ok { color: var(--ok); }
+  .value.bad { color: var(--bad); }
+  .status { margin-top: 1rem; color: var(--muted); font-size: 0.9rem; min-height: 1.2em; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>G1 Ball-Throw Policy Demo</h1>
+    <p class="sub">Runs one episode of the trained residual PPO policy in MuJoCo and plays back the result.</p>
+    <button id="runBtn">Run Simulation</button>
+    <div class="status" id="status"></div>
+    <div class="video-wrap" id="videoWrap">
+      <video id="video" controls autoplay loop></video>
+    </div>
+    <div class="metrics" id="metrics"></div>
+  </div>
+
+<script>
+const runBtn = document.getElementById('runBtn');
+const statusEl = document.getElementById('status');
+const videoWrap = document.getElementById('videoWrap');
+const video = document.getElementById('video');
+const metricsEl = document.getElementById('metrics');
+
+function metricCard(label, value, cls) {
+  return `<div class="metric"><div class="label">${label}</div><div class="value ${cls || ''}">${value}</div></div>`;
+}
+
+runBtn.addEventListener('click', async () => {
+  runBtn.disabled = true;
+  statusEl.textContent = 'Running episode in MuJoCo…';
+  metricsEl.style.display = 'none';
+  videoWrap.style.display = 'none';
+  try {
+    const res = await fetch('/run', { method: 'POST' });
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    const data = await res.json();
+
+    video.src = data.video_url;
+    videoWrap.style.display = 'block';
+
+    const errText = data.landing_error_cm === null ? 'no landing' : `${data.landing_error_cm.toFixed(2)} cm`;
+    metricsEl.innerHTML =
+      metricCard('Landing error', errText) +
+      metricCard('Success', data.success ? 'Yes' : 'No', data.success ? 'ok' : 'bad') +
+      metricCard('Fell over', data.has_fallen ? 'Yes' : 'No', data.has_fallen ? 'bad' : 'ok') +
+      metricCard('Episode reward', data.reward_sum.toFixed(2)) +
+      metricCard('Seed', data.seed);
+    metricsEl.style.display = 'grid';
+    statusEl.textContent = 'Done.';
+  } catch (err) {
+    statusEl.textContent = `Failed: ${err.message}`;
+  } finally {
+    runBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

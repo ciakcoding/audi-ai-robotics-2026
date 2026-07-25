@@ -10,3 +10,7 @@ torch
 tensorboard
 mkdocs
 mkdocs-material
+fastapi
+uvicorn[standard]
+imageio
+imageio-ffmpeg
