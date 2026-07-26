@@ -1,0 +1,16 @@
+{
+  "label": "derived baseline (no CEM, no RL)",
+  "episodes": 100,
+  "successes": 0,
+  "success_rate": 0.0,
+  "mean_crossing_error": 1.1031867565640738,
+  "max_crossing_error": 1.1068044648986577,
+  "backboard_contacts": 0,
+  "falls": 0,
+  "target": [
+    2.2,
+    0.0,
+    1.2
+  ],
+  "success_radius": 0.1
+}
