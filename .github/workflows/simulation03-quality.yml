@@ -9,6 +9,7 @@ on:
     branches:
       - "feature/simulation03-derived-baseline"
       - "feature/simulation03-cem"
+      - "feature/rl-on-lv3"
     paths:
       - "training_extension/**"
       - ".github/workflows/simulation03-quality.yml"
@@ -25,3 +26,4 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - run: python -m unittest discover -s training_extension/tests -v
       - run: python -m training_extension.quality_check --smoke-episodes 2
+      - run: python -m training_extension.quality_check_rl

@@ -308,3 +308,16 @@ The parent branch `feature/simulation03-derived-baseline` intentionally
 contains no CEM and no RL. This stacked branch adds CEM artifacts documented
 in [`training_extension/CEM_README.md`](training_extension/CEM_README.md),
 while still excluding all reinforcement-learning work.
+
+## LEVEL03 reinforcement learning
+
+The stacked `feature/rl-on-lv3` branch adds PPO parameter-residual training,
+evaluation, playback, the selected model, and compact failed/intermediate
+experiment evidence. See
+[`training_extension/RL_README.md`](training_extension/RL_README.md).
+
+The selected policy was trained for 12,288 cumulative complete-shot episodes.
+Across the fixed 300-seed evaluation it records 297/300 direct successes,
+3.336 cm mean hoop-plane error, 31.255 cm maximum error, no backboard
+contacts, and no falls. The world, hoop target, 10 cm success radius, and
+anti-cheating constraints remain unchanged.

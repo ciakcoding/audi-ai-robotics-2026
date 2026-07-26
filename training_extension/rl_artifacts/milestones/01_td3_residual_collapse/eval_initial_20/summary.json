@@ -1,0 +1,10 @@
+{
+  "episodes": 20,
+  "successes": 5,
+  "success_rate": 0.25,
+  "mean_crossing_error": 0.10745847988117865,
+  "max_crossing_error": 0.12465111289185456,
+  "backboard_contacts": 0,
+  "falls": 0,
+  "mean_reward": 149.6117897279415
+}

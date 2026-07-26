@@ -1,0 +1,12 @@
+# Keep hashed text assets stable across Windows and Linux checkouts.
+training_extension/frozen/ppo_parameters_12288_selected_20260726/** text eol=lf
+training_extension/rl_artifacts/** text eol=lf
+
+# Model, normalization, image, and video artifacts are byte-for-byte binaries.
+training_extension/frozen/ppo_parameters_12288_selected_20260726/**/*.zip binary
+training_extension/frozen/ppo_parameters_12288_selected_20260726/**/*.pkl binary
+training_extension/frozen/ppo_parameters_12288_selected_20260726/**/*.mp4 binary
+training_extension/rl_artifacts/**/*.zip binary
+training_extension/rl_artifacts/**/*.pkl binary
+training_extension/rl_artifacts/**/*.mp4 binary
+training_extension/rl_artifacts/**/*.jpg binary

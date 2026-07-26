@@ -1,0 +1,8 @@
+mujoco
+gymnasium
+numpy
+imageio[ffmpeg]
+pillow
+stable-baselines3
+torch
+tensorboard

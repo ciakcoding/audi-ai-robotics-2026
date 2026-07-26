@@ -1,0 +1,12 @@
+{
+  "episodes": 100,
+  "successes": 98,
+  "success_rate": 0.98,
+  "mean_crossing_error": 0.03728615219587932,
+  "max_crossing_error": 0.37564862327546045,
+  "backboard_contacts": 0,
+  "falls": 0,
+  "mean_reward": 10.161573100090028,
+  "mean_parameter_l2": 7.85859660806673e-05,
+  "mean_ctrl_delta": 0.00032668704887513553
+}

@@ -1,0 +1,50 @@
+{
+  "algorithm": "SAC parameter residual around frozen CEM v17",
+  "timesteps": 2000,
+  "n_envs": 8,
+  "seed": 2043,
+  "device_requested": "cuda",
+  "cuda_available": true,
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "parameter_names": [
+    "right_shoulder_pitch_joint:load",
+    "right_elbow_joint:load",
+    "right_wrist_pitch_joint:load",
+    "left_shoulder_pitch_joint:load",
+    "left_elbow_joint:load",
+    "left_wrist_pitch_joint:load",
+    "waist_pitch_joint:load",
+    "right_shoulder_pitch_joint:release",
+    "right_elbow_joint:release",
+    "right_wrist_pitch_joint:release",
+    "left_shoulder_pitch_joint:release",
+    "left_elbow_joint:release",
+    "left_wrist_pitch_joint:release",
+    "waist_pitch_joint:release",
+    "release_timing"
+  ],
+  "target": [
+    2.2,
+    0.0,
+    1.2
+  ],
+  "success_radius": 0.1,
+  "parameter_scales": [
+    0.005,
+    0.002,
+    0.005,
+    0.005,
+    0.002,
+    0.005,
+    0.01,
+    0.01,
+    0.005,
+    0.005,
+    0.005,
+    0.002,
+    0.005,
+    0.01,
+    0.0
+  ],
+  "zero_mean_initialization": true
+}

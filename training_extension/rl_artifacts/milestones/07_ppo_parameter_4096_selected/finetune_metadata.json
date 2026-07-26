@@ -1,0 +1,22 @@
+{
+  "algorithm": "PPO parameter residual fine-tune",
+  "parent_model": "D:\\RLlearing-new\\audi-ai-robotics-2026-simulation03\\training_extension\\runs\\ppo_parameters_gate_2k_seed2051_20260726\\checkpoints\\ppo_parameters_1024_steps.zip",
+  "parent_vecnormalize": "D:\\RLlearing-new\\audi-ai-robotics-2026-simulation03\\training_extension\\runs\\ppo_parameters_gate_2k_seed2051_20260726\\checkpoints\\ppo_parameters_vecnormalize_1024_steps.pkl",
+  "parent_timesteps": 1024,
+  "additional_timesteps": 4096,
+  "n_envs": 8,
+  "seed": 2052,
+  "learning_rate": 1e-05,
+  "clip_range": 0.03,
+  "target_kl": 0.005,
+  "n_epochs": 5,
+  "device_requested": "cuda",
+  "cuda_available": true,
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "target": [
+    2.2,
+    0.0,
+    1.2
+  ],
+  "success_radius": 0.1
+}
