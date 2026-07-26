@@ -1,424 +1,114 @@
-# audi-ai-robotics-2026
-Audi Development Camp 2026 - AI Robotics Team
+# Audi AI Robotics 2026
 
-## Task 1 scripted baseline
+Audi Development Camp 2026 — training a Unitree G1 humanoid (29 DoF) in
+MuJoCo to perform two tasks, each built up in three stages: a scripted
+baseline, a residual reinforcement-learning policy on top of it, and a
+Sim2Real domain-randomization robustness check.
 
-This baseline uses the official MuJoCo Menagerie Unitree G1 `g1.xml` model
-with 29 actuators. The ball radius is 4 cm, the target center is
-`(0.55, 0.00)`, and the unchanged success radius is 10 cm.
+| | Task | Baseline | RL |
+|---|---|---|---|
+| **Level 02** | Throw a ball to a fixed ground target while balancing (no locomotion) | 100% success, 1.150 cm mean landing error | 100% success, 0.674 cm mean landing error (−41% error) |
+| **Level 03** | Walk ~2.2 m to a basketball hoop and shoot | scripted CEM-derived shot (293/300 direct success) | one-decision residual over 15 shot parameters (297/300 direct success, 3.336 cm mean hoop-plane error) |
 
-### Setup
+Both policies are also stress-tested under domain randomization (joint
+friction/damping, actuator gain, floor friction, contact stiffness, observation
+noise, control latency) to check they don't just memorize the nominal
+simulator.
 
-From this repository root:
+## Quick start: watch it run
 
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+The fastest way to see everything working is the local web GUI — click a
+button, watch the trained policies run live in the browser, no terminal
+interaction needed after startup:
+
+```bash
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn webapp.app:app --reload
 ```
 
-Python 3.10-3.12 is recommended. All required G1 XML and mesh assets are
-included in `assets/`.
+Then open `http://localhost:8000` (Level 02) and
+`http://localhost:8000/level03.html` (Level 03). Full details on what each
+page is doing under the hood: [`webapp/README.md`](webapp/README.md).
 
-### Run
+## How it's built
 
-View the continuously looping scripted non-learning baseline:
+Each level is a stack of three layers, each frozen before the next is built
+on top so later work can't quietly change what came before:
 
-```powershell
-.\run_baseline.ps1
-```
+1. **Scripted baseline** — a hand-authored, non-learning controller (fixed
+   arm keyframes / motion trajectory) that solves the task directly. This is
+   the disclosed, auditable reference every later stage is measured against.
+2. **Residual RL policy** — a PPO (Level 02) or SAC→PPO (Level 03) policy
+   that predicts a *bounded correction* on top of the scripted baseline,
+   rather than learning the task from scratch. Level 02's policy corrects
+   the arm swing every control step; Level 03's policy makes one decision
+   per episode (a residual over 15 expert trajectory parameters), since the
+   shot motion itself is a single planned arc.
+3. **Sim2Real robustness check** — the same trained RL policy re-run under
+   randomized physics (friction, damping, actuator strength, contact
+   softness) and sensor/actuation noise, to see how much performance holds
+   up outside the exact conditions it was trained in.
 
-On Windows, `run_baseline.bat` can also be double-clicked from Explorer or
-the VS Code file tree after the environment has been installed.
-
-Evaluate 100 deterministic episodes:
-
-```powershell
-.\.venv\Scripts\python.exe scripts\evaluate_baseline.py --episodes 100 --seed 2026
-```
-
-Run contract tests:
-
-```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
-
-Evaluation results are generated under the ignored `outputs/` directory.
-
-Validated with MuJoCo 3.10: 100/100 successful episodes from seed 2026,
-mean first-contact landing error 1.15 cm, and zero detected falls.
-
-# Task 2 - Residual PPO for Unitree G1 Ball Throwing
-
-This branch contains the reproducible reinforcement-learning deliverables for
-Audi Development Camp 2026. It is intentionally isolated from Task 1 and is
-based on the frozen Task 1 contract:
-
-- tag: `task1-baseline-v1.0`
-- commit: `7a370663cbcc1aa96438dffc9f6331d3bf4ef35c`
-- robot: official Unitree G1, 29 actuators
-- ball radius: `0.04 m`
-- target center: `(0.55, 0.00) m`
-- success radius: `0.10 m`
-- release time: `0.65 s`
-
-## Result
-
-The selected policy is a disclosed residual PPO policy around the scripted
-baseline. It does not claim to learn the entire throw from zero.
-
-Under an identical 100-seed nominal evaluation:
-
-| Policy | Success | Mean landing error | P90 error | Falls |
-|---|---:|---:|---:|---:|
-| Scripted baseline | 100% | 1.150 cm | 1.223 cm | 0% |
-| Selected PPO best | 100% | 0.674 cm | 0.775 cm | 0% |
-
-The selected PPO policy reduces mean landing error by approximately 41.4%
-while preserving 100% success and zero falls. The final one-million-step model
-degraded; therefore the automatically preserved best policy is the selected
-deliverable. Best, final, and ten checkpoints are all retained.
+Each stage's environment/model files are treated as frozen contracts — see
+[`docs/architecture.md`](docs/architecture.md) and
+[`docs/frozen_snapshot.json`](docs/frozen_snapshot.json) for how that's
+enforced for Level 02.
 
 ## Repository structure
 
 ```text
-assets/       Frozen G1 MJCF, scene, and required meshes
-envs/         Frozen Task 1 environment and Task 2 residual wrapper
-configs/      PPO configuration used by the selected run
-train/        Reproducible parallel PPO training entry point
-evaluation/   Policy evaluation, comparison, and plot generation
-scripts/      Snapshot verification and live PPO viewer
-outputs/
-  models/     Best, final, and 100k-step checkpoints
-  logs/       Run metadata, Monitor data, and evaluation arrays
-  plots/      Training, nominal, and robustness figures and raw metrics
-docs/         Architecture, decisions, frozen hashes, and training report
-tests/        Contract and environment tests
+assets/               G1 MJCF model, scenes, and meshes (Menagerie Unitree G1)
+envs/                 Level 02 Gymnasium envs (baseline, PPO residual, robustness/Sim2Real)
+scripts/              Scripted baselines, live viewers, evaluation entry points
+train/                Level 02 PPO training entry point
+evaluation/            Level 02 policy evaluation and baseline-vs-RL comparison
+training_extension/   Level 03: derived baseline, CEM expert trajectories, RL training/eval
+outputs/               Trained models, logs, plots, evaluation artifacts (mostly gitignored)
+webapp/                FastAPI + HTML/JS/canvas GUI serving both levels' live demos
+docs/                  Architecture, decisions, frozen hashes, training report
+tests/                 Contract and environment tests
+Dockerfile, fly.toml   Headless deployment for the web GUI
 ```
 
-## Setup
+## Running things directly (without the GUI)
 
-Python 3.11 is recommended.
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+Level 02:
+```bash
+python scripts/view_baseline.py                 # scripted baseline, looping
+python scripts/view_ppo.py                       # trained RL policy
+python evaluation/compare_baseline_ppo.py --episodes 100 --seed 2026
+python -m unittest discover -s tests -v
 ```
 
-## Verify
-
-```powershell
-.\.venv\Scripts\python.exe scripts\verify_frozen_snapshot.py
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+Level 03 (see [`training_extension/README.md`](training_extension/README.md)
+and [`training_extension/RL_README.md`](training_extension/RL_README.md) for
+the full picture):
+```bash
+python -m training_extension.view_derived_baseline
+python -m training_extension.evaluate_ppo_parameters \
+  --model training_extension/frozen/ppo_parameters_12288_selected_20260726/selected_model.zip
 ```
 
-## View the selected PPO policy
-
-```powershell
-.\.venv\Scripts\python.exe scripts\view_ppo.py
-```
-
-## Reproduce training
-
-The configuration uses eight CPU MuJoCo worker processes for rollout
-collection and CUDA for PyTorch PPO updates.
-
-```powershell
-.\.venv\Scripts\python.exe train\train_ppo.py `
-  --timesteps 1000000 `
-  --run-name ppo_robust_1m_seed2026
-```
-
-Each run receives a unique directory and saves TensorBoard logs, evaluation
-logs, metadata, best/final models, and 100k-step checkpoints. Existing runs
-are never overwritten.
-
-## Reproduce the comparison
-
-```powershell
-.\.venv\Scripts\python.exe evaluation\compare_baseline_ppo.py `
-  --run-dir outputs\models\selected `
-  --episodes 100 `
-  --seed 2026
-```
-
-See [the full training report](docs/TRAINING_REPORT.md) for failed runs,
-reward-design iterations, robustness results, and limitations.
-
-Robot-model provenance and licensing are documented in
-[`docs/model_source.md`](docs/model_source.md).
-
-# Task 2 - Residual PPO for Unitree G1 Ball Throwing
-
-This branch contains the reproducible reinforcement-learning deliverables for
-Audi Development Camp 2026. It is intentionally isolated from Task 1 and is
-based on the frozen Task 1 contract:
-
-- tag: `task1-baseline-v1.0`
-- commit: `7a370663cbcc1aa96438dffc9f6331d3bf4ef35c`
-- robot: official Unitree G1, 29 actuators
-- ball radius: `0.04 m`
-- target center: `(0.55, 0.00) m`
-- success radius: `0.10 m`
-- release time: `0.65 s`
-
-## Result
-
-The selected policy is a disclosed residual PPO policy around the scripted
-baseline. It does not claim to learn the entire throw from zero.
-
-Under an identical 100-seed nominal evaluation:
-
-| Policy | Success | Mean landing error | P90 error | Falls |
-|---|---:|---:|---:|---:|
-| Scripted baseline | 100% | 1.150 cm | 1.223 cm | 0% |
-| Selected PPO best | 100% | 0.674 cm | 0.775 cm | 0% |
-
-The selected PPO policy reduces mean landing error by approximately 41.4%
-while preserving 100% success and zero falls. The final one-million-step model
-degraded; therefore the automatically preserved best policy is the selected
-deliverable. Best, final, and ten checkpoints are all retained.
-
-## Repository structure
-
-```text
-assets/       Frozen G1 MJCF, scene, and required meshes
-envs/         Frozen Task 1 environment and Task 2 residual wrapper
-configs/      PPO configuration used by the selected run
-train/        Reproducible parallel PPO training entry point
-evaluation/   Policy evaluation, comparison, and plot generation
-scripts/      Snapshot verification and live PPO viewer
-outputs/
-  models/     Best, final, and 100k-step checkpoints
-  logs/       Run metadata, Monitor data, and evaluation arrays
-  plots/      Training, nominal, and robustness figures and raw metrics
-docs/         Architecture, decisions, frozen hashes, and training report
-tests/        Contract and environment tests
-```
-
-## Setup
-
-Python 3.11 is recommended.
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-## Verify
-
-```powershell
-.\.venv\Scripts\python.exe scripts\verify_frozen_snapshot.py
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
-
-## View the selected PPO policy
-
-```powershell
-.\.venv\Scripts\python.exe scripts\view_ppo.py
-```
-
-## Reproduce training
-
-The configuration uses eight CPU MuJoCo worker processes for rollout
-collection and CUDA for PyTorch PPO updates.
-
-```powershell
-.\.venv\Scripts\python.exe train\train_ppo.py `
-  --timesteps 1000000 `
-  --run-name ppo_robust_1m_seed2026
-```
-
-Each run receives a unique directory and saves TensorBoard logs, evaluation
-logs, metadata, best/final models, and 100k-step checkpoints. Existing runs
-are never overwritten.
-
-## Reproduce the comparison
-
-```powershell
-.\.venv\Scripts\python.exe evaluation\compare_baseline_ppo.py `
-  --run-dir outputs\models\selected `
-  --episodes 100 `
-  --seed 2026
-```
-
-See [the full training report](docs/TRAINING_REPORT.md) for failed runs,
-reward-design iterations, robustness results, and limitations.
-
-Robot-model provenance and licensing are documented in
-[`docs/model_source.md`](docs/model_source.md).
-
-
-# audi-ai-robotics-2026
-Audi Development Camp 2026 - AI Robotics Team
-
-## Task 1 scripted baseline
-
-This baseline uses the official MuJoCo Menagerie Unitree G1 `g1.xml` model
-with 29 actuators. The ball radius is 4 cm, the target center is
-`(0.55, 0.00)`, and the unchanged success radius is 10 cm.
-
-### Setup
-
-From this repository root:
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-Python 3.10-3.12 is recommended. All required G1 XML and mesh assets are
-included in `assets/`.
-
-### Run
-
-View the continuously looping scripted non-learning baseline:
-
-```powershell
-.\run_baseline.ps1
-```
-
-On Windows, `run_baseline.bat` can also be double-clicked from Explorer or
-the VS Code file tree after the environment has been installed.
-
-Evaluate 100 deterministic episodes:
-
-```powershell
-.\.venv\Scripts\python.exe scripts\evaluate_baseline.py --episodes 100 --seed 2026
-```
-
-Run contract tests:
-
-```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
-
-Evaluation results are generated under the ignored `outputs/` directory.
-
-Validated with MuJoCo 3.10: 100/100 successful episodes from seed 2026,
-mean first-contact landing error 1.15 cm, and zero detected falls.
-
-## LEVEL03 derived basketball baseline
-
-The independently runnable LEVEL03 derived baseline is documented in
-[`training_extension/README.md`](training_extension/README.md). It preserves
-the teammate `v031` implementation, overrides selected motion keyframes in a
-separate policy, and evaluates a physical hoop at `(2.2, 0.0, 1.2)`.
-
-The parent branch `feature/simulation03-derived-baseline` intentionally
-contains no CEM and no RL. This stacked branch adds CEM artifacts documented
-in [`training_extension/CEM_README.md`](training_extension/CEM_README.md),
-while still excluding all reinforcement-learning work.
-
-## LEVEL03 reinforcement learning
-
-The stacked `feature/rl-on-lv3` branch adds PPO parameter-residual training,
-evaluation, playback, the selected model, and compact failed/intermediate
-experiment evidence. See
-[`training_extension/RL_README.md`](training_extension/RL_README.md).
-
-The selected policy was trained for 12,288 cumulative complete-shot episodes.
-Across the fixed 300-seed evaluation it records 297/300 direct successes,
-3.336 cm mean hoop-plane error, 31.255 cm maximum error, no backboard
-contacts, and no falls. The world, hoop target, 10 cm success radius, and
-anti-cheating constraints remain unchanged.
-
-# Task 2 - Residual PPO for Unitree G1 Ball Throwing
-
-This branch contains the reproducible reinforcement-learning deliverables for
-Audi Development Camp 2026. It is intentionally isolated from Task 1 and is
-based on the frozen Task 1 contract:
-
-- tag: `task1-baseline-v1.0`
-- commit: `7a370663cbcc1aa96438dffc9f6331d3bf4ef35c`
-- robot: official Unitree G1, 29 actuators
-- ball radius: `0.04 m`
-- target center: `(0.55, 0.00) m`
-- success radius: `0.10 m`
-- release time: `0.65 s`
-
-## Result
-
-The selected policy is a disclosed residual PPO policy around the scripted
-baseline. It does not claim to learn the entire throw from zero.
-
-Under an identical 100-seed nominal evaluation:
-
-| Policy | Success | Mean landing error | P90 error | Falls |
-|---|---:|---:|---:|---:|
-| Scripted baseline | 100% | 1.150 cm | 1.223 cm | 0% |
-| Selected PPO best | 100% | 0.674 cm | 0.775 cm | 0% |
-
-The selected PPO policy reduces mean landing error by approximately 41.4%
-while preserving 100% success and zero falls. The final one-million-step model
-degraded; therefore the automatically preserved best policy is the selected
-deliverable. Best, final, and ten checkpoints are all retained.
-
-## Repository structure
-
-```text
-assets/       Frozen G1 MJCF, scene, and required meshes
-envs/         Frozen Task 1 environment and Task 2 residual wrapper
-configs/      PPO configuration used by the selected run
-train/        Reproducible parallel PPO training entry point
-evaluation/   Policy evaluation, comparison, and plot generation
-scripts/      Snapshot verification and live PPO viewer
-outputs/
-  models/     Best, final, and 100k-step checkpoints
-  logs/       Run metadata, Monitor data, and evaluation arrays
-  plots/      Training, nominal, and robustness figures and raw metrics
-docs/         Architecture, decisions, frozen hashes, and training report
-tests/        Contract and environment tests
-```
-
-## Setup
-
-Python 3.11 is recommended.
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-## Verify
-
-```powershell
-.\.venv\Scripts\python.exe scripts\verify_frozen_snapshot.py
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
-
-## View the selected PPO policy
-
-```powershell
-.\.venv\Scripts\python.exe scripts\view_ppo.py
-```
-
-## Reproduce training
-
-The configuration uses eight CPU MuJoCo worker processes for rollout
-collection and CUDA for PyTorch PPO updates.
-
-```powershell
-.\.venv\Scripts\python.exe train\train_ppo.py `
-  --timesteps 1000000 `
-  --run-name ppo_robust_1m_seed2026
-```
-
-Each run receives a unique directory and saves TensorBoard logs, evaluation
-logs, metadata, best/final models, and 100k-step checkpoints. Existing runs
-are never overwritten.
-
-## Reproduce the comparison
-
-```powershell
-.\.venv\Scripts\python.exe evaluation\compare_baseline_ppo.py `
-  --run-dir outputs\models\selected `
-  --episodes 100 `
-  --seed 2026
-```
-
-See [the full training report](docs/TRAINING_REPORT.md) for failed runs,
-reward-design iterations, robustness results, and limitations.
-
-Robot-model provenance and licensing are documented in
-[`docs/model_source.md`](docs/model_source.md).
-
+Sim2Real (Level 02): see [`SIM2REAL_README.md`](SIM2REAL_README.md).
+Sim2Real (Level 03): `scripts/level_3_view_noisy.py` /
+`scripts/level_3_evaluate_robustness.py`.
+
+Windows: `run_baseline.bat` / `run_baseline.ps1` wrap the equivalent commands
+with `.venv\Scripts\python.exe` and PowerShell syntax.
+
+## Deployment
+
+The web GUI ships as a headless Docker image (`MUJOCO_GL=osmesa`, no GPU
+needed) with a ready-made `fly.toml` for Fly.io. See the
+[Deployment section of `webapp/README.md`](webapp/README.md#deployment) for
+build/run/deploy commands and cost caveats.
+
+## Further reading
+
+- [`docs/architecture.md`](docs/architecture.md), [`docs/decisions.md`](docs/decisions.md), [`docs/TRAINING_REPORT.md`](docs/TRAINING_REPORT.md) — Level 02 design and training report
+- [`docs/model_source.md`](docs/model_source.md) — robot model provenance and licensing
+- [`training_extension/README.md`](training_extension/README.md), [`training_extension/RL_README.md`](training_extension/RL_README.md) — Level 03 baseline and RL extension
+- [`SIM2REAL_README.md`](SIM2REAL_README.md) — Level 02 robustness testing
+- [`webapp/README.md`](webapp/README.md) — web GUI internals and deployment
