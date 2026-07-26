@@ -15,6 +15,9 @@ friction/damping, actuator gain, floor friction, contact stiffness, observation
 noise, control latency) to check they don't just memorize the nominal
 simulator.
 
+- **Trello board**: https://trello.com/b/z42I2vSE
+- **Final report**: https://docs.google.com/document/d/1HUYO_wSMAxBY-qL1g_YRi02oJLaMqBbRzlGysW7D7M0/edit?tab=t.28q7u0wql8m3
+
 ## Quick start: watch it run
 
 The fastest way to see everything working is the local web GUI — click a
