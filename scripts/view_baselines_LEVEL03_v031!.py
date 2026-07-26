@@ -165,8 +165,8 @@ def view_baseline():
             
             target_body_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_BODY, "throw_target")
             if target_body_id != -1:
-                env.model.body_pos[target_body_id][0] = 1.8 
-                env.model.body_pos[target_body_id][2] = 1.2 
+                env.model.body_pos[target_body_id][0] = 1.8 #distance
+                env.model.body_pos[target_body_id][2] = 1.2 #height
             
             env.data.qpos[:3] = [0.0, 0.0, 0.81] 
             env.data.qvel[:] = 0.0
