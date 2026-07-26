@@ -1,0 +1,23 @@
+# Fly.io app config. Deploy with: flyctl deploy
+# First time: `flyctl launch --no-deploy` to create the app + pick a region,
+# then replace the generated fly.toml's `app` name below with what it chose
+# (names must be globally unique on Fly), or just edit `app` here first and
+# run `flyctl apps create <name>` before the first `flyctl deploy`.
+
+app = "g1-webapp"           # <-- change to your own unique app name
+primary_region = "iad"      # nearest region; list options with `flyctl platform regions`
+
+[build]
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = false   # keep the machine warm -- Level 03 runs already
+  auto_start_machines = true   # take ~25-30s; a cold start on top would be rough
+  min_machines_running = 1
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory = "2gb"               # loads 2 PPO models + ~9 MuJoCo model/renderer
+                                # instances across both pages; bump if you see OOM kills

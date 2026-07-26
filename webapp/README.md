@@ -240,12 +240,56 @@ pages yet) and click **Run Simulation** — expect ~25-30s per run.
 - Headless server, CPU only: `MUJOCO_GL=osmesa`.
 - Headless server with GPU: `MUJOCO_GL=egl`.
 
+## Deployment
+
+`Dockerfile`, `.dockerignore`, and `fly.toml` live at the repo root (not
+under `webapp/`), since the image needs the whole tree's runtime pieces —
+`assets/`, `envs/`, `scripts/`, the specific `training_extension/` files,
+and both trained models — not just this directory.
+
+**Build and run locally:**
+```bash
+docker build -t g1-webapp .
+docker run -p 8000:8000 g1-webapp
+```
+Open `http://localhost:8000`. The image sets `MUJOCO_GL=osmesa` (CPU-only
+headless rendering, no GPU/driver dependency) — the same env var, no code
+changes, that lets this run on any plain VM or container host. For a
+GPU instance instead, override it to `MUJOCO_GL=egl` when running the
+container (`docker run -e MUJOCO_GL=egl ...`).
+
+**Deploy to Fly.io** (the `fly.toml` here targets this):
+```bash
+flyctl auth login
+flyctl apps create <your-unique-app-name>   # fly.toml's app name must match
+flyctl deploy
+```
+`fly.toml` pins `min_machines_running = 1` / `auto_stop_machines = false` so
+the machine stays warm — Level 03 runs already take ~25-30s; a cold start
+on top of that would be rough. That means it's never fully scaled to zero,
+so check Fly's current pricing for a small always-on `shared-cpu-1x`/2GB
+machine before deploying, rather than assuming it's free.
+
+**Other Dockerfile-based hosts** (Render, Railway, a plain VM) work the
+same way: point them at this `Dockerfile`, no changes needed beyond
+whatever health-check/port config that platform expects (the app listens
+on `$PORT`-agnostic port 8000 internally — remap it in that platform's own
+config, don't edit the `Dockerfile`'s `EXPOSE`/`CMD` for it).
+
+**Image size**: dependencies alone (`torch`, `mujoco`,
+`stable-baselines3`) are the bulk of it; the Dockerfile explicitly copies
+only the ~11 `training_extension/` files the webapp actually imports, not
+its ~30MB of unrelated training artifacts (`rl_artifacts/`,
+`cem_artifacts/milestones/`, checkpoint sweeps) — see the Dockerfile's
+comments if that file list ever needs updating alongside
+`webapp/runner_level03.py`'s imports.
+
 ## Known limitations (v1)
 
 - Single shared MuJoCo environment/renderer instance per page (Level 02 and
   Level 03 have separate locks, so the two pages don't block each other,
   but concurrent runs *within* one page's endpoints are serialized behind
   that page's lock, not parallelized).
-- No nav link between `index.html` and `level03.html` yet — open
-  `/level03.html` directly.
-- No deployment/containerization yet (`Dockerfile` is a planned next step).
+- Not load-tested for multiple concurrent users — the per-page lock means
+  a second visitor's click queues behind whoever's already running a
+  simulation on that page, which could feel slow with real traffic.

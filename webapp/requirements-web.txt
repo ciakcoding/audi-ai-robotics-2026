@@ -1,0 +1,14 @@
+# Runtime dependencies for serving the webapp (Dockerfile at repo root).
+# Deliberately narrower than the top-level requirements.txt, which also
+# covers training/plotting/docs tooling (matplotlib, pandas, tensorboard,
+# mkdocs) that the deployed server never imports.
+mujoco
+gymnasium
+numpy
+stable-baselines3
+torch
+fastapi
+uvicorn[standard]
+imageio
+imageio-ffmpeg
+Pillow

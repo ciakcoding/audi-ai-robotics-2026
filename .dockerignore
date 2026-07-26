@@ -1,0 +1,17 @@
+.git
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+webapp/videos/*.mp4
+
+# Training-only bulk not referenced by the Dockerfile's explicit COPY list
+training_extension/rl_artifacts
+training_extension/cem_artifacts/milestones
+training_extension/artifacts
+training_extension/frozen/*/checkpoint_sweep_100
+outputs/logs
+outputs/plots
+
+docs
+site
