@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Audi AI Robotics — Level 03: Basketball-Hoop Shot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --audi-red: #bb0a30;
+    --audi-red-bright: #e2001a;
+    --bg: #0a0a0a;
+    --panel: #141414;
+    --panel-border: #2a2a2a;
+    --text: #f2f2f2;
+    --muted: #8c8c8c;
+    --ok: #2fbf71;
+    --bad: var(--audi-red-bright);
+    --baseline-chip: #3a3d44;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .page {
+    width: 100%;
+    max-width: 1020px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+  }
+  .brand img {
+    height: 2.75rem;
+    width: auto;
+    display: block;
+  }
+  .level-badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--audi-red-bright);
+    border: 1px solid var(--audi-red);
+    border-radius: 2px;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    padding: 2.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--audi-red);
+  }
+  h1 { font-size: 1.15rem; font-weight: 600; margin: 0 0 0.3rem; }
+  p.sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.88rem; }
+  p.note {
+    color: var(--muted);
+    margin: 0 0 1.5rem;
+    font-size: 0.8rem;
+    border-left: 2px solid var(--audi-red);
+    padding-left: 0.75rem;
+  }
+  button {
+    background: var(--audi-red);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 0.8rem 1.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  button:hover:not(:disabled) { background: var(--audi-red-bright); }
+  button:disabled { opacity: 0.45; cursor: progress; }
+  .status { margin-top: 1rem; color: var(--muted); font-size: 0.85rem; min-height: 1.2em; }
+
+  .stage-wrap {
+    margin-top: 1.5rem;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #000;
+    display: none;
+    border: 1px solid var(--panel-border);
+    position: relative;
+  }
+  canvas { width: 100%; display: block; }
+  .chip {
+    position: absolute;
+    top: 0.6rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    color: white;
+  }
+  .chip.left { left: 0.6rem; background: var(--baseline-chip); }
+  .chip.right { right: 0.6rem; background: var(--audi-red); }
+  .live-badge {
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--audi-red-bright);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    display: none;
+  }
+  .stage-wrap.live .live-badge { display: block; }
+
+  table.compare {
+    display: none;
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  table.compare th, table.compare td {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--panel-border);
+    text-align: left;
+  }
+  table.compare th {
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  table.compare th.col-right { color: var(--audi-red-bright); }
+  table.compare td.metric-name { color: var(--muted); }
+  table.compare td.val { font-weight: 700; }
+  table.compare td.val.na { color: var(--muted); font-weight: 400; }
+  table.compare td.val.ok { color: var(--ok); }
+  table.compare td.val.bad { color: var(--bad); }
+  table.compare tr.section td {
+    padding-top: 1rem;
+    color: var(--audi-red-bright);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    border-bottom: none;
+  }
+  table.compare tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">
+    <img src="/logos/logo.jpeg" alt="Audi Hungaria / ADC / Széchenyi Egyetem" />
+    <span class="level-badge">Level 03</span>
+  </div>
+
+  <div class="card">
+    <h1>Level 03 — Basketball-Hoop Shot: Scripted Baseline vs RL Policy</h1>
+    <p class="sub">Each side runs its own script's actual simulation, exactly as written, in its own scene — not a shared comparison environment. Left: <code>scripts/view_baselines_LEVEL03_v031!.py</code>'s scripted keyframe policy (target 1.8m out, fixed 850-step loop). Right: <code>training_extension/view_ppo_parameters.py</code>'s trained one-decision RL policy over <code>BasketballResidualEnv</code> (target 2.2m out, its own success contract). Because they're different scenes with different scoring rules, the metrics table below shows each side's own native numbers rather than forcing them into shared rows.</p>
+    <p class="note">One run takes ~25-30 seconds: the baseline script's loop always runs the full 850 steps (17s of simulated time) regardless of outcome, and the RL side is held in a stabilized idle pose for the remainder once its own (shorter) episode ends, so both panels finish together.</p>
+    <button id="runBtn">Run Simulation</button>
+    <div class="status" id="status"></div>
+
+    <div class="stage-wrap" id="stageWrap">
+      <span class="chip left">Scripted baseline (v031!)</span>
+      <span class="chip right">RL policy (parameter residual)</span>
+      <span class="live-badge">LIVE</span>
+      <canvas id="stage" width="968" height="360"></canvas>
+    </div>
+
+    <table class="compare" id="compareTable">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Scripted baseline</th>
+          <th class="col-right">RL policy</th>
+        </tr>
+      </thead>
+      <tbody id="compareBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function wsUrl(path) {
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  return `${proto}//${location.host}${path}`;
+}
+
+function na(v, fmt) {
+  return v === null || v === undefined ? '<span class="val na">n/a</span>' : `<span class="val">${fmt(v)}</span>`;
+}
+
+function boolTd(v, goodWhenTrue) {
+  const cls = v === goodWhenTrue ? 'ok' : 'bad';
+  return `<td class="val ${cls}">${v ? 'Yes' : 'No'}</td>`;
+}
+
+const runBtn = document.getElementById('runBtn');
+const statusEl = document.getElementById('status');
+const stageWrap = document.getElementById('stageWrap');
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+const table = document.getElementById('compareTable');
+const tbody = document.getElementById('compareBody');
+
+function renderResult(baseline, rl) {
+  tbody.innerHTML = `
+    <tr class="section"><td colspan="3">Shared</td></tr>
+    <tr>
+      <td class="metric-name">Made the shot</td>
+      ${boolTd(baseline.crossed_hoop, true)}
+      ${boolTd(rl.success, true)}
+    </tr>
+    <tr>
+      <td class="metric-name">Random Seed</td>
+      <td class="val">${baseline.seed}</td>
+      <td class="val">${rl.seed}</td>
+    </tr>
+    <tr class="section"><td colspan="3">Scripted baseline's own metrics (v031!)</td></tr>
+    <tr>
+      <td class="metric-name">Hoop-crossing speed</td>
+      <td>${na(baseline.hoop_crossing_speed_mps, v => v.toFixed(2) + ' m/s')}</td>
+      <td class="val na">n/a</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Max rim impact force</td>
+      <td class="val">${baseline.max_impact_force_n.toFixed(2)} N</td>
+      <td class="val na">n/a</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Max torso tilt (pitch / roll / yaw)</td>
+      <td class="val">${baseline.max_pitch_deg.toFixed(1)}&deg; / ${baseline.max_roll_deg.toFixed(1)}&deg; / ${baseline.max_yaw_deg.toFixed(1)}&deg;</td>
+      <td class="val na">n/a</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Final ball-to-target distance</td>
+      <td class="val">${baseline.final_distance_m.toFixed(2)} m</td>
+      <td class="val na">n/a</td>
+    </tr>
+    <tr class="section"><td colspan="3">RL policy's own metrics (BasketballResidualEnv)</td></tr>
+    <tr>
+      <td class="metric-name">Hoop-crossing XY error</td>
+      <td class="val na">n/a</td>
+      <td>${na(rl.crossing_error_cm, v => v.toFixed(2) + ' cm')}</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Touched backboard</td>
+      <td class="val na">n/a</td>
+      ${boolTd(rl.touched_backboard, false)}
+    </tr>
+    <tr>
+      <td class="metric-name">Fell over</td>
+      <td class="val na">n/a</td>
+      ${boolTd(rl.has_fallen, false)}
+    </tr>
+    <tr>
+      <td class="metric-name">Airborne distance</td>
+      <td class="val na">n/a</td>
+      <td class="val">${rl.airborne_distance_m.toFixed(2)} m</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Release step</td>
+      <td class="val na">n/a</td>
+      <td class="val">${rl.release_step ?? '—'}</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Episode reward</td>
+      <td class="val na">n/a</td>
+      <td class="val">${rl.reward_sum.toFixed(2)}</td>
+    </tr>
+  `;
+  table.style.display = 'table';
+}
+
+runBtn.addEventListener('click', () => {
+  runBtn.disabled = true;
+  statusEl.textContent = 'Connecting…';
+  table.style.display = 'none';
+  stageWrap.style.display = 'block';
+  stageWrap.classList.add('live');
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const socket = new WebSocket(wsUrl('/ws/level03/compare'));
+  socket.binaryType = 'arraybuffer';
+
+  socket.addEventListener('open', () => {
+    statusEl.textContent = 'Streaming scripted baseline (left) and RL policy (right) live from MuJoCo — this takes ~25-30 seconds…';
+  });
+
+  socket.addEventListener('message', async (event) => {
+    if (typeof event.data === 'string') {
+      const msg = JSON.parse(event.data);
+      if (msg.type === 'done') {
+        stageWrap.classList.remove('live');
+        renderResult(msg.baseline, msg.rl);
+        statusEl.textContent = 'Done.';
+      }
+      return;
+    }
+    const blob = new Blob([event.data], { type: 'image/jpeg' });
+    const bitmap = await createImageBitmap(blob);
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+  });
+
+  socket.addEventListener('close', () => {
+    stageWrap.classList.remove('live');
+    runBtn.disabled = false;
+  });
+
+  socket.addEventListener('error', () => {
+    statusEl.textContent = 'Connection failed.';
+    stageWrap.classList.remove('live');
+    runBtn.disabled = false;
+  });
+});
+</script>
+</body>
+</html>

@@ -122,14 +122,73 @@ numbers slightly (observed ~0.68–0.83 cm landing error vs. the frozen
 report's 0.674 cm mean) — worth knowing if you're comparing against the
 official evaluation report.
 
+## Level 03 — Basketball-Hoop Shot (`level03.html`, `webapp/runner_level03.py`)
+
+A second, separate page at `/level03.html` (not linked from `index.html` —
+Level 02's page is intentionally untouched). Unlike Level 02, this isn't a
+lockstep comparison in a shared environment: **each side runs its own
+script's actual simulation, exactly as written, in its own scene**, because
+no unified Level 03 env exists in this project to make a true
+apples-to-apples comparison meaningful.
+
+- **Baseline (left)**: `scripts/view_baselines_LEVEL03_v031!.py`'s own
+  `G1FixedBodyThrowEnv` + `OptionDBasketballPolicy`, dynamically loaded via
+  `importlib` (the same technique `training_extension/derived_baseline.py`
+  already uses for this exact file, since the `!` in the filename isn't a
+  valid Python module name). `webapp/runner_level03.py`'s `BaselineSlot`
+  replays that script's `view_baseline()` per-step body line-for-line — the
+  keyframe policy, the pelvis anti-drift gyro correction, the release at
+  policy step 406, the hoop-crossing and rim-impact-force detection — just
+  swapping its interactive `mujoco.viewer.launch_passive()` loop for
+  headless stepping and offscreen rendering. Target is 1.8m out; the loop
+  always runs the full fixed 850 steps, exactly like the script (no
+  early-exit condition exists in it).
+- **RL (right)**: `training_extension/view_ppo_parameters.py`'s own
+  trained PPO model + `VecNormalize` over `SACShotParameterEnv` — a
+  one-decision parameter-residual policy: called exactly once per episode,
+  from the initial observation, predicting a residual over 15 expert shot
+  parameters (arm load/release angles + release timing), which are then
+  played out for the whole walk-dip-throw sequence via
+  `training_extension/optimize_direct.py`'s `controller_action()` — not a
+  per-step neural network call. Target is 2.2m out, and
+  `BasketballResidualEnv` terminates early
+  (~426 steps) once the ball crosses the hoop plane, touches the backboard,
+  or the robot falls. `webapp/runner_level03.py`'s `RLSlot` then holds it in
+  a stabilized idle pose (`BasketballResidualEnv._apply_peer_stabilizer()`,
+  the same anti-drift torques it applies every substep during real
+  stepping) for the remainder of the 850-step window, so it doesn't
+  collapse once its episode ends and so both panels run for the same
+  visual duration as the baseline's fixed-length loop.
+- **Metrics don't share a schema.** The baseline script computes
+  `crossed_hoop`/hoop-crossing speed/rim-impact force/max torso tilt/final
+  distance; the RL env computes `success`/crossing XY error/backboard
+  contact/fall/airborne distance/release step. The page shows both sets of
+  native numbers side by side, under clearly separated headers, rather than
+  forcing them into shared rows that would misrepresent one side's scoring
+  as the other's.
+- **`assets/g1.xml`'s meshdir was fixed** (`meshdir="assets"` →
+  `meshdir="."`) to make `assets/scene_throw_LEVEL03.xml` loadable at all —
+  the same broken-mesh-path bug Level 02's webapp worked around, but this
+  time there was no existing self-contained alternative scene to point at
+  instead, so the shared asset itself was corrected. This also happens to
+  fix the top-level `assets/scene_throw.xml` Level 02 originally couldn't
+  load (see below) — a side effect, not something exercised by either page.
+- **~25-30s per click.** 850 steps × 0.02s = 17s of simulated time, plus
+  render/JPEG-encode overhead. There's no way to shorten this without
+  deviating from the baseline script's own fixed loop length.
+
 ## Files
 
 ```text
 webapp/
-  app.py          FastAPI app: POST /run, WS /ws/run, WS /ws/compare, WS /ws/sim2real, static mounts
-  runner.py       SimulationRunner: loads envs + policy once, runs episodes
+  app.py             FastAPI app: POST /run, WS /ws/run, /ws/compare,
+                      /ws/sim2real, /ws/level03/compare, static mounts
+  runner.py          Level 02 SimulationRunner: loads envs + policy once, runs episodes
+  runner_level03.py  Level 03: BaselineSlot (scripts/view_baselines_LEVEL03_v031!.py,
+                      loaded via importlib) + RLSlot (view_ppo_parameters.py's model)
   static/
-    index.html    The GUI (Audi red/black themed) — two side-by-side canvases + comparison tables
+    index.html    Level 02 GUI (Audi red/black themed) — two side-by-side canvases + tables
+    level03.html  Level 03 GUI, same visual format — one side-by-side canvas + two-schema table
   videos/         Generated MP4s from POST /run (gitignored)
 ```
 
@@ -140,8 +199,10 @@ source .venv/bin/activate
 uvicorn webapp.app:app --reload
 ```
 
-Open `http://localhost:8000`, then click **Run Simulation** (top section) or
-**Run Sim2Real Test** (bottom section).
+Open `http://localhost:8000` for Level 02, then click **Run Simulation**
+(top section) or **Run Sim2Real Test** (bottom section). Open
+`http://localhost:8000/level03.html` for Level 03 (no link between the two
+pages yet) and click **Run Simulation** — expect ~25-30s per run.
 
 `MUJOCO_GL` controls the rendering backend and needs no code changes:
 - Local machine with a display (default here): unset, or `glfw`.
@@ -150,6 +211,10 @@ Open `http://localhost:8000`, then click **Run Simulation** (top section) or
 
 ## Known limitations (v1)
 
-- Single shared MuJoCo environment/renderer instance — concurrent runs from
-  multiple browser tabs are serialized behind a lock, not parallelized.
+- Single shared MuJoCo environment/renderer instance per page (Level 02 and
+  Level 03 have separate locks, so the two pages don't block each other,
+  but concurrent runs *within* one page's endpoints are serialized behind
+  that page's lock, not parallelized).
+- No nav link between `index.html` and `level03.html` yet — open
+  `/level03.html` directly.
 - No deployment/containerization yet (`Dockerfile` is a planned next step).
