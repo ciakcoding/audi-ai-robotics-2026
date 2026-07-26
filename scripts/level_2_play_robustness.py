@@ -34,7 +34,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from stable_baselines3 import PPO
-from envs.g1_robustness_env import G1RobustnessEnv
+from envs.level_2_robustness_env import G1RobustnessEnv
 
 DEFAULT_POLICY = str(ROOT / "outputs" / "models" / "selected" / "best" / "best_model.zip")
 DEFAULT_SCENE  = str(ROOT / "assets" / "scene_throw.xml")
