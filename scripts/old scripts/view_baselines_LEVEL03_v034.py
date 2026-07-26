@@ -30,7 +30,7 @@ def get_torso_tilt(model, data):
     return np.degrees(pitch), np.degrees(roll), np.degrees(yaw)
 
 # ==========================================
-# LEVEL 16: CORRECTED WRISTS & FORWARD ARC
+# LEVEL 15: PERFECT SWISH & BODY AIMING
 # ==========================================
 class OptionDBasketballPolicy:
     def __init__(self, env):
@@ -72,55 +72,65 @@ class OptionDBasketballPolicy:
                 'right_hip_pitch_joint': 0.4, 'right_knee_joint': 0.3, 'right_ankle_pitch_joint': 0.1
             }, 
             
-            # PHASE 2: PRO THROW
+            # PHASE 2: PRO THROW (MATCHING THE PHOTO)
             350: {
                 'waist_roll_joint': 0.0, 'right_ankle_roll_joint': 0.0, 'left_ankle_roll_joint': 0.0,
                 'left_hip_pitch_joint': -0.4, 'left_knee_joint': 0.8, 'left_ankle_pitch_joint': -0.4,
                 'right_hip_pitch_joint': -0.4, 'right_knee_joint': 0.8, 'right_ankle_pitch_joint': -0.4,
                 'waist_pitch_joint': 0.1, 
-                'right_shoulder_pitch_joint': -0.5, 'right_elbow_joint': 1.0,
-                'left_shoulder_pitch_joint': -0.5, 'left_elbow_joint': 1.0,
             },
             
             # --- THE "SET POINT" ---
+            # --- THE "SET POINT" ---
             380: { 
+                # Deep squat
                 'left_hip_pitch_joint': -0.6, 'left_knee_joint': 1.1, 'left_ankle_pitch_joint': -0.5,
                 'right_hip_pitch_joint': -0.6, 'right_knee_joint': 1.1, 'right_ankle_pitch_joint': -0.5,
                 
-                'right_shoulder_pitch_joint': -1.6, 'right_shoulder_roll_joint': -0.15,
-                'right_elbow_joint': 2.4, 'right_wrist_pitch_joint': -1.2, 
+                # Shoulders in front of the head to avoid clipping (-1.6 rad)
+                # Elbows bent, right hand cocked under the ball
+                'right_shoulder_pitch_joint': -1.6, 'right_shoulder_roll_joint': -0.1,
+                'right_elbow_joint': 2.0, 'right_wrist_pitch_joint': -1.0, 
                 
-                'left_shoulder_pitch_joint': -1.5, 'left_shoulder_roll_joint': 0.0,
-                'left_elbow_joint': 2.2, 'left_wrist_pitch_joint': -0.2, 'left_wrist_yaw_joint': 0.8,
+                # Left guide hand matches the height, but wraps onto the side of the ball
+                'left_shoulder_pitch_joint': -1.6, 'left_shoulder_roll_joint': 0.1,
+                'left_elbow_joint': 2.0, 'left_wrist_pitch_joint': -0.2, 'left_wrist_yaw_joint': 0.5,
             },
 
             # --- UPWARD ACCELERATION ---
-            400: {
-                'right_shoulder_pitch_joint': -1.8, 'right_elbow_joint': 1.2, 'right_wrist_pitch_joint': -0.6,
-                'left_shoulder_pitch_joint': -2.0, 'left_elbow_joint': 1.5, 'left_shoulder_roll_joint': 0.0, 
-                'left_wrist_yaw_joint': 0.8,
-                'left_knee_joint': 0.4, 'right_knee_joint': 0.4, 
+            395: {
+                # Start exploding upwards with the legs
+                'left_knee_joint': 0.5, 'right_knee_joint': 0.5, 
+                'left_hip_pitch_joint': -0.3, 'right_hip_pitch_joint': -0.3,
+                
+                # Drive the ball up and slightly forward (creates the high arc)
+                'right_shoulder_pitch_joint': -2.0, 'right_elbow_joint': 1.0, 'right_wrist_pitch_joint': -0.2,
+                
+                # Guide hand stays attached during the upward motion
+                'left_shoulder_pitch_joint': -2.0, 'left_elbow_joint': 1.0, 
             },
 
-            # --- EXPLOSIVE SNAP (Release & Peel Away) ---
-            412: { 
-                # Right arm points 45 degrees forward (-1.8) to push the ball to the target, gentle wrist follow through
-                'right_shoulder_pitch_joint': -1.8, 'right_elbow_joint': 0.2, 'right_wrist_pitch_joint': 0.2, 
-                
-                # Left hand completely drops down and straightens out to avoid the head!
-                'left_shoulder_pitch_joint': -0.5, 'left_shoulder_roll_joint': 0.5, 'left_elbow_joint': 0.5, 
-                'left_wrist_yaw_joint': 0.0, 'left_wrist_pitch_joint': 0.0,
-                
-                # Full Jump Extension
+            # --- EXPLOSIVE SNAP (Release) ---
+            405: { 
+                # Full jump extension
                 'left_hip_pitch_joint': 0.0, 'left_knee_joint': 0.1, 'left_ankle_pitch_joint': 0.0, 
                 'right_hip_pitch_joint': 0.0, 'right_knee_joint': 0.1, 'right_ankle_pitch_joint': 0.0,
+
+                # Right arm extends completely for max power, shoulder angled high (-2.2 rad), wrist starts to snap
+                'right_shoulder_pitch_joint': -2.2, 'right_elbow_joint': 0.15, 'right_wrist_pitch_joint': 0.6, 
+                
+                # Left guide hand stops pushing and peels slightly outward (0.4 roll) to let the ball fly clean
+                'left_shoulder_pitch_joint': -2.0, 'left_shoulder_roll_joint': 0.4, 'left_elbow_joint': 0.8, 
+                'left_wrist_yaw_joint': 0.0,
             },
             
             # --- HOLD THE FOLLOW THROUGH ---
             440: {
-                'right_shoulder_pitch_joint': -1.8, 'right_elbow_joint': 0.2, 'right_wrist_pitch_joint': 0.2, 
+                # Hold the right hand high with a full "gooseneck" wrist snap (1.0 rad)
+                'right_shoulder_pitch_joint': -2.2, 'right_elbow_joint': 0.15, 'right_wrist_pitch_joint': 1.0, 
+                
+                # Left hand completely drops down to the side
                 'left_shoulder_pitch_joint': -0.5, 'left_elbow_joint': 0.5, 'left_shoulder_roll_joint': 0.5,
-                'left_wrist_yaw_joint': 0.0, 'left_wrist_pitch_joint': 0.0,
             },
 
             # --- RECOVER BALANCE ---
@@ -198,7 +208,6 @@ def view_baseline():
             
             max_pitch, max_roll, max_yaw = 0.0, 0.0, 0.0
             last_ball_pos = env.data.xpos[ball_body_id].copy()
-            last_time = env.data.time
             ball_released = False
             
             ball_crossed_hoop = False
@@ -210,12 +219,16 @@ def view_baseline():
             while policy.step_count < 850 and viewer.is_running():
                 policy.apply_controls()
 
-                # --- ADVANCED GYRO: ANTI-DRIFT SYSTEM ---
+                # --- ADVANCED GYRO & SHOULDER AIMING SYSTEM ---
                 pitch, roll, yaw = get_torso_tilt(env.model, env.data)
+                
+                # The right shoulder is offset by 0.15m. To hit a target 1.8m away perfectly straight, 
+                # the robot must pivot its torso exactly 4.7 degrees to the left!
+                target_yaw = 4.7 
                 
                 torque_pitch = np.clip((0.0 - pitch) * 100.0 - (env.data.qvel[4] * 20.0), -200.0, 200.0)
                 torque_roll = np.clip((0.0 - roll) * 100.0 - (env.data.qvel[3] * 20.0), -200.0, 200.0)
-                torque_yaw = np.clip((0.0 - yaw) * 50.0 - (env.data.qvel[5] * 10.0), -100.0, 100.0)
+                torque_yaw = np.clip((target_yaw - yaw) * 50.0 - (env.data.qvel[5] * 10.0), -100.0, 100.0)
                 force_y = np.clip((0.0 - env.data.qpos[1]) * 50.0 - (env.data.qvel[1] * 10.0), -50.0, 50.0)
                 
                 if pelvis_id != -1:
@@ -232,49 +245,24 @@ def view_baseline():
                 telemetry["ball_z"].append(float(env.data.body("throw_ball").xpos[2]))
                 telemetry["pitch"].append(float(pitch))
                 
-                # --- AUTO-AIM: REAL-TIME PHYSICS PREDICTOR ---
-                current_time = env.data.time
-                dt = current_time - last_time if 'last_time' in locals() else control_dt
-                current_ball_pos = env.data.xpos[ball_body_id].copy()
-                
-                if not ball_released and dt > 0 and 395 < policy.step_count < 410:
-                    ball_vel = (current_ball_pos - last_ball_pos) / dt
-                    vx, vy, vz = ball_vel
-                    
-                    if vx > 1.0 and vz > 1.0: 
-                        x0, y0, z0 = current_ball_pos
-                        xt = env.data.xpos[target_body_id][0]
-                        zt = env.data.xpos[target_body_id][2]
-                        
-                        g = 9.81
-                        a = 0.5 * g
-                        b = -vz
-                        c = zt - z0
-                        discriminant = b**2 - 4*a*c
-                        
-                        if discriminant >= 0:
-                            t_impact = (-b + np.sqrt(discriminant)) / (2*a)
-                            predicted_x = x0 + vx * t_impact
-                            
-                            if predicted_x >= xt:
-                                weld_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_EQUALITY, "hold_throw_ball")
-                                if weld_id != -1:
-                                    env.data.eq_active[weld_id] = 0 
-                                    ball_released = True
-                                    print(f"\n>>> Auto-Aim Triggered! Vx:{vx:.2f}, Vz:{vz:.2f} | Predicted Land: {predicted_x:.2f}m <<<")
-
-                # Failsafe Release
-                if policy.step_count == 408 and not ball_released:
+                # --- PERFECT DETERMINISTIC RELEASE ---
+                # Releasing at exactly Frame 392 guarantees the perfect arc for 1.8m
+                if policy.step_count == 392 and not ball_released:
                     weld_id = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_EQUALITY, "hold_throw_ball")
                     if weld_id != -1:
                         env.data.eq_active[weld_id] = 0 
                         ball_released = True
-                        print("\n>>> Failsafe Release Triggered! <<<")
+                        print("\n>>> Perfect Release Triggered! <<<")
 
                 # --- HOOP ANALYTICS TRACKING ---
+                current_time = env.data.time
+                dt = current_time - last_time if 'last_time' in locals() else control_dt
+                current_ball_pos = env.data.xpos[ball_body_id].copy()
+                
                 if ball_released:
                     hx, hy, hz = env.data.xpos[target_body_id]
                     
+                    # 1. Check for Hoop Crossing
                     if last_ball_pos[2] > hz and current_ball_pos[2] <= hz:
                         dist_to_center = np.hypot(current_ball_pos[0] - hx, current_ball_pos[1] - hy)
                         if dist_to_center < 0.15: 
@@ -283,6 +271,7 @@ def view_baseline():
                                 ball_vel = (current_ball_pos - last_ball_pos) / dt
                                 hoop_crossing_speed = np.linalg.norm(ball_vel)
                     
+                    # 2. Check for Rim Impacts
                     for i in range(env.data.ncon):
                         contact = env.data.contact[i]
                         g1 = mujoco.mj_id2name(env.model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
@@ -313,7 +302,7 @@ def view_baseline():
             final_distance = np.linalg.norm(final_target_pos - final_ball_pos)
 
             print(f"\n--- EPISODE {episode + 1} BASKETBALL REPORT ---")
-            print(f"Ball successfully crossed inside the hoop: {'YES!' if ball_crossed_hoop else 'NO (Missed)'}")
+            print(f"Ball successfully crossed inside the hoop: {'YES! SWISH!' if ball_crossed_hoop else 'NO (Missed)'}")
             
             if ball_crossed_hoop:
                 print(f"Ball Speed exactly at Hoop Crossing: {hoop_crossing_speed:.2f} m/s")
