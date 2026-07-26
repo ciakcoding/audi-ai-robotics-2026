@@ -72,6 +72,8 @@ PANEL_HEIGHT = 360
 PANEL_GAP = 8
 TOTAL_STEPS = 850  # scripts/view_baselines_LEVEL03_v031!.py's own fixed loop length
 BASELINE_RELEASE_STEP = 406  # hardcoded in that script
+SIM2REAL_STEPS_CAP = 1100  # BasketballResidualEnv.max_policy_steps; typical runs finish ~426
+SIM2REAL_TAIL_STEPS = 40  # extra post-episode physics steps so the viewer sees the ball settle
 
 
 def _load_baseline_module():
@@ -125,7 +127,18 @@ class Level03ComparisonDone:
     metrics: Level03ComparisonMetrics
 
 
-Level03StreamEvent = Union[StreamFrame, Level03ComparisonDone]
+@dataclass
+class Sim2RealComparisonMetrics:
+    nominal: RLShotMetrics
+    sim2real: RLShotMetrics
+
+
+@dataclass
+class Sim2RealComparisonDone:
+    metrics: Sim2RealComparisonMetrics
+
+
+Level03StreamEvent = Union[StreamFrame, Level03ComparisonDone, Sim2RealComparisonDone]
 
 
 class BaselineSlot:
@@ -273,6 +286,7 @@ class RLSlot:
         self.model = PPO.load(RL_MODEL_PATH, device="cpu")
         self.renderer = renderer
         self.camera = camera
+        self.control_dt = self.env.control_substeps * self.env.model.opt.timestep
 
         self.parameters: np.ndarray | None = None
         self.done = False
@@ -322,6 +336,60 @@ class RLSlot:
         )
 
 
+class NoisyRLSlot(RLSlot):
+    """Runs scripts/level_3_view_noisy.py's own Sim2Real domain-randomization
+    gauntlet on top of the same trained RL policy: every reset, physics
+    parameters (joint friction/damping, actuator force range, contact
+    solref/solimp, floor friction) and the hoop target position are
+    randomly perturbed, using that script's own perturbation ranges
+    verbatim (0.7-1.3x friction/damping, 0.85-1.0x actuator force, 0.5-2.0x
+    contact stiffness/impedance, 0.5-1.5x floor friction, +/-3cm target
+    noise on x/y only) -- which happen to match Level 02's
+    G1RobustnessEnv._enable_all_defaults() ranges.
+
+    Matching that script exactly: the observation used for the model's
+    one-shot residual prediction is captured from reset() *before* these
+    perturbations are applied (perturbing physics/target doesn't retroactively
+    change an already-computed observation), and the randomization draw
+    itself uses bare np.random, not the seeded env RNG -- so, like Level 02's
+    Sim2Real page, the nominal side's initial state is reproducible per seed
+    but the randomization strength on this side varies every run by design.
+    """
+
+    def __init__(self, renderer: mujoco.Renderer, camera: mujoco.MjvCamera):
+        super().__init__(renderer, camera)
+        m = self.env.model
+        self._baseline_frictionloss = m.dof_frictionloss.copy()
+        self._baseline_damping = m.dof_damping.copy()
+        self._baseline_forcerange = m.actuator_forcerange.copy()
+        self._baseline_solref = m.opt.o_solref.copy()
+        self._baseline_solimp = m.opt.o_solimp.copy()
+        self._floor_geom_ids = [i for i in range(m.ngeom) if m.geom_type[i] == mujoco.mjtGeom.mjGEOM_PLANE]
+        self._baseline_target = self.env.target.copy()
+
+    def reset(self, seed: int) -> None:
+        self.vector_env.seed(seed)
+        observation = self.vector_env.reset()
+
+        m = self.env.model
+        m.dof_frictionloss[:] = self._baseline_frictionloss * np.random.uniform(0.7, 1.3)
+        m.dof_damping[:] = self._baseline_damping * np.random.uniform(0.7, 1.3)
+        m.actuator_forcerange[:] = self._baseline_forcerange * np.random.uniform(0.85, 1.0)
+        m.opt.o_solref[0] = self._baseline_solref[0] * np.random.uniform(0.5, 2.0)
+        m.opt.o_solimp[0] = self._baseline_solimp[0] * np.random.uniform(0.5, 2.0)
+        for gid in self._floor_geom_ids:
+            m.geom_friction[gid, 0] *= np.random.uniform(0.5, 1.5)
+        self.env.target = self._baseline_target + np.random.normal(0, 0.03, 3)
+        self.env.target[2] = self._baseline_target[2]
+        mujoco.mj_forward(m, self.env.data)
+
+        residual, _ = self.model.predict(observation, deterministic=True)
+        self.parameters = self.shot_env.expert_parameters + self.shot_env.parameter_scales * residual[0]
+        self.done = False
+        self.info = {}
+        self.reward_sum = 0.0
+
+
 class Level03Runner:
     """Loads both scripts' envs + the RL model once and reuses them."""
 
@@ -347,12 +415,37 @@ class Level03Runner:
         self.rl = RLSlot(renderer=None, camera=rl_camera)
         self.rl.renderer = mujoco.Renderer(self.rl.env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH)
 
-    def run_comparison_stream(self, seed: int | None = None) -> Iterator[Level03StreamEvent]:
-        seed = DEFAULT_SEED if seed is None else seed
-        self.baseline.reset(seed)
-        self.rl.reset(seed)
+        nominal_camera = mujoco.MjvCamera()
+        nominal_camera.lookat[:] = [1.1, 0.0, 1.0]
+        nominal_camera.distance = 4.3
+        nominal_camera.azimuth = 90
+        nominal_camera.elevation = -8
 
-        control_dt = self.baseline.control_dt
+        sim2real_camera = mujoco.MjvCamera()
+        sim2real_camera.lookat[:] = [1.1, 0.0, 1.0]
+        sim2real_camera.distance = 4.3
+        sim2real_camera.azimuth = 90
+        sim2real_camera.elevation = -8
+
+        self.nominal = RLSlot(renderer=None, camera=nominal_camera)
+        self.nominal.renderer = mujoco.Renderer(self.nominal.env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH)
+
+        self.sim2real = NoisyRLSlot(renderer=None, camera=sim2real_camera)
+        self.sim2real.renderer = mujoco.Renderer(self.sim2real.env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH)
+
+    def _stream_pair(
+        self,
+        left,
+        right,
+        seed: int,
+        total_steps: int,
+        tail_steps: int,
+        break_when_both_done: bool,
+    ) -> Iterator[StreamFrame]:
+        left.reset(seed)
+        right.reset(seed)
+
+        control_dt = left.control_dt
         start_time = time.monotonic()
         frame_idx = 0
 
@@ -364,17 +457,57 @@ class Level03Runner:
                 time.sleep(remaining)
             frame_idx += 1
             gap = np.full((PANEL_HEIGHT, PANEL_GAP, 3), 20, dtype=np.uint8)
-            return np.concatenate([self.baseline.render(), gap, self.rl.render()], axis=1)
+            return np.concatenate([left.render(), gap, right.render()], axis=1)
 
         yield StreamFrame(composite_frame())
-        for _ in range(TOTAL_STEPS):
-            self.baseline.step()
-            self.rl.step()
+        for _ in range(total_steps):
+            left.step()
+            right.step()
+            yield StreamFrame(composite_frame())
+            if break_when_both_done and left.done and right.done:
+                break
+
+        for _ in range(tail_steps):
+            left.step()
+            right.step()
             yield StreamFrame(composite_frame())
 
+    def run_comparison_stream(self, seed: int | None = None) -> Iterator[Level03StreamEvent]:
+        """Scripted baseline (left) vs RL policy (right). Runs the
+        baseline's own fixed 850-step loop length exactly; no separate tail
+        needed since both slots already self-manage staying alive/stable
+        past their own termination (BaselineSlot no-ops past 850, RLSlot
+        holds a stabilized idle pose)."""
+        seed = DEFAULT_SEED if seed is None else seed
+        yield from self._stream_pair(
+            self.baseline, self.rl, seed, total_steps=TOTAL_STEPS, tail_steps=0, break_when_both_done=False
+        )
         yield Level03ComparisonDone(
             Level03ComparisonMetrics(
                 baseline=self.baseline.metrics(seed),
                 rl=self.rl.metrics(seed),
+            )
+        )
+
+    def run_sim2real_stream(self, seed: int | None = None) -> Iterator[Level03StreamEvent]:
+        """The same trained RL policy in a clean/nominal env (left) vs
+        scripts/level_3_view_noisy.py's Sim2Real domain-randomization
+        gauntlet (right), same seed. Both sides are BasketballResidualEnv
+        instances that terminate early (~426 steps typical) well before the
+        1100-step hard cap, so this breaks out once both are done rather
+        than running the full baseline-comparison's fixed 850."""
+        seed = DEFAULT_SEED if seed is None else seed
+        yield from self._stream_pair(
+            self.nominal,
+            self.sim2real,
+            seed,
+            total_steps=SIM2REAL_STEPS_CAP,
+            tail_steps=SIM2REAL_TAIL_STEPS,
+            break_when_both_done=True,
+        )
+        yield Sim2RealComparisonDone(
+            Sim2RealComparisonMetrics(
+                nominal=self.nominal.metrics(seed),
+                sim2real=self.sim2real.metrics(seed),
             )
         )

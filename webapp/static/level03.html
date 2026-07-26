@@ -145,6 +145,30 @@
   }
   .stage-wrap.live .live-badge { display: block; }
 
+  .headline {
+    display: none;
+    margin-top: 1.5rem;
+    border: 1px solid var(--audi-red);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(90deg, rgba(187,10,48,0.16), rgba(187,10,48,0.03));
+    text-align: center;
+  }
+  .headline .headline-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--audi-red-bright);
+  }
+  .headline .headline-value.good { color: var(--ok); }
+  .headline .headline-value.bad { color: var(--bad); }
+  .headline .headline-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.15rem;
+  }
+
   table.compare {
     display: none;
     width: 100%;
@@ -216,6 +240,36 @@
         </tr>
       </thead>
       <tbody id="compareBody"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h1>Level 03 — Sim2Real Robustness Check</h1>
+    <p class="sub">Runs the same trained RL policy twice: once clean, once with <code>scripts/level_3_view_noisy.py</code>'s own Sim2Real domain-randomization gauntlet applied — joint friction/damping (0.7-1.3x), actuator force range (0.85-1.0x), contact stiffness/impedance (0.5-2.0x), floor friction (0.5-1.5x), and &plusmn;3cm target-position noise, all drawn fresh every run. Both sides share the same scoring contract this time (both are <code>BasketballResidualEnv</code>), so the table below shows one set of shared rows.</p>
+    <button id="sim2realBtn">Run Sim2Real Test</button>
+    <div class="status" id="sim2realStatus"></div>
+
+    <div class="stage-wrap" id="sim2realStageWrap">
+      <span class="chip left">Nominal (clean)</span>
+      <span class="chip right">Sim2Real (domain randomized)</span>
+      <span class="live-badge">LIVE</span>
+      <canvas id="sim2realStage" width="968" height="360"></canvas>
+    </div>
+
+    <div class="headline" id="sim2realHeadline">
+      <div class="headline-value" id="sim2realHeadlineValue">—</div>
+      <div class="headline-label">Hoop-crossing error change under domain randomization (some increase is expected)</div>
+    </div>
+
+    <table class="compare" id="sim2realTable">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Nominal</th>
+          <th class="col-right">Sim2Real</th>
+        </tr>
+      </thead>
+      <tbody id="sim2realBody"></tbody>
     </table>
   </div>
 
@@ -354,6 +408,123 @@ runBtn.addEventListener('click', () => {
     statusEl.textContent = 'Connection failed.';
     stageWrap.classList.remove('live');
     runBtn.disabled = false;
+  });
+});
+
+// --- Sim2Real Robustness Check (shared-schema comparison) ---
+const s2rBtn = document.getElementById('sim2realBtn');
+const s2rStatus = document.getElementById('sim2realStatus');
+const s2rStageWrap = document.getElementById('sim2realStageWrap');
+const s2rCanvas = document.getElementById('sim2realStage');
+const s2rCtx = s2rCanvas.getContext('2d');
+const s2rHeadline = document.getElementById('sim2realHeadline');
+const s2rHeadlineValue = document.getElementById('sim2realHeadlineValue');
+const s2rTable = document.getElementById('sim2realTable');
+const s2rBody = document.getElementById('sim2realBody');
+
+function shotErrText(v) {
+  return v === null || v === undefined ? 'no crossing' : `${v.toFixed(2)} cm`;
+}
+
+function renderSim2RealResult(nominal, sim2real) {
+  s2rBody.innerHTML = `
+    <tr>
+      <td class="metric-name">Hoop-crossing error</td>
+      <td class="val">${shotErrText(nominal.crossing_error_cm)}</td>
+      <td class="val">${shotErrText(sim2real.crossing_error_cm)}</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Success</td>
+      ${boolTd(nominal.success, true)}
+      ${boolTd(sim2real.success, true)}
+    </tr>
+    <tr>
+      <td class="metric-name">Touched backboard</td>
+      ${boolTd(nominal.touched_backboard, false)}
+      ${boolTd(sim2real.touched_backboard, false)}
+    </tr>
+    <tr>
+      <td class="metric-name">Fell over</td>
+      ${boolTd(nominal.has_fallen, false)}
+      ${boolTd(sim2real.has_fallen, false)}
+    </tr>
+    <tr>
+      <td class="metric-name">Airborne distance</td>
+      <td class="val">${nominal.airborne_distance_m.toFixed(2)} m</td>
+      <td class="val">${sim2real.airborne_distance_m.toFixed(2)} m</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Episode reward</td>
+      <td class="val">${nominal.reward_sum.toFixed(2)}</td>
+      <td class="val">${sim2real.reward_sum.toFixed(2)}</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Random Seed</td>
+      <td class="val">${nominal.seed}</td>
+      <td class="val">${sim2real.seed}</td>
+    </tr>
+  `;
+  s2rTable.style.display = 'table';
+
+  s2rHeadlineValue.classList.remove('good', 'bad');
+  if (nominal.crossing_error_cm != null && sim2real.crossing_error_cm != null && nominal.crossing_error_cm > 0) {
+    const change = ((nominal.crossing_error_cm - sim2real.crossing_error_cm) / nominal.crossing_error_cm) * 100;
+    if (Math.abs(change) < 0.05) {
+      s2rHeadlineValue.textContent = 'No measurable change';
+    } else if (change > 0) {
+      s2rHeadlineValue.textContent = `${change.toFixed(1)}% lower error under randomization`;
+    } else {
+      s2rHeadlineValue.textContent = `${Math.abs(change).toFixed(1)}% higher error under randomization`;
+    }
+    s2rHeadlineValue.classList.add(sim2real.success ? 'good' : 'bad');
+    s2rHeadline.style.display = 'block';
+  } else {
+    s2rHeadline.style.display = 'none';
+  }
+}
+
+s2rBtn.addEventListener('click', () => {
+  s2rBtn.disabled = true;
+  s2rStatus.textContent = 'Connecting…';
+  s2rHeadline.style.display = 'none';
+  s2rTable.style.display = 'none';
+  s2rStageWrap.style.display = 'block';
+  s2rStageWrap.classList.add('live');
+  s2rCtx.fillStyle = '#000';
+  s2rCtx.fillRect(0, 0, s2rCanvas.width, s2rCanvas.height);
+
+  const socket = new WebSocket(wsUrl('/ws/level03/sim2real'));
+  socket.binaryType = 'arraybuffer';
+
+  socket.addEventListener('open', () => {
+    s2rStatus.textContent = 'Streaming nominal (left) and Sim2Real (right) live from MuJoCo…';
+  });
+
+  socket.addEventListener('message', async (event) => {
+    if (typeof event.data === 'string') {
+      const msg = JSON.parse(event.data);
+      if (msg.type === 'done') {
+        s2rStageWrap.classList.remove('live');
+        renderSim2RealResult(msg.nominal, msg.sim2real);
+        s2rStatus.textContent = 'Done.';
+      }
+      return;
+    }
+    const blob = new Blob([event.data], { type: 'image/jpeg' });
+    const bitmap = await createImageBitmap(blob);
+    s2rCtx.drawImage(bitmap, 0, 0, s2rCanvas.width, s2rCanvas.height);
+    bitmap.close();
+  });
+
+  socket.addEventListener('close', () => {
+    s2rStageWrap.classList.remove('live');
+    s2rBtn.disabled = false;
+  });
+
+  socket.addEventListener('error', () => {
+    s2rStatus.textContent = 'Connection failed.';
+    s2rStageWrap.classList.remove('live');
+    s2rBtn.disabled = false;
   });
 });
 </script>

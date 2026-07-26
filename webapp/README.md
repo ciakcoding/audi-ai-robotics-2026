@@ -177,18 +177,49 @@ apples-to-apples comparison meaningful.
   render/JPEG-encode overhead. There's no way to shorten this without
   deviating from the baseline script's own fixed loop length.
 
+### Level 03 Sim2Real Robustness Check
+
+A second comparison on the same page (`WS /ws/level03/sim2real`), same
+spirit as Level 02's Sim2Real section but built from
+`scripts/level_3_view_noisy.py` instead: the **same** trained RL policy run
+once clean (`RLSlot`, nominal) and once under `NoisyRLSlot`'s domain
+randomization — joint friction/damping (0.7-1.3x), actuator force range
+(0.85-1.0x), contact stiffness/impedance solref/solimp (0.5-2.0x), floor
+friction (0.5-1.5x), and ±3cm target-position noise on x/y only — using
+that script's own perturbation ranges verbatim (which happen to match
+Level 02's `G1RobustnessEnv._enable_all_defaults()` ranges). Unlike the
+baseline-vs-RL comparison above, both sides here are `BasketballResidualEnv`
+instances with the same scoring contract, so the table shows one shared
+set of rows, not two separate schemas.
+
+Matching that script exactly: the observation used for the model's one-shot
+residual prediction is captured *before* the perturbations are applied (the
+script calls `vector_env.reset()`, then perturbs physics/target, then
+predicts from the pre-perturbation observation) — reproduced here even
+though it means the residual is predicted without seeing the noise it's
+about to be tested against. The randomization draw itself uses bare
+`np.random`, not the seeded env RNG, so — exactly like Level 02's Sim2Real
+page — the nominal side's initial state is reproducible per seed but the
+randomization strength on the Sim2Real side varies every run by design.
+Both sides terminate early (~426 steps typical, well under
+`BasketballResidualEnv.max_policy_steps`'s 1100-step hard cap), so this one
+breaks out once both sides are done plus a short 40-step settle tail,
+rather than running the baseline comparison's fixed 850.
+
 ## Files
 
 ```text
 webapp/
   app.py             FastAPI app: POST /run, WS /ws/run, /ws/compare,
-                      /ws/sim2real, /ws/level03/compare, static mounts
+                      /ws/sim2real, /ws/level03/compare, /ws/level03/sim2real,
+                      static mounts
   runner.py          Level 02 SimulationRunner: loads envs + policy once, runs episodes
   runner_level03.py  Level 03: BaselineSlot (scripts/view_baselines_LEVEL03_v031!.py,
-                      loaded via importlib) + RLSlot (view_ppo_parameters.py's model)
+                      loaded via importlib), RLSlot (view_ppo_parameters.py's model),
+                      NoisyRLSlot (level_3_view_noisy.py's Sim2Real gauntlet)
   static/
     index.html    Level 02 GUI (Audi red/black themed) — two side-by-side canvases + tables
-    level03.html  Level 03 GUI, same visual format — one side-by-side canvas + two-schema table
+    level03.html  Level 03 GUI, same visual format — two side-by-side canvases + tables
   videos/         Generated MP4s from POST /run (gitignored)
 ```
 

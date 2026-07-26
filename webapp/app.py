@@ -19,7 +19,7 @@ from PIL import Image
 from starlette.websockets import WebSocketState
 
 from webapp.runner import ComparisonDone, Sim2RealDone, SimulationRunner, StreamDone, StreamFrame
-from webapp.runner_level03 import Level03ComparisonDone, Level03Runner
+from webapp.runner_level03 import Level03ComparisonDone, Level03Runner, Sim2RealComparisonDone
 
 APP_DIR = Path(__file__).resolve().parent
 JPEG_QUALITY = 80
@@ -158,6 +158,14 @@ async def _stream_events(websocket: WebSocket, make_event_iter, lock: threading.
                             "rl": _rl_shot_json(event.metrics.rl),
                         }
                     )
+                elif isinstance(event, Sim2RealComparisonDone):
+                    await websocket.send_json(
+                        {
+                            "type": "done",
+                            "nominal": _rl_shot_json(event.metrics.nominal),
+                            "sim2real": _rl_shot_json(event.metrics.sim2real),
+                        }
+                    )
             except (WebSocketDisconnect, RuntimeError):
                 # A half-closed transport surfaces as RuntimeError from
                 # uvloop/uvicorn on send, not always as WebSocketDisconnect.
@@ -230,6 +238,22 @@ async def run_level03_comparison_live(websocket: WebSocket):
     await _stream_events(
         websocket,
         lambda: get_runner_l03().run_comparison_stream(seed=seed),
+        lock=_lock_l03,
+    )
+
+
+@app.websocket("/ws/level03/sim2real")
+async def run_level03_sim2real_live(websocket: WebSocket):
+    """Level 03: streams the same trained RL policy in a clean/nominal env
+    (left) vs scripts/level_3_view_noisy.py's Sim2Real domain-randomization
+    gauntlet (right) on the same seed, then a final JSON message with both
+    sides' metrics (same schema this time -- both sides are
+    BasketballResidualEnv)."""
+    await websocket.accept()
+    seed = random.randint(0, 1_000_000)
+    await _stream_events(
+        websocket,
+        lambda: get_runner_l03().run_sim2real_stream(seed=seed),
         lock=_lock_l03,
     )
 
