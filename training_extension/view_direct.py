@@ -44,8 +44,12 @@ def main():
     if args.baseline:
         parameters[:] = 0.0
     print(
-        "播放内容："
-        + ("派生 baseline（无训练修正）" if args.baseline else "训练/优化后的模型")
+        "Playback: "
+        + (
+            "modified baseline (no CEM or RL)"
+            if args.baseline
+            else "CEM-optimised baseline (no RL)"
+        )
     )
     env = BasketballResidualEnv(curriculum_radius=0.10, set_shot_only=False)
 
@@ -67,12 +71,16 @@ def main():
             if not viewer.is_running():
                 break
             print(
-                "球是否达到目标："
+                "Ball reached target: "
                 f"{'YES' if info['success'] else 'NO'} | "
-                f"穿越误差={info['crossing_xy_error'] * 100:.2f} cm | "
-                f"释放距离={info['release_distance_to_hoop_xy']:.2f} m | "
-                f"飞行距离={info['airborne_horizontal_distance']:.2f} m | "
-                f"碰板={'YES' if info['touched_backboard'] else 'NO'}"
+                f"Distance from hoop centre at crossing="
+                f"{info['crossing_xy_error'] * 100:.2f} cm | "
+                f"Release distance to hoop="
+                f"{info['release_distance_to_hoop_xy']:.2f} m | "
+                f"Airborne distance="
+                f"{info['airborne_horizontal_distance']:.2f} m | "
+                f"Backboard contact="
+                f"{'YES' if info['touched_backboard'] else 'NO'}"
             )
             end_hold = time.perf_counter() + args.hold_seconds
             while viewer.is_running() and time.perf_counter() < end_hold:

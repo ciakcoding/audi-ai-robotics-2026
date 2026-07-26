@@ -27,8 +27,9 @@ def main():
     env = BasketballResidualEnv(curriculum_radius=0.10)
     zero_action = np.zeros(env.action_space.shape, dtype=np.float32)
     print(
-        "播放内容：修改版 baseline（无 CEM、无 RL）\n"
-        "目标=(2.2, 0.0, 1.2)，固定球心穿圈半径=0.10 m"
+        "Playback: modified baseline (no CEM, no RL)\n"
+        "Target=(2.2, 0.0, 1.2), fixed ball-centre "
+        "hoop-crossing radius=0.10 m"
     )
     with mujoco.viewer.launch_passive(env.model, env.data) as viewer:
         episode = 0
@@ -52,11 +53,12 @@ def main():
                 else f"{100.0 * crossing_error:.2f} cm"
             )
             print(
-                "球是否达到目标："
+                "Ball reached target: "
                 f"{'YES' if info['success'] else 'NO'} | "
-                f"穿越误差={crossing_text} | "
-                f"碰板={'YES' if info['touched_backboard'] else 'NO'} | "
-                f"跌倒={'YES' if info['has_fallen'] else 'NO'}"
+                f"Distance from hoop centre at crossing={crossing_text} | "
+                f"Backboard contact="
+                f"{'YES' if info['touched_backboard'] else 'NO'} | "
+                f"Robot fell={'YES' if info['has_fallen'] else 'NO'}"
             )
             end_hold = time.perf_counter() + args.hold_seconds
             while viewer.is_running() and time.perf_counter() < end_hold:
