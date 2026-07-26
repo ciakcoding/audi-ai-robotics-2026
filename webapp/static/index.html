@@ -39,16 +39,13 @@
     display: flex;
     align-items: center;
     gap: 0.85rem;
+    flex-wrap: wrap;
   }
-  .rings svg { display: block; }
-  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
-  .brand-text .make {
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
+  .brand img {
+    height: 2.75rem;
+    width: auto;
+    display: block;
   }
-  .brand-text .project { font-size: 1.05rem; font-weight: 700; }
   .level-badge {
     margin-left: auto;
     font-size: 0.7rem;
@@ -189,18 +186,7 @@
 <div class="page">
 
   <div class="brand">
-    <span class="rings">
-      <svg width="86" height="24" viewBox="0 0 86 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-        <circle cx="30" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-        <circle cx="48" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-        <circle cx="66" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-      </svg>
-    </span>
-    <span class="brand-text">
-      <span class="make">Audi AI Robotics</span>
-      <span class="project">Development Camp 2026</span>
-    </span>
+    <img src="/logos/logo.jpeg" alt="Audi Hungaria / ADC / Széchenyi Egyetem" />
     <span class="level-badge">Level 02</span>
   </div>
 
