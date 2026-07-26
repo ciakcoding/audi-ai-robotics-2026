@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Audi AI Robotics — Level 2: Baseline vs RL Policy</title>
+<title>Audi AI Robotics — Level 02: Baseline vs RL vs Sim2Real</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
   :root {
@@ -25,32 +25,20 @@
     color: var(--text);
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 2rem 1rem;
   }
-  .card {
+  .page {
     width: 100%;
     max-width: 1020px;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
-    padding: 2.25rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: var(--audi-red);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
   .brand {
     display: flex;
     align-items: center;
     gap: 0.85rem;
-    margin-bottom: 1.75rem;
   }
   .rings svg { display: block; }
   .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
@@ -71,6 +59,22 @@
     border: 1px solid var(--audi-red);
     border-radius: 2px;
     padding: 0.25rem 0.6rem;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    padding: 2.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--audi-red);
   }
   h1 { font-size: 1.15rem; font-weight: 600; margin: 0 0 0.3rem; }
   p.sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.88rem; }
@@ -112,8 +116,8 @@
     border-radius: 2px;
     color: white;
   }
-  .chip.baseline { left: 0.6rem; background: var(--baseline-chip); }
-  .chip.rl { right: 0.6rem; background: var(--audi-red); }
+  .chip.left { left: 0.6rem; background: var(--baseline-chip); }
+  .chip.right { right: 0.6rem; background: var(--audi-red); }
   .live-badge {
     position: absolute;
     top: 0.6rem;
@@ -173,7 +177,7 @@
     letter-spacing: 0.05em;
     font-weight: 600;
   }
-  table.compare th.col-rl { color: var(--audi-red-bright); }
+  table.compare th.col-right { color: var(--audi-red-bright); }
   table.compare td.metric-name { color: var(--muted); }
   table.compare td.val { font-weight: 700; }
   table.compare td.val.ok { color: var(--ok); }
@@ -182,31 +186,33 @@
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="brand">
-      <span class="rings">
-        <svg width="86" height="24" viewBox="0 0 86 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-          <circle cx="30" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-          <circle cx="48" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-          <circle cx="66" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
-        </svg>
-      </span>
-      <span class="brand-text">
-        <span class="make">Audi AI Robotics</span>
-        <span class="project">Development Camp 2026</span>
-      </span>
-      <span class="level-badge">Level 02</span>
-    </div>
+<div class="page">
 
+  <div class="brand">
+    <span class="rings">
+      <svg width="86" height="24" viewBox="0 0 86 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+        <circle cx="30" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+        <circle cx="48" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+        <circle cx="66" cy="12" r="10.5" stroke="#f2f2f2" stroke-width="2.6"/>
+      </svg>
+    </span>
+    <span class="brand-text">
+      <span class="make">Audi AI Robotics</span>
+      <span class="project">Development Camp 2026</span>
+    </span>
+    <span class="level-badge">Level 02</span>
+  </div>
+
+  <div class="card">
     <h1>Level 02 — Ball Throw + Balance: Scripted Baseline vs RL Policy</h1>
     <p class="sub">Runs both controllers live, from the same starting conditions, and streams them side by side. This is the Level 02 task (throw to a fixed target while balancing) — Level 03 (walk + throw) will get its own page later.</p>
     <button id="runBtn">Run Simulation</button>
     <div class="status" id="status"></div>
 
     <div class="stage-wrap" id="stageWrap">
-      <span class="chip baseline">Scripted baseline</span>
-      <span class="chip rl">RL policy (residual PPO)</span>
+      <span class="chip left">Scripted baseline</span>
+      <span class="chip right">RL policy (residual PPO)</span>
       <span class="live-badge">LIVE</span>
       <canvas id="stage" width="968" height="360"></canvas>
     </div>
@@ -221,24 +227,46 @@
         <tr>
           <th>Metric</th>
           <th>Scripted baseline</th>
-          <th class="col-rl">RL policy</th>
+          <th class="col-right">RL policy</th>
         </tr>
       </thead>
       <tbody id="compareBody"></tbody>
     </table>
   </div>
 
-<script>
-const runBtn = document.getElementById('runBtn');
-const statusEl = document.getElementById('status');
-const stageWrap = document.getElementById('stageWrap');
-const canvas = document.getElementById('stage');
-const ctx = canvas.getContext('2d');
-const headline = document.getElementById('headline');
-const headlineValue = document.getElementById('headlineValue');
-const compareTable = document.getElementById('compareTable');
-const compareBody = document.getElementById('compareBody');
+  <div class="card">
+    <h1>Level 02 — Sim2Real Robustness Check</h1>
+    <p class="sub">Runs the same trained RL policy twice: once in the clean/nominal sim, once with the full 7-parameter Sim2Real domain-randomization gauntlet (sensor noise, actuator latency, friction, contact modelling, motor dynamics, observation noise, target-position noise) applied. A live version of <code>scripts/evaluate_robustness.py</code>'s clean-vs-noisy comparison. Watch the target position shift slightly on the right — that's the dominant perturbation.</p>
+    <button id="sim2realBtn">Run Sim2Real Test</button>
+    <div class="status" id="sim2realStatus"></div>
 
+    <div class="stage-wrap" id="sim2realStageWrap">
+      <span class="chip left">Nominal (clean sim)</span>
+      <span class="chip right">Sim2Real (domain randomized)</span>
+      <span class="live-badge">LIVE</span>
+      <canvas id="sim2realStage" width="968" height="360"></canvas>
+    </div>
+
+    <div class="headline" id="sim2realHeadline">
+      <div class="headline-value" id="sim2realHeadlineValue">—</div>
+      <div class="headline-label">Landing-error change under domain randomization (some increase is expected)</div>
+    </div>
+
+    <table class="compare" id="sim2realTable">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Nominal</th>
+          <th class="col-right">Sim2Real</th>
+        </tr>
+      </thead>
+      <tbody id="sim2realBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
 function wsUrl(path) {
   const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
   return `${proto}//${location.host}${path}`;
@@ -253,103 +281,162 @@ function boolCell(v, goodWhenTrue) {
   return `<td class="val ${cls}">${v ? 'Yes' : 'No'}</td>`;
 }
 
-function renderComparison(baseline, rl) {
-  compareBody.innerHTML = `
-    <tr>
-      <td class="metric-name">Landing error</td>
-      <td class="val">${errText(baseline.landing_error_cm)}</td>
-      <td class="val">${errText(rl.landing_error_cm)}</td>
-    </tr>
-    <tr>
-      <td class="metric-name">Success</td>
-      ${boolCell(baseline.success, true)}
-      ${boolCell(rl.success, true)}
-    </tr>
-    <tr>
-      <td class="metric-name">Fell over</td>
-      ${boolCell(baseline.has_fallen, false)}
-      ${boolCell(rl.has_fallen, false)}
-    </tr>
-    <tr>
-      <td class="metric-name">Episode reward</td>
-      <td class="val">${baseline.reward_sum.toFixed(2)}</td>
-      <td class="val">${rl.reward_sum.toFixed(2)}</td>
-    </tr>
-    <tr>
-      <td class="metric-name">Release time</td>
-      <td class="val">${baseline.release_time_s?.toFixed(2) ?? '—'} s</td>
-      <td class="val">${rl.release_time_s?.toFixed(2) ?? '—'} s</td>
-    </tr>
-    <tr>
-      <td class="metric-name">Seed</td>
-      <td class="val">${baseline.seed}</td>
-      <td class="val">${rl.seed}</td>
-    </tr>
-  `;
-  compareTable.style.display = 'table';
+function setupComparison(cfg) {
+  const btn = document.getElementById(cfg.buttonId);
+  const statusEl = document.getElementById(cfg.statusId);
+  const stageWrap = document.getElementById(cfg.stageWrapId);
+  const canvas = document.getElementById(cfg.canvasId);
+  const ctx = canvas.getContext('2d');
+  const headline = document.getElementById(cfg.headlineId);
+  const headlineValue = document.getElementById(cfg.headlineValueId);
+  const table = document.getElementById(cfg.tableId);
+  const tbody = document.getElementById(cfg.tableBodyId);
 
-  headlineValue.classList.remove('good', 'bad');
-  if (baseline.landing_error_cm != null && rl.landing_error_cm != null && baseline.landing_error_cm > 0) {
-    // Positive = RL error is lower than baseline (better); negative = RL error is higher (worse).
-    const change = ((baseline.landing_error_cm - rl.landing_error_cm) / baseline.landing_error_cm) * 100;
-    if (Math.abs(change) < 0.05) {
-      headlineValue.textContent = 'No change';
-    } else if (change > 0) {
-      headlineValue.textContent = `${change.toFixed(1)}% lower error (RL better)`;
-      headlineValue.classList.add('good');
+  function renderResult(left, right) {
+    tbody.innerHTML = `
+      <tr>
+        <td class="metric-name">Landing error</td>
+        <td class="val">${errText(left.landing_error_cm)}</td>
+        <td class="val">${errText(right.landing_error_cm)}</td>
+      </tr>
+      <tr>
+        <td class="metric-name">Success</td>
+        ${boolCell(left.success, true)}
+        ${boolCell(right.success, true)}
+      </tr>
+      <tr>
+        <td class="metric-name">Fell over</td>
+        ${boolCell(left.has_fallen, false)}
+        ${boolCell(right.has_fallen, false)}
+      </tr>
+      <tr>
+        <td class="metric-name">Episode reward</td>
+        <td class="val">${left.reward_sum.toFixed(2)}</td>
+        <td class="val">${right.reward_sum.toFixed(2)}</td>
+      </tr>
+      <tr>
+        <td class="metric-name">Release time</td>
+        <td class="val">${left.release_time_s?.toFixed(2) ?? '—'} s</td>
+        <td class="val">${right.release_time_s?.toFixed(2) ?? '—'} s</td>
+      </tr>
+      <tr>
+        <td class="metric-name">Seed</td>
+        <td class="val">${left.seed}</td>
+        <td class="val">${right.seed}</td>
+      </tr>
+    `;
+    table.style.display = 'table';
+
+    headlineValue.classList.remove('good', 'bad');
+    if (left.landing_error_cm != null && right.landing_error_cm != null && left.landing_error_cm > 0) {
+      // Positive = right side's error is lower than left's; negative = higher.
+      const change = ((left.landing_error_cm - right.landing_error_cm) / left.landing_error_cm) * 100;
+      if (cfg.headlineMode === 'improvement') {
+        if (Math.abs(change) < 0.05) {
+          headlineValue.textContent = 'No change';
+        } else if (change > 0) {
+          headlineValue.textContent = `${change.toFixed(1)}% lower error (RL better)`;
+          headlineValue.classList.add('good');
+        } else {
+          headlineValue.textContent = `${Math.abs(change).toFixed(1)}% higher error (RL worse)`;
+          headlineValue.classList.add('bad');
+        }
+      } else {
+        // 'shift': domain randomization is expected to move the number either way;
+        // color by whether the randomized run still landed successfully, not by sign.
+        if (Math.abs(change) < 0.05) {
+          headlineValue.textContent = 'No measurable change';
+        } else if (change > 0) {
+          headlineValue.textContent = `${change.toFixed(1)}% lower error under randomization`;
+        } else {
+          headlineValue.textContent = `${Math.abs(change).toFixed(1)}% higher error under randomization`;
+        }
+        headlineValue.classList.add(right.success ? 'good' : 'bad');
+      }
+      headline.style.display = 'block';
     } else {
-      headlineValue.textContent = `${Math.abs(change).toFixed(1)}% higher error (RL worse)`;
-      headlineValue.classList.add('bad');
+      headline.style.display = 'none';
     }
-    headline.style.display = 'block';
-  } else {
-    headline.style.display = 'none';
   }
+
+  btn.addEventListener('click', () => {
+    btn.disabled = true;
+    statusEl.textContent = 'Connecting…';
+    headline.style.display = 'none';
+    table.style.display = 'none';
+    stageWrap.style.display = 'block';
+    stageWrap.classList.add('live');
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const socket = new WebSocket(wsUrl(cfg.socketPath));
+    socket.binaryType = 'arraybuffer';
+
+    socket.addEventListener('open', () => {
+      statusEl.textContent = `Streaming ${cfg.leftLabel} (left) and ${cfg.rightLabel} (right) live from MuJoCo…`;
+    });
+
+    socket.addEventListener('message', async (event) => {
+      if (typeof event.data === 'string') {
+        const msg = JSON.parse(event.data);
+        if (msg.type === 'done') {
+          stageWrap.classList.remove('live');
+          renderResult(msg[cfg.leftKey], msg[cfg.rightKey]);
+          statusEl.textContent = 'Done.';
+        }
+        return;
+      }
+      const blob = new Blob([event.data], { type: 'image/jpeg' });
+      const bitmap = await createImageBitmap(blob);
+      ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close();
+    });
+
+    socket.addEventListener('close', () => {
+      stageWrap.classList.remove('live');
+      btn.disabled = false;
+    });
+
+    socket.addEventListener('error', () => {
+      statusEl.textContent = 'Connection failed.';
+      stageWrap.classList.remove('live');
+      btn.disabled = false;
+    });
+  });
 }
 
-runBtn.addEventListener('click', () => {
-  runBtn.disabled = true;
-  statusEl.textContent = 'Connecting…';
-  headline.style.display = 'none';
-  compareTable.style.display = 'none';
-  stageWrap.style.display = 'block';
-  stageWrap.classList.add('live');
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+setupComparison({
+  buttonId: 'runBtn',
+  statusId: 'status',
+  stageWrapId: 'stageWrap',
+  canvasId: 'stage',
+  headlineId: 'headline',
+  headlineValueId: 'headlineValue',
+  tableId: 'compareTable',
+  tableBodyId: 'compareBody',
+  socketPath: '/ws/compare',
+  leftLabel: 'baseline',
+  rightLabel: 'RL policy',
+  leftKey: 'baseline',
+  rightKey: 'rl',
+  headlineMode: 'improvement',
+});
 
-  const socket = new WebSocket(wsUrl('/ws/compare'));
-  socket.binaryType = 'arraybuffer';
-
-  socket.addEventListener('open', () => {
-    statusEl.textContent = 'Streaming baseline (left) and RL policy (right) live from MuJoCo…';
-  });
-
-  socket.addEventListener('message', async (event) => {
-    if (typeof event.data === 'string') {
-      const msg = JSON.parse(event.data);
-      if (msg.type === 'done') {
-        stageWrap.classList.remove('live');
-        renderComparison(msg.baseline, msg.rl);
-        statusEl.textContent = 'Done.';
-      }
-      return;
-    }
-    const blob = new Blob([event.data], { type: 'image/jpeg' });
-    const bitmap = await createImageBitmap(blob);
-    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    bitmap.close();
-  });
-
-  socket.addEventListener('close', () => {
-    stageWrap.classList.remove('live');
-    runBtn.disabled = false;
-  });
-
-  socket.addEventListener('error', () => {
-    statusEl.textContent = 'Connection failed.';
-    stageWrap.classList.remove('live');
-    runBtn.disabled = false;
-  });
+setupComparison({
+  buttonId: 'sim2realBtn',
+  statusId: 'sim2realStatus',
+  stageWrapId: 'sim2realStageWrap',
+  canvasId: 'sim2realStage',
+  headlineId: 'sim2realHeadline',
+  headlineValueId: 'sim2realHeadlineValue',
+  tableId: 'sim2realTable',
+  tableBodyId: 'sim2realBody',
+  socketPath: '/ws/sim2real',
+  leftLabel: 'nominal (clean)',
+  rightLabel: 'Sim2Real (domain randomized)',
+  leftKey: 'nominal',
+  rightKey: 'sim2real',
+  headlineMode: 'shift',
 });
 </script>
 </body>

@@ -11,13 +11,18 @@ shown) is written specifically around the Level 02 task and does not
 generalize to walking. Don't try to repoint it at a Level 03 env without
 rethinking the comparison logic and metrics from scratch.
 
-A small local website that runs the scripted Task 1 baseline and the
-trained Task 2 RL policy side by side, live, without touching a terminal.
-Click **Run Simulation** and the browser shows both controllers throwing
-the ball from the same starting conditions in real time — baseline on the
-left, RL policy on the right — followed by a metrics comparison table.
+A small local website with two side-by-side live comparisons, no terminal
+required:
+- **Baseline vs RL Policy** — click **Run Simulation** and watch the
+  scripted Task 1 baseline and the trained Task 2 RL policy throw the ball
+  from the same starting conditions — baseline left, RL right.
+- **Sim2Real Robustness Check** — click **Run Sim2Real Test** and watch
+  the *same* trained RL policy run once clean and once under the full
+  Task 3 domain-randomization gauntlet — nominal left, Sim2Real right.
 
-## What's actually happening
+Both end in a metrics comparison table.
+
+## What's actually happening (Baseline vs RL Policy)
 
 1. **You click "Run Simulation".** The browser opens a WebSocket connection
    to the FastAPI backend at `/ws/compare`.
@@ -57,6 +62,44 @@ left, RL policy on the right — followed by a metrics comparison table.
    table plus a headline "landing-error reduction" stat computed from the
    two.
 
+## What's actually happening (Sim2Real Robustness Check)
+
+Same mechanics as above (`WS /ws/sim2real`, same lockstep-and-composite
+approach via the shared `SimulationRunner._stream_pair()` helper), but both
+sides run the **same** trained RL policy — the only difference is the
+environment:
+- **Nominal (left):** `WebRobustnessEnv(enable_all=False)` — identical
+  physics to the Baseline-vs-RL page's RL side, just wrapped in the
+  robustness env class for a consistent interface.
+- **Sim2Real (right):** `WebRobustnessEnv(enable_all=True)` — turns on all
+  7 of `envs/g1_robustness_env.py`'s (`G1RobustnessEnv`) perturbations at
+  once: observation noise, joint friction/damping randomization, floor
+  friction randomization, actuator gain randomization, contact
+  stiffness/impedance randomization, control latency, and target-position
+  noise. This is a live version of what `scripts/evaluate_robustness.py`
+  does over 50-100 episodes and averages — here you watch one draw at a
+  time. Per the project's own `outputs/per_param_results.json`, target-
+  position noise is by far the dominant contributor (mean best-distance
+  ~0.042 m alone vs. ~0.02 m clean; the other 6 perturbations are each
+  individually negligible), so the most visible effect is usually the green
+  target sphere sitting in a slightly different spot on the right.
+- The domain-randomization draw itself (`G1RobustnessEnv.reset()`'s
+  `np.random.uniform`/`normal` calls) is **not** tied to the seed passed to
+  `env.reset(seed=...)` — it uses bare global `np.random`, exactly like the
+  original `G1RobustnessEnv`/`evaluate_robustness.py` do. So the nominal
+  side's initial arm noise is reproducible per seed, but the randomization
+  strength on the Sim2Real side varies every run, by design — that's the
+  whole point of watching several runs.
+- `WebRobustnessEnv` exists for the same reason `WebPPOThrowEnv` does:
+  `G1RobustnessEnv.__init__` calls `PPOThrowEnv.__init__`, which hardcodes
+  the broken top-level scene path. Since `G1RobustnessEnv` always inherits
+  directly from `PPOThrowEnv`, there's no cooperative-`super()` way to
+  splice in the working path, so `WebRobustnessEnv.__init__` in
+  `webapp/runner.py` copies `G1RobustnessEnv.__init__`'s body verbatim,
+  swapping only the one `super().__init__()` call — see the docstring
+  there if `envs/g1_robustness_env.py` ever changes and this needs
+  re-syncing.
+
 There are also two single-policy endpoints kept around as simpler
 alternatives/API surface, not wired into the current page:
 - `POST /run` — runs the RL policy once, writes an MP4 to `webapp/videos/`,
@@ -83,10 +126,10 @@ official evaluation report.
 
 ```text
 webapp/
-  app.py          FastAPI app: POST /run, WS /ws/run, WS /ws/compare, static mounts
+  app.py          FastAPI app: POST /run, WS /ws/run, WS /ws/compare, WS /ws/sim2real, static mounts
   runner.py       SimulationRunner: loads envs + policy once, runs episodes
   static/
-    index.html    The GUI (Audi red/black themed) — side-by-side canvas + comparison table
+    index.html    The GUI (Audi red/black themed) — two side-by-side canvases + comparison tables
   videos/         Generated MP4s from POST /run (gitignored)
 ```
 
@@ -97,7 +140,8 @@ source .venv/bin/activate
 uvicorn webapp.app:app --reload
 ```
 
-Open `http://localhost:8000` and click **Run Simulation**.
+Open `http://localhost:8000`, then click **Run Simulation** (top section) or
+**Run Sim2Real Test** (bottom section).
 
 `MUJOCO_GL` controls the rendering backend and needs no code changes:
 - Local machine with a display (default here): unset, or `glfw`.

@@ -18,7 +18,7 @@ from fastapi.staticfiles import StaticFiles
 from PIL import Image
 from starlette.websockets import WebSocketState
 
-from webapp.runner import ComparisonDone, SimulationRunner, StreamDone, StreamFrame
+from webapp.runner import ComparisonDone, Sim2RealDone, SimulationRunner, StreamDone, StreamFrame
 
 APP_DIR = Path(__file__).resolve().parent
 JPEG_QUALITY = 80
@@ -102,6 +102,14 @@ async def _stream_events(websocket: WebSocket, make_event_iter) -> None:
                         "rl": _metrics_json(event.metrics.rl),
                     }
                 )
+            elif isinstance(event, Sim2RealDone):
+                await websocket.send_json(
+                    {
+                        "type": "done",
+                        "nominal": _metrics_json(event.metrics.nominal),
+                        "sim2real": _metrics_json(event.metrics.sim2real),
+                    }
+                )
     except WebSocketDisconnect:
         pass
     finally:
@@ -128,6 +136,16 @@ async def run_comparison_live(websocket: WebSocket):
     await websocket.accept()
     seed = random.randint(0, 1_000_000)
     await _stream_events(websocket, lambda: get_runner().run_comparison_stream(seed=seed))
+
+
+@app.websocket("/ws/sim2real")
+async def run_sim2real_live(websocket: WebSocket):
+    """Streams the same RL policy in a clean/nominal env (left) vs the full
+    Sim2Real domain-randomization gauntlet (right) on the same seed, then a
+    final JSON message with both sides' metrics."""
+    await websocket.accept()
+    seed = random.randint(0, 1_000_000)
+    await _stream_events(websocket, lambda: get_runner().run_sim2real_stream(seed=seed))
 
 
 app.mount("/videos", StaticFiles(directory=APP_DIR / "videos"), name="videos")

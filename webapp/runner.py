@@ -31,6 +31,7 @@ from gymnasium import spaces
 from stable_baselines3 import PPO
 
 from envs.g1_fixed_body_throw_env import G1FixedBodyThrowEnv
+from envs.g1_robustness_env import G1RobustnessEnv
 from envs.ppo_throw_env import PPOThrowEnv
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,6 +76,86 @@ class WebPPOThrowEnv(PPOThrowEnv):
         )
 
 
+class WebRobustnessEnv(G1RobustnessEnv):
+    """G1RobustnessEnv (Sim2Real domain randomization) on the same working
+    assets/unitree_g1 mesh copy WebPPOThrowEnv uses.
+
+    G1RobustnessEnv.__init__ calls PPOThrowEnv.__init__(residual_scale=...,
+    extra_initial_joint_noise=...), which hardcodes the broken top-level
+    scene path -- the same problem WebPPOThrowEnv works around above. There
+    is no way to override just that one call cooperatively (G1RobustnessEnv
+    always inherits directly from PPOThrowEnv, so Python's MRO can't be
+    reshaped to insert a substitute in between), so this constructor
+    replicates G1RobustnessEnv.__init__ verbatim, swapping only that one
+    super().__init__() call for the same G1FixedBodyThrowEnv-direct
+    construction WebPPOThrowEnv uses. Everything else below is copied
+    unchanged from envs/g1_robustness_env.py -- keep the two in sync if
+    that file's __init__ ever changes.
+    """
+
+    def __init__(
+        self,
+        residual_scale: float = RESIDUAL_SCALE,
+        extra_initial_joint_noise: float = 0.0,
+        enable_all: bool = False,
+    ):
+        # --- swapped-in construction (mirrors WebPPOThrowEnv.__init__) ---
+        G1FixedBodyThrowEnv.__init__(
+            self,
+            xml_path=ROOT / "assets" / "unitree_g1" / "scene_throw.xml",
+            learned_release=False,
+        )
+        self.residual_scale = float(residual_scale)
+        self.extra_initial_joint_noise = float(extra_initial_joint_noise)
+        self.action_space = spaces.Box(-1.0, 1.0, shape=(7,), dtype=np.float32)
+        self.baseline_start = np.array(
+            [0.9318, -0.7911, 0.0491, -0.1425, 0.0, 0.0, 0.0], dtype=np.float64
+        )
+        self.baseline_end = np.array(
+            [-1.0, 0.0964, 0.0072, -1.0, 0.0, 0.0, 0.0], dtype=np.float64
+        )
+        # --- end swap; rest copied verbatim from G1RobustnessEnv.__init__ ---
+
+        self._floor_geom_ids = [
+            i for i in range(self.model.ngeom)
+            if self.model.geom_type[i] == mujoco.mjtGeom.mjGEOM_PLANE
+        ]
+
+        self._baseline_ball_mass = self.model.body_mass[self.ball_body_id]
+        self._baseline_joint_frictionloss = self.model.dof_frictionloss.copy()
+        self._baseline_joint_damping = self.model.dof_damping.copy()
+        self._baseline_actuator_forcerange = self.model.actuator_forcerange.copy()
+        self._baseline_ball_size = self.model.geom_size[self.ball_geom_id].copy()
+        self._baseline_target_pos = self.target_pos.copy()
+        self._baseline_solref = self.model.opt.o_solref.copy()
+        self._baseline_solimp = self.model.opt.o_solimp.copy()
+        if self._floor_geom_ids:
+            self._baseline_floor_friction = self.model.geom_friction[
+                self._floor_geom_ids[0]
+            ].copy()
+
+        self.obs_noise = 0.0
+        self.ball_mass_range = None
+        self.joint_friction_range = None
+        self.joint_damping_range = None
+        self.floor_friction_range = None
+        self.actuator_gain_range = None
+        self.target_pos_noise = 0.0
+        self.ball_size_range = None
+        self.control_latency_steps = 0
+        self.action_noise = 0.0
+        self.push_probability = 0.0
+        self.push_force_range = (-3.0, 3.0)
+        self.contact_solref_range = None
+        self.contact_solimp_range = None
+
+        self._action_buffer = []
+        self.current_randomization = {}
+
+        if enable_all:
+            self._enable_all_defaults()
+
+
 @dataclass
 class EpisodeResult:
     video_url: str
@@ -104,6 +185,12 @@ class ComparisonMetrics:
 
 
 @dataclass
+class Sim2RealMetrics:
+    nominal: EpisodeMetrics
+    sim2real: EpisodeMetrics
+
+
+@dataclass
 class StreamFrame:
     image: np.ndarray
 
@@ -118,7 +205,12 @@ class ComparisonDone:
     metrics: ComparisonMetrics
 
 
-StreamEvent = Union[StreamFrame, StreamDone, ComparisonDone]
+@dataclass
+class Sim2RealDone:
+    metrics: Sim2RealMetrics
+
+
+StreamEvent = Union[StreamFrame, StreamDone, ComparisonDone, Sim2RealDone]
 
 
 def _metrics_from_info(info: dict, reward_sum: float, steps: int, seed: int) -> EpisodeMetrics:
@@ -201,6 +293,24 @@ class SimulationRunner:
         self.rl_slot = _CompareSlot(
             env=rl_env,
             renderer=mujoco.Renderer(rl_env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH),
+            camera=panel_camera,
+            policy=self.model,
+        )
+
+        # Sim2Real pair: same trained RL policy on both sides, the only
+        # difference is environment perturbation -- mirrors the "clean vs
+        # noisy" comparison in scripts/evaluate_robustness.py.
+        nominal_env = WebRobustnessEnv(residual_scale=RESIDUAL_SCALE, enable_all=False)
+        sim2real_env = WebRobustnessEnv(residual_scale=RESIDUAL_SCALE, enable_all=True)
+        self.nominal_slot = _CompareSlot(
+            env=nominal_env,
+            renderer=mujoco.Renderer(nominal_env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH),
+            camera=panel_camera,
+            policy=self.model,
+        )
+        self.sim2real_slot = _CompareSlot(
+            env=sim2real_env,
+            renderer=mujoco.Renderer(sim2real_env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH),
             camera=panel_camera,
             policy=self.model,
         )
@@ -289,18 +399,18 @@ class SimulationRunner:
         metrics = _metrics_from_info(info, reward_sum, env.step_count, seed)
         yield StreamDone(metrics)
 
-    def run_comparison_stream(self, seed: int | None = None) -> Iterator[StreamEvent]:
-        """Steps the scripted baseline and the RL policy through the same
-        seed in lockstep, one composite frame (baseline left, RL right) per
-        tick, paced to real time. Once a side finishes it keeps stepping
-        physics-only (no policy/info updates) so the ball can be seen
-        landing/rolling while the other side catches up."""
-        seed = DEFAULT_SEED if seed is None else seed
-        self.baseline_slot.reset(seed)
-        self.rl_slot.reset(seed)
+    def _stream_pair(self, left: _CompareSlot, right: _CompareSlot, seed: int) -> Iterator[StreamFrame]:
+        """Steps two slots through the same seed in lockstep, yielding one
+        composite frame (left | right) per tick, paced to real time. Once a
+        side finishes it keeps stepping physics-only (no policy/info
+        updates) so the ball can be seen landing/rolling while the other
+        side catches up. Does not yield a Done event -- callers build and
+        yield their own, typed metrics event after exhausting this."""
+        left.reset(seed)
+        right.reset(seed)
 
-        control_dt = self.baseline_slot.env.control_dt
-        main_steps = int(round(self.baseline_slot.env.episode_time / control_dt))
+        control_dt = left.env.control_dt
+        main_steps = int(round(left.env.episode_time / control_dt))
         start_time = time.monotonic()
         frame_idx = 0
 
@@ -312,26 +422,46 @@ class SimulationRunner:
                 time.sleep(remaining)
             frame_idx += 1
             gap = np.full((PANEL_HEIGHT, PANEL_GAP, 3), 20, dtype=np.uint8)
-            left = self.baseline_slot.render()
-            right = self.rl_slot.render()
-            return np.concatenate([left, gap, right], axis=1)
+            return np.concatenate([left.render(), gap, right.render()], axis=1)
 
         yield StreamFrame(composite_frame())
         for _ in range(main_steps):
-            self.baseline_slot.step()
-            self.rl_slot.step()
+            left.step()
+            right.step()
             yield StreamFrame(composite_frame())
-            if self.baseline_slot.done and self.rl_slot.done:
+            if left.done and right.done:
                 break
 
         for _ in range(TAIL_STEPS):
-            self.baseline_slot.step()
-            self.rl_slot.step()
+            left.step()
+            right.step()
             yield StreamFrame(composite_frame())
 
+    def run_comparison_stream(self, seed: int | None = None) -> Iterator[StreamEvent]:
+        """Scripted baseline (left) vs RL policy (right), same seed."""
+        seed = DEFAULT_SEED if seed is None else seed
+        yield from self._stream_pair(self.baseline_slot, self.rl_slot, seed)
         yield ComparisonDone(
             ComparisonMetrics(
                 baseline=self.baseline_slot.metrics(seed),
                 rl=self.rl_slot.metrics(seed),
+            )
+        )
+
+    def run_sim2real_stream(self, seed: int | None = None) -> Iterator[StreamEvent]:
+        """The same trained RL policy in a clean/nominal env (left) vs the
+        full 7-parameter Sim2Real domain-randomization gauntlet (right),
+        same seed -- a live version of scripts/evaluate_robustness.py's
+        clean-vs-noisy comparison. The randomization draw itself (ball
+        mass, friction, target offset, etc.) uses G1RobustnessEnv's own
+        np.random calls, not the seeded env RNG, so it varies run to run
+        even for a repeated seed -- matching the original evaluation
+        script's behavior."""
+        seed = DEFAULT_SEED if seed is None else seed
+        yield from self._stream_pair(self.nominal_slot, self.sim2real_slot, seed)
+        yield Sim2RealDone(
+            Sim2RealMetrics(
+                nominal=self.nominal_slot.metrics(seed),
+                sim2real=self.sim2real_slot.metrics(seed),
             )
         )
