@@ -304,5 +304,7 @@ The independently runnable LEVEL03 derived baseline is documented in
 the teammate `v031` implementation, overrides selected motion keyframes in a
 separate policy, and evaluates a physical hoop at `(2.2, 0.0, 1.2)`.
 
-This branch intentionally contains no CEM and no RL so it can serve as the
-honest baseline for the stacked optimization branch.
+The parent branch `feature/simulation03-derived-baseline` intentionally
+contains no CEM and no RL. This stacked branch adds CEM artifacts documented
+in [`training_extension/CEM_README.md`](training_extension/CEM_README.md),
+while still excluding all reinforcement-learning work.

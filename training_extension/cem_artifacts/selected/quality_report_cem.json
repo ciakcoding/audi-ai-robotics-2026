@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "compiled_python_files": 5,
+  "algorithm": "cross-entropy method trajectory optimization",
+  "is_reinforcement_learning": false,
+  "parameter_count": 15,
+  "state_iteration": 28,
+  "smoke_episodes": 2,
+  "smoke_successes": 2,
+  "smoke_mean_crossing_error": 0.030327305692998175,
+  "backboard_contacts": 0,
+  "falls": 0,
+  "target": [
+    2.2,
+    0.0,
+    1.2
+  ],
+  "success_radius": 0.1
+}
