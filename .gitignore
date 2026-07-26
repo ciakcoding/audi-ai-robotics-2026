@@ -219,6 +219,3 @@ __marimo__/
 
 # Generated baseline evaluation artifacts
 outputs/
-
-# Generated webapp demo videos
-webapp/videos/*.mp4
