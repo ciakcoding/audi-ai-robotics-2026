@@ -24,6 +24,16 @@ DEFAULT_FROZEN = (
 )
 
 
+def realtime_step(env, parameters, viewer):
+    start = time.perf_counter()
+    result = env.step(controller_action(env, parameters))
+    viewer.sync()
+    remaining = 0.02 - (time.perf_counter() - start)
+    if remaining > 0:
+        time.sleep(remaining)
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -37,6 +47,7 @@ def main():
         default=DEFAULT_FROZEN / "selected_vecnormalize.pkl",
     )
     parser.add_argument("--seed", type=int, default=100_000)
+    parser.add_argument("--post-shot-seconds", type=float, default=10.0)
     parser.add_argument("--hold-seconds", type=float, default=2.0)
     args = parser.parse_args()
 
@@ -67,25 +78,44 @@ def main():
             terminated = truncated = False
             info = {}
             while viewer.is_running() and not (terminated or truncated):
-                start = time.perf_counter()
-                action = controller_action(env, parameters)
-                _, _, terminated, truncated, info = env.step(action)
-                viewer.sync()
-                remaining = 0.02 - (time.perf_counter() - start)
-                if remaining > 0:
-                    time.sleep(remaining)
+                _, _, terminated, truncated, info = realtime_step(
+                    env, parameters, viewer
+                )
             if not viewer.is_running():
                 break
+
+            scoring_info = dict(info)
+            post_shot_fall = False
+            minimum_pelvis_height = float(scoring_info["pelvis_height_m"])
+            recovery_end = (
+                float(env.data.time) + max(args.post_shot_seconds, 0.0)
+            )
+            while viewer.is_running() and env.data.time < recovery_end:
+                _, _, _, _, info = realtime_step(
+                    env, parameters, viewer
+                )
+                post_shot_fall = post_shot_fall or bool(info["has_fallen"])
+                minimum_pelvis_height = min(
+                    minimum_pelvis_height,
+                    float(info["pelvis_height_m"]),
+                )
+            if not viewer.is_running():
+                break
+
             print(
                 "Ball reached target: "
-                f"{'YES' if info['success'] else 'NO'} | "
+                f"{'YES' if scoring_info['success'] else 'NO'} | "
                 f"Distance from hoop centre at crossing="
-                f"{info['crossing_xy_error'] * 100:.2f} cm | "
+                f"{scoring_info['crossing_xy_error'] * 100:.2f} cm | "
                 f"Airborne distance="
-                f"{info['airborne_horizontal_distance']:.2f} m | "
+                f"{scoring_info['airborne_horizontal_distance']:.2f} m | "
                 f"Backboard contact="
-                f"{'YES' if info['touched_backboard'] else 'NO'} | "
-                f"Robot fell={'YES' if info['has_fallen'] else 'NO'}"
+                f"{'YES' if scoring_info['touched_backboard'] else 'NO'} | "
+                f"Fall before crossing="
+                f"{'YES' if scoring_info['has_fallen'] else 'NO'} | "
+                f"Fall during {args.post_shot_seconds:.1f} s recovery="
+                f"{'YES' if post_shot_fall else 'NO'} | "
+                f"Minimum pelvis height={minimum_pelvis_height:.3f} m"
             )
             end_hold = time.perf_counter() + args.hold_seconds
             while viewer.is_running() and time.perf_counter() < end_hold:

@@ -1,0 +1,17 @@
+{
+  "episodes": 300,
+  "seed_start": 100000,
+  "post_shot_seconds": 10.0,
+  "successes": 297,
+  "success_rate": 0.99,
+  "mean_crossing_error": 0.03336485868716297,
+  "max_crossing_error": 0.3125470618238281,
+  "falls_before_crossing": 0,
+  "falls_during_recovery": 0,
+  "falls_at_final_frame": 0,
+  "minimum_recovery_pelvis_height_m": 0.6980000215778445,
+  "mean_minimum_recovery_pelvis_height_m": 0.6981085455818467,
+  "maximum_recovery_abs_pitch_deg": 2.064143202674421,
+  "maximum_recovery_abs_roll_deg": 0.6114120019267094,
+  "earliest_fall_after_crossing_s": null
+}
