@@ -107,6 +107,12 @@ def _rl_shot_json(m) -> dict:
         "steps": m.steps,
         "reward_sum": m.reward_sum,
         "seed": m.seed,
+        "hoop_crossing_speed_mps": m.hoop_crossing_speed_mps,
+        "max_impact_force_n": m.max_impact_force_n,
+        "max_pitch_deg": m.max_pitch_deg,
+        "max_roll_deg": m.max_roll_deg,
+        "max_yaw_deg": m.max_yaw_deg,
+        "final_distance_m": m.final_distance_m,
     }
 
 

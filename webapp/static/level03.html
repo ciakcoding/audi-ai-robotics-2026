@@ -220,7 +220,7 @@
 
   <div class="card">
     <h1>Level 03 — Basketball-Hoop Shot: Scripted Baseline vs RL Policy</h1>
-    <p class="sub">Each side runs its own script's actual simulation, exactly as written, in its own scene — not a shared comparison environment. Left: <code>scripts/view_baselines_LEVEL03_v031!.py</code>'s scripted keyframe policy (target 1.8m out, fixed 850-step loop). Right: <code>training_extension/view_ppo_parameters.py</code>'s trained one-decision RL policy over <code>BasketballResidualEnv</code> (target 2.2m out, its own success contract). Because they're different scenes with different scoring rules, the metrics table below shows each side's own native numbers rather than forcing them into shared rows.</p>
+    <p class="sub">Each side runs its own script's actual simulation, exactly as written, in its own scene — not a shared comparison environment. Left: <code>scripts/view_baselines_LEVEL03_v031!.py</code>'s scripted keyframe policy (target 1.8m out, fixed 850-step loop). Right: <code>training_extension/view_ppo_parameters.py</code>'s trained one-decision RL policy over <code>BasketballResidualEnv</code> (target 2.2m out, its own success contract). Both sides now compute the same 4 presentation metrics the same way — hoop-crossing speed, max rim impact force, max torso tilt, final ball-to-target distance — shown as shared rows below; the RL policy's few extra metrics the baseline script doesn't compute (backboard contact, fall detection, etc.) are shown separately.</p>
     <p class="note">One run takes ~25-30 seconds: the baseline script's loop always runs the full 850 steps (17s of simulated time) regardless of outcome, and the RL side is held in a stabilized idle pose for the remainder once its own (shorter) episode ends, so both panels finish together.</p>
     <button id="runBtn">Run Simulation</button>
     <div class="status" id="status"></div>
@@ -301,39 +301,38 @@ const tbody = document.getElementById('compareBody');
 
 function renderResult(baseline, rl) {
   tbody.innerHTML = `
-    <tr class="section"><td colspan="3">Shared</td></tr>
+    <tr class="section"><td colspan="3">Shared (same definitions on both sides)</td></tr>
     <tr>
       <td class="metric-name">Made the shot</td>
       ${boolTd(baseline.crossed_hoop, true)}
       ${boolTd(rl.success, true)}
     </tr>
     <tr>
-      <td class="metric-name">Random Seed</td>
-      <td class="val">${baseline.seed}</td>
-      <td class="val">${rl.seed}</td>
-    </tr>
-    <tr class="section"><td colspan="3">Scripted baseline's own metrics (v031!)</td></tr>
-    <tr>
       <td class="metric-name">Hoop-crossing speed</td>
       <td>${na(baseline.hoop_crossing_speed_mps, v => v.toFixed(2) + ' m/s')}</td>
-      <td class="val na">n/a</td>
+      <td>${na(rl.hoop_crossing_speed_mps, v => v.toFixed(2) + ' m/s')}</td>
     </tr>
     <tr>
       <td class="metric-name">Max rim impact force</td>
       <td class="val">${baseline.max_impact_force_n.toFixed(2)} N</td>
-      <td class="val na">n/a</td>
+      <td class="val">${rl.max_impact_force_n.toFixed(2)} N</td>
     </tr>
     <tr>
       <td class="metric-name">Max torso tilt (pitch / roll / yaw)</td>
       <td class="val">${baseline.max_pitch_deg.toFixed(1)}&deg; / ${baseline.max_roll_deg.toFixed(1)}&deg; / ${baseline.max_yaw_deg.toFixed(1)}&deg;</td>
-      <td class="val na">n/a</td>
+      <td class="val">${rl.max_pitch_deg.toFixed(1)}&deg; / ${rl.max_roll_deg.toFixed(1)}&deg; / ${rl.max_yaw_deg.toFixed(1)}&deg;</td>
     </tr>
     <tr>
       <td class="metric-name">Final ball-to-target distance</td>
       <td class="val">${baseline.final_distance_m.toFixed(2)} m</td>
-      <td class="val na">n/a</td>
+      <td class="val">${rl.final_distance_m.toFixed(2)} m</td>
     </tr>
-    <tr class="section"><td colspan="3">RL policy's own metrics (BasketballResidualEnv)</td></tr>
+    <tr>
+      <td class="metric-name">Random Seed</td>
+      <td class="val">${baseline.seed}</td>
+      <td class="val">${rl.seed}</td>
+    </tr>
+    <tr class="section"><td colspan="3">RL policy's additional metrics (not computed by the baseline script)</td></tr>
     <tr>
       <td class="metric-name">Hoop-crossing XY error</td>
       <td class="val na">n/a</td>

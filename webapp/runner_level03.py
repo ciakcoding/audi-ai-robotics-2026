@@ -114,6 +114,17 @@ class RLShotMetrics:
     steps: int
     reward_sum: float
     seed: int
+    # Same 4 metrics BaselineShotMetrics reports, computed the same way,
+    # now that training_extension/basketball_env.py's BasketballResidualEnv
+    # exposes them too (feature/rl-on-lv3 commit "Expose Level 03
+    # presentation metrics") -- field names match BaselineShotMetrics's so
+    # the page can render both sides as one shared table.
+    hoop_crossing_speed_mps: float | None
+    max_impact_force_n: float
+    max_pitch_deg: float
+    max_roll_deg: float
+    max_yaw_deg: float
+    final_distance_m: float
 
 
 @dataclass
@@ -310,6 +321,7 @@ class RLSlot:
             for _ in range(self.env.control_substeps):
                 self.env._apply_peer_stabilizer()
                 mujoco.mj_step(self.env.model, self.env.data)
+                self._track_post_episode_instrumentation()
             return
         action = controller_action(self.env, self.parameters)
         _, reward, terminated, truncated, self.info = self.env.step(action)
@@ -317,12 +329,39 @@ class RLSlot:
         if terminated or truncated:
             self.done = True
 
+    def _track_post_episode_instrumentation(self) -> None:
+        """BasketballResidualEnv.step()'s own substep loop is what updates
+        max_abs_torso_tilt_deg and max_rim_impact_force (see feature/rl-on-lv3's
+        "Expose Level 03 presentation metrics" commit) -- calling raw
+        mj_step() during the post-episode tail above bypasses that, so
+        without this those two running-maxes would freeze at whatever they
+        were at termination instead of covering the same full window the
+        baseline script tracks them over (its entire 850-step loop,
+        settling included)."""
+        env = self.env
+        env.max_abs_torso_tilt_deg = np.maximum(
+            env.max_abs_torso_tilt_deg,
+            np.abs(env._tilt_degrees(env.data.xquat[env.pelvis_id])),
+        )
+        for i in range(env.data.ncon):
+            contact = env.data.contact[i]
+            pair = {int(contact.geom1), int(contact.geom2)}
+            if env.peer_env.ball_geom_id in pair and bool(pair & env.rim_geom_id_set):
+                contact_force = np.zeros(6, dtype=np.float64)
+                mujoco.mj_contactForce(env.model, env.data, i, contact_force)
+                env.max_rim_impact_force = max(env.max_rim_impact_force, abs(float(contact_force[0])))
+
     def render(self) -> np.ndarray:
         self.renderer.update_scene(self.env.data, camera=self.camera)
         return self.renderer.render()
 
     def metrics(self, seed: int) -> RLShotMetrics:
         crossing_error = self.info.get("crossing_xy_error")
+        env = self.env
+        # Read live from env state, not the (possibly stale, pre-tail)
+        # self.info snapshot -- matching how BaselineSlot.metrics() reads
+        # its own final_distance_m fresh rather than from a stored value.
+        final_distance = float(np.linalg.norm(env.data.xpos[env.ball_id] - env.target))
         return RLShotMetrics(
             success=bool(self.info.get("success", False)),
             crossing_error_cm=None if crossing_error is None else float(crossing_error) * 100.0,
@@ -332,6 +371,12 @@ class RLSlot:
             release_step=self.info.get("release_step"),
             steps=int(self.env.policy.step_count),
             reward_sum=self.reward_sum,
+            hoop_crossing_speed_mps=self.info.get("hoop_crossing_speed_m_s"),
+            max_impact_force_n=float(env.max_rim_impact_force),
+            max_pitch_deg=float(env.max_abs_torso_tilt_deg[0]),
+            max_roll_deg=float(env.max_abs_torso_tilt_deg[1]),
+            max_yaw_deg=float(env.max_abs_torso_tilt_deg[2]),
+            final_distance_m=final_distance,
             seed=seed,
         )
 

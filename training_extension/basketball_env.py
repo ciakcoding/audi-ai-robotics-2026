@@ -120,6 +120,7 @@ class BasketballResidualEnv(gym.Env):
         )
         if np.any(self.rim_geom_ids < 0):
             raise RuntimeError("The 16-segment physical rim is incomplete")
+        self.rim_geom_id_set = {int(geom_id) for geom_id in self.rim_geom_ids}
         # Wide curriculum gates are virtual. The immutable 10 cm evaluation
         # always restores physical ring collisions.
         if self.curriculum_radius > self.hoop_radius:
@@ -152,6 +153,9 @@ class BasketballResidualEnv(gym.Env):
         self.release_hand_separation = None
         self.crossing_ball_pos = None
         self.crossing_xy_error = None
+        self.hoop_crossing_speed = None
+        self.max_rim_impact_force = 0.0
+        self.max_abs_torso_tilt_deg = np.zeros(3, dtype=np.float64)
         self.minimum_hand_to_hoop_distance = np.inf
         self.airborne_horizontal_distance = 0.0
 
@@ -235,6 +239,11 @@ class BasketballResidualEnv(gym.Env):
         self.release_hand_separation = None
         self.crossing_ball_pos = None
         self.crossing_xy_error = None
+        self.hoop_crossing_speed = None
+        self.max_rim_impact_force = 0.0
+        self.max_abs_torso_tilt_deg = np.abs(
+            self._tilt_degrees(self.data.xquat[self.pelvis_id])
+        )
         self.minimum_hand_to_hoop_distance = np.inf
         self.airborne_horizontal_distance = 0.0
         return self._get_obs(), self._info()
@@ -307,6 +316,20 @@ class BasketballResidualEnv(gym.Env):
                 else self.crossing_ball_pos.tolist()
             ),
             "crossing_xy_error": self.crossing_xy_error,
+            "hoop_crossing_speed_m_s": self.hoop_crossing_speed,
+            "max_rim_impact_force_n": float(self.max_rim_impact_force),
+            "max_torso_tilt_pitch_deg": float(
+                self.max_abs_torso_tilt_deg[0]
+            ),
+            "max_torso_tilt_roll_deg": float(
+                self.max_abs_torso_tilt_deg[1]
+            ),
+            "max_torso_tilt_yaw_deg": float(
+                self.max_abs_torso_tilt_deg[2]
+            ),
+            "ball_to_target_distance_m": float(
+                np.linalg.norm(ball_pos - self.target)
+            ),
             "airborne_horizontal_distance": float(
                 self.airborne_horizontal_distance
             ),
@@ -374,6 +397,14 @@ class BasketballResidualEnv(gym.Env):
             self._apply_peer_stabilizer()
             mujoco.mj_step(self.model, self.data)
             ball_pos = self.data.xpos[self.ball_id].copy()
+            self.max_abs_torso_tilt_deg = np.maximum(
+                self.max_abs_torso_tilt_deg,
+                np.abs(
+                    self._tilt_degrees(
+                        self.data.xquat[self.pelvis_id]
+                    )
+                ),
+            )
             hand_distance = min(
                 float(
                     np.linalg.norm(
@@ -385,14 +416,35 @@ class BasketballResidualEnv(gym.Env):
             self.minimum_hand_to_hoop_distance = min(
                 self.minimum_hand_to_hoop_distance, hand_distance
             )
-            if self.released and not self.touched_backboard:
+            if self.released:
                 for contact_index in range(self.data.ncon):
                     contact = self.data.contact[contact_index]
                     pair = {int(contact.geom1), int(contact.geom2)}
-                    if pair == {self.peer_env.ball_geom_id, self.backboard_geom_id}:
+                    if (
+                        not self.touched_backboard
+                        and pair
+                        == {
+                            self.peer_env.ball_geom_id,
+                            self.backboard_geom_id,
+                        }
+                    ):
                         self.touched_backboard = True
                         new_backboard_contact = True
-                        break
+                    if (
+                        self.peer_env.ball_geom_id in pair
+                        and bool(pair & self.rim_geom_id_set)
+                    ):
+                        contact_force = np.zeros(6, dtype=np.float64)
+                        mujoco.mj_contactForce(
+                            self.model,
+                            self.data,
+                            contact_index,
+                            contact_force,
+                        )
+                        self.max_rim_impact_force = max(
+                            self.max_rim_impact_force,
+                            abs(float(contact_force[0])),
+                        )
             if (
                 self.released
                 and not self.crossed_plane
@@ -402,6 +454,9 @@ class BasketballResidualEnv(gym.Env):
             ):
                 self.crossed_plane = True
                 self.crossing_ball_pos = ball_pos.copy()
+                self.hoop_crossing_speed = float(
+                    np.linalg.norm(self._ball_velocity())
+                )
                 crossing_xy_error = float(
                     np.linalg.norm(ball_pos[:2] - self.target[:2])
                 )
