@@ -1,0 +1,8 @@
+runs/
+__pycache__/
+tests/__pycache__/
+videos/
+milestones/
+backups/
+*.stdout.log
+*.stderr.log

@@ -46,3 +46,13 @@ Evaluation results are generated under the ignored `outputs/` directory.
 
 Validated with MuJoCo 3.10: 100/100 successful episodes from seed 2026,
 mean first-contact landing error 1.15 cm, and zero detected falls.
+
+## LEVEL03 derived basketball baseline
+
+The independently runnable LEVEL03 derived baseline is documented in
+[`training_extension/README.md`](training_extension/README.md). It preserves
+the teammate `v031` implementation, overrides selected motion keyframes in a
+separate policy, and evaluates a physical hoop at `(2.2, 0.0, 1.2)`.
+
+This branch intentionally contains no CEM and no RL so it can serve as the
+honest baseline for the stacked optimization branch.

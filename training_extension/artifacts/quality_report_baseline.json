@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "compiled_python_files": 6,
+  "scene_loaded": true,
+  "physical_rim_segments": 16,
+  "teammate_baseline_preserved": true,
+  "smoke_evaluation": {
+    "label": "derived baseline (no CEM, no RL)",
+    "episodes": 2,
+    "successes": 0,
+    "success_rate": 0.0,
+    "mean_crossing_error": 1.1030164057025336,
+    "max_crossing_error": 1.1034199414844832,
+    "backboard_contacts": 0,
+    "falls": 0,
+    "target": [
+      2.2,
+      0.0,
+      1.2
+    ],
+    "success_radius": 0.1
+  }
+}
