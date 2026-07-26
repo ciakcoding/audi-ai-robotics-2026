@@ -90,6 +90,25 @@ python -m training_extension.view_ppo_parameters `
   --vecnormalize training_extension/frozen/ppo_parameters_12288_selected_20260726/selected_vecnormalize.pkl
 ```
 
+Playback now continues for 10 seconds after the normal hoop-crossing scoring
+terminal. The console reports falls before crossing and during recovery
+separately. Override the extension with `--post-shot-seconds`.
+
+Extended recovery evaluation:
+
+```powershell
+python -m training_extension.evaluate_ppo_recovery `
+  --model training_extension/frozen/ppo_parameters_12288_selected_20260726/selected_model.zip `
+  --vecnormalize training_extension/frozen/ppo_parameters_12288_selected_20260726/selected_vecnormalize.pkl `
+  --episodes 300 --seed 100000 --post-shot-seconds 10 --workers 8 `
+  --output outputs/ppo_12288_recovery300_post10s
+```
+
+The fixed 300-seed recovery evaluation found 0 falls before crossing, 0 falls
+during the additional 10 seconds, and 0 falls at the final frame. The minimum
+pelvis height was 0.6980 m; maximum absolute pelvis pitch and roll were 2.064
+degrees and 0.611 degrees.
+
 The selected package and full per-episode evaluation are under
 `frozen/ppo_parameters_12288_selected_20260726/`. Compact failed and
 intermediate evidence is under `rl_artifacts/milestones/`; large replay
