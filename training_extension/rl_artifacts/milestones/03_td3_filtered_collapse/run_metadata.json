@@ -1,0 +1,29 @@
+{
+  "algorithm": "TD3",
+  "timesteps": 20000,
+  "n_envs": 4,
+  "seed": 2028,
+  "device_requested": "cuda",
+  "cuda_available": true,
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "expert": "frozen/cem_v17_no_cross_20260725",
+  "action_names": [
+    "right_shoulder_pitch_joint",
+    "right_elbow_joint",
+    "right_wrist_pitch_joint",
+    "left_shoulder_pitch_joint",
+    "left_elbow_joint",
+    "left_wrist_pitch_joint",
+    "waist_pitch_joint",
+    "symmetric_hip_pitch",
+    "symmetric_knee",
+    "symmetric_ankle_pitch",
+    "release_timing"
+  ],
+  "target": [
+    2.2,
+    0.0,
+    1.2
+  ],
+  "success_radius": 0.1
+}

@@ -6,3 +6,6 @@ milestones/
 backups/
 *.stdout.log
 *.stderr.log
+frozen/*
+!frozen/ppo_parameters_12288_selected_20260726/
+!frozen/ppo_parameters_12288_selected_20260726/**
