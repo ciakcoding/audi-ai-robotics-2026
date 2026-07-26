@@ -1,0 +1,42 @@
+{
+  "validation_score": 0.4937355727516558,
+  "successes": 17,
+  "episodes": 20,
+  "mean_error": 0.06473458145301543,
+  "backboard_contacts": 0,
+  "falls": 0,
+  "best_parameters": [
+    -0.8965649136341263,
+    -0.9076769019141283,
+    -0.9813518696479002,
+    -0.21169245722334018,
+    -0.9767773916206008,
+    0.7605843079518666,
+    -0.43334696003564854,
+    -0.6984478882369836,
+    0.8031163744052794,
+    -0.06230790555894811,
+    -0.6955791771742297,
+    -0.08306964008801843,
+    -0.14167065552925362,
+    0.7678362564698789,
+    0.13665604287288294
+  ],
+  "parameter_names": [
+    "right_shoulder_pitch_joint:load",
+    "right_elbow_joint:load",
+    "right_wrist_pitch_joint:load",
+    "left_shoulder_pitch_joint:load",
+    "left_elbow_joint:load",
+    "left_wrist_pitch_joint:load",
+    "waist_pitch_joint:load",
+    "right_shoulder_pitch_joint:release",
+    "right_elbow_joint:release",
+    "right_wrist_pitch_joint:release",
+    "left_shoulder_pitch_joint:release",
+    "left_elbow_joint:release",
+    "left_wrist_pitch_joint:release",
+    "waist_pitch_joint:release",
+    "release_timing"
+  ]
+}

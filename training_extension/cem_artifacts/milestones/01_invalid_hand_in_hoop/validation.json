@@ -1,0 +1,30 @@
+{
+  "validation_score": 0.05552683605447167,
+  "successes": 20,
+  "episodes": 20,
+  "mean_error": 0.05552683605447167,
+  "backboard_contacts": 0,
+  "falls": 0,
+  "best_parameters": [
+    -0.17074732117310604,
+    -0.17978102861510975,
+    -0.14229953164474815,
+    0.11256630947810194,
+    0.1564102160726908,
+    -0.29060786152251683,
+    0.12697235591853992,
+    0.4073877284138462,
+    -0.12785106641431185
+  ],
+  "parameter_names": [
+    "right_shoulder_pitch_joint",
+    "right_elbow_joint",
+    "right_wrist_pitch_joint",
+    "left_shoulder_pitch_joint",
+    "left_elbow_joint",
+    "left_wrist_pitch_joint",
+    "waist_pitch_joint",
+    "knees_together",
+    "release_timing"
+  ]
+}

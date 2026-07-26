@@ -1,0 +1,4202 @@
+[
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03273934867497467,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6970087251705426,
+    "release_ball_position": [
+      0.5050495101212797,
+      0.08355507264574358,
+      1.5100679586814685
+    ],
+    "release_ball_velocity": [
+      4.788600113431219,
+      -0.15474916262909633,
+      0.9367140173280235
+    ],
+    "release_pelvis_position": [
+      0.6153265294593743,
+      0.0030035304791935584,
+      0.7928116350664746
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5846763169274072,
+    "release_hand_separation": 0.09059818642395646,
+    "crossing_ball_position": [
+      2.2091141419097444,
+      0.03144514857510788,
+      1.197461572181023
+    ],
+    "crossing_xy_error": 0.03273934867497467,
+    "airborne_horizontal_distance": 1.7048612006550572,
+    "minimum_hand_to_hoop_distance": 1.0782883978859958,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8013062411069778,
+    "pitch_deg": 0.4006814664255121,
+    "roll_deg": 0.029513111934025053,
+    "yaw_deg": 0.055116133485525624
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02923857372264088,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6935715431052862,
+    "release_ball_position": [
+      0.5085205503593286,
+      0.08415368714032428,
+      1.5114258404332623
+    ],
+    "release_ball_velocity": [
+      4.768380610089775,
+      -0.18916177924100624,
+      0.8303966982199441
+    ],
+    "release_pelvis_position": [
+      0.6119694613937784,
+      0.003584068162895544,
+      0.7928692572624455
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5880345830902307,
+    "release_hand_separation": 0.0901178153639786,
+    "crossing_ball_position": [
+      2.2302140170145863,
+      0.017969240441703106,
+      1.1980097139463686
+    ],
+    "crossing_xy_error": 0.03515366874466219,
+    "airborne_horizontal_distance": 1.7229651111117141,
+    "minimum_hand_to_hoop_distance": 1.0768180939852365,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8003861427416776,
+    "pitch_deg": 0.6869323874307673,
+    "roll_deg": -0.03590896911089344,
+    "yaw_deg": -0.027431414879020823
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.0314243359140831,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.696026471277517,
+    "release_ball_position": [
+      0.5060382045731833,
+      0.08366138241997359,
+      1.5103582266345097
+    ],
+    "release_ball_velocity": [
+      4.799110472829076,
+      -0.15682839270798152,
+      0.9234215383525368
+    ],
+    "release_pelvis_position": [
+      0.6146669326897328,
+      0.003057288907213897,
+      0.792894321947855
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5853360152733689,
+    "release_hand_separation": 0.09045674901908063,
+    "crossing_ball_position": [
+      2.204749763990691,
+      0.03106330036673296,
+      1.1982539033614785
+    ],
+    "crossing_xy_error": 0.0314243359140831,
+    "airborne_horizontal_distance": 1.6995256751030092,
+    "minimum_hand_to_hoop_distance": 1.0786366219762973,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8013637193185648,
+    "pitch_deg": 0.3528737711421996,
+    "roll_deg": -0.01082725972377088,
+    "yaw_deg": 0.03920844452996008
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.019897303415165705,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6952986603251676,
+    "release_ball_position": [
+      0.5067188345025508,
+      0.08268278098798898,
+      1.5112152390006255
+    ],
+    "release_ball_velocity": [
+      4.729760029389095,
+      -0.17897035441376033,
+      0.8696314100683697
+    ],
+    "release_pelvis_position": [
+      0.6138986469119211,
+      0.002905265452961869,
+      0.7928223958643196
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5861040138765135,
+    "release_hand_separation": 0.09057594130018704,
+    "crossing_ball_position": [
+      2.199364914418444,
+      0.01988716544657042,
+      1.198429164335738
+    ],
+    "crossing_xy_error": 0.019897303415165705,
+    "airborne_horizontal_distance": 1.6938105092323246,
+    "minimum_hand_to_hoop_distance": 1.0767629826091283,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8012262742542934,
+    "pitch_deg": 0.5693962307385855,
+    "roll_deg": -0.009677695920717662,
+    "yaw_deg": 0.006815751185952271
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.04001533785516428,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.7004616365655203,
+    "release_ball_position": [
+      0.5016048892575672,
+      0.08380826473138554,
+      1.5098828849982
+    ],
+    "release_ball_velocity": [
+      4.7584837317428725,
+      -0.13238432982160303,
+      0.9420787497605867
+    ],
+    "release_pelvis_position": [
+      0.6122840753130828,
+      0.0036742338855614803,
+      0.7924394347349213
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5877201760697883,
+    "release_hand_separation": 0.09062789124677555,
+    "crossing_ball_position": [
+      2.1953235139040705,
+      0.03974113412394669,
+      1.199111070061486
+    ],
+    "crossing_xy_error": 0.04001533785516428,
+    "airborne_horizontal_distance": 1.6942917964372066,
+    "minimum_hand_to_hoop_distance": 1.0781730749227183,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8034586085420692,
+    "pitch_deg": 0.6427751705286192,
+    "roll_deg": -0.07270319781602355,
+    "yaw_deg": -0.0055087136136404025
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.024963306399633654,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6945513996063724,
+    "release_ball_position": [
+      0.5075117657792536,
+      0.08359439533997,
+      1.5115393383781697
+    ],
+    "release_ball_velocity": [
+      4.743666874087099,
+      -0.1820262013410035,
+      0.8448947540815126
+    ],
+    "release_pelvis_position": [
+      0.6120691605987125,
+      0.003624321394520745,
+      0.7927928289684046
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5879349755034835,
+    "release_hand_separation": 0.09016510855587649,
+    "crossing_ball_position": [
+      2.229210315876646,
+      0.01972420507773156,
+      1.198208771120314
+    ],
+    "crossing_xy_error": 0.03524608942225833,
+    "airborne_horizontal_distance": 1.7228828452949427,
+    "minimum_hand_to_hoop_distance": 1.0761755442594656,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8005641959475733,
+    "pitch_deg": 0.728849945893025,
+    "roll_deg": -0.025159448988576402,
+    "yaw_deg": -0.030863888169705707
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02896478042545573,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6984685280224174,
+    "release_ball_position": [
+      0.5036205928263086,
+      0.08421548313506218,
+      1.5107283336066832
+    ],
+    "release_ball_velocity": [
+      4.755427584813999,
+      -0.16390316098757296,
+      0.8954227816478867
+    ],
+    "release_pelvis_position": [
+      0.6113241059569623,
+      0.0037214579702466743,
+      0.7929209969003072
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5886802527767725,
+    "release_hand_separation": 0.09037571841466908,
+    "crossing_ball_position": [
+      2.1922539785609554,
+      0.02790981291518669,
+      1.1959892858753056
+    ],
+    "crossing_xy_error": 0.02896478042545573,
+    "airborne_horizontal_distance": 1.6895718510665847,
+    "minimum_hand_to_hoop_distance": 1.0803729939751807,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8031404625224744,
+    "pitch_deg": 0.5947638103285442,
+    "roll_deg": -0.07010962899553368,
+    "yaw_deg": -0.010145007762914979
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.021588064100157234,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.697112787702489,
+    "release_ball_position": [
+      0.504931801651642,
+      0.08328035261311251,
+      1.5111912677809152
+    ],
+    "release_ball_velocity": [
+      4.734424024284607,
+      -0.1761459818493702,
+      0.8702583148161752
+    ],
+    "release_pelvis_position": [
+      0.6120730773986519,
+      0.003367302158472177,
+      0.7928493173182052
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5879304928887834,
+    "release_hand_separation": 0.09061511369249624,
+    "crossing_ball_position": [
+      2.198845505737174,
+      0.021557171766945653,
+      1.1993066146825138
+    ],
+    "crossing_xy_error": 0.021588064100157234,
+    "airborne_horizontal_distance": 1.6950378721263237,
+    "minimum_hand_to_hoop_distance": 1.0787533834703396,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8007829361790779,
+    "pitch_deg": 0.5634279518634917,
+    "roll_deg": -0.05561818961584013,
+    "yaw_deg": -0.03318370959593675
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02165217464800662,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6960477562186462,
+    "release_ball_position": [
+      0.5059712163088633,
+      0.08273132055172291,
+      1.5110931108729801
+    ],
+    "release_ball_velocity": [
+      4.7250364662916295,
+      -0.17439023233567424,
+      0.8704086952301803
+    ],
+    "release_pelvis_position": [
+      0.6139228542843659,
+      0.0027188646820547916,
+      0.7929096360403016
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5860794760624741,
+    "release_hand_separation": 0.0904164022418524,
+    "crossing_ball_position": [
+      2.203070046329648,
+      0.021433419757976017,
+      1.1985937050712665
+    ],
+    "crossing_xy_error": 0.02165217464800662,
+    "airborne_horizontal_distance": 1.6982054856523212,
+    "minimum_hand_to_hoop_distance": 1.0777234167289942,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8024069695365673,
+    "pitch_deg": 0.6977405706140546,
+    "roll_deg": -0.09897527030745851,
+    "yaw_deg": -0.05472135065329366
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03745960404824047,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6970805705860084,
+    "release_ball_position": [
+      0.5050147564710556,
+      0.08430591485570095,
+      1.5100655784856112
+    ],
+    "release_ball_velocity": [
+      4.799846505247542,
+      -0.14644306570963772,
+      0.941264344152956
+    ],
+    "release_pelvis_position": [
+      0.6142636835485625,
+      0.0035588340603665827,
+      0.7927959002484899
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5857403099539482,
+    "release_hand_separation": 0.09040493109311164,
+    "crossing_ball_position": [
+      2.2129511510578337,
+      0.03514953231165575,
+      1.1990918391839034
+    ],
+    "crossing_xy_error": 0.03745960404824047,
+    "airborne_horizontal_distance": 1.708643636894159,
+    "minimum_hand_to_hoop_distance": 1.0768873362712197,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8018159888850526,
+    "pitch_deg": 0.478432447929021,
+    "roll_deg": 0.0016576392978066106,
+    "yaw_deg": 0.010964765703658456
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.018460762876908354,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.695078514212837,
+    "release_ball_position": [
+      0.5070036781253068,
+      0.08399180593818817,
+      1.511405050744405
+    ],
+    "release_ball_velocity": [
+      4.744552389543153,
+      -0.18489245669087798,
+      0.8268209423076974
+    ],
+    "release_pelvis_position": [
+      0.6114620343653603,
+      0.003639553098956818,
+      0.792790475796339
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5885421349808133,
+    "release_hand_separation": 0.09022301514899567,
+    "crossing_ball_position": [
+      2.250189824864186,
+      0.015226116692281641,
+      1.1988159968636902
+    ],
+    "crossing_xy_error": 0.05244857623829868,
+    "airborne_horizontal_distance": 1.7445419634390589,
+    "minimum_hand_to_hoop_distance": 1.0771628626548329,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.7995153099816512,
+    "pitch_deg": 0.860105628254933,
+    "roll_deg": -0.05577523157776215,
+    "yaw_deg": -0.01126455575631791
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.0317346829946503,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6969652515055809,
+    "release_ball_position": [
+      0.5051299347180348,
+      0.0843002172506414,
+      1.5107284519205868
+    ],
+    "release_ball_velocity": [
+      4.755421583349282,
+      -0.16390319953762952,
+      0.8954151900817897
+    ],
+    "release_pelvis_position": [
+      0.6128330740947034,
+      0.003806645622777462,
+      0.7929209776094773
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5871714908095367,
+    "release_hand_separation": 0.09037573415212947,
+    "crossing_ball_position": [
+      2.1864184538663696,
+      0.02868155695548989,
+      1.1955630195119562
+    ],
+    "crossing_xy_error": 0.0317346829946503,
+    "airborne_horizontal_distance": 1.6822082272991736,
+    "minimum_hand_to_hoop_distance": 1.0789957676288182,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8033430691478681,
+    "pitch_deg": 0.5835407527526969,
+    "roll_deg": -0.06783351979698889,
+    "yaw_deg": 0.004912062227541249
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03476904916682691,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.691663855379515,
+    "release_ball_position": [
+      0.5103848801054478,
+      0.08323068076858563,
+      1.5106746376004183
+    ],
+    "release_ball_velocity": [
+      4.730100569245597,
+      -0.14659855300863023,
+      0.8986103982329247
+    ],
+    "release_pelvis_position": [
+      0.6187392664798578,
+      0.0031625801748604945,
+      0.7928287009358723
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5812638961558634,
+    "release_hand_separation": 0.09051593058361164,
+    "crossing_ball_position": [
+      2.189550712772921,
+      0.03316171250721565,
+      1.197614378399981
+    ],
+    "crossing_xy_error": 0.03476904916682691,
+    "airborne_horizontal_distance": 1.6799121391253193,
+    "minimum_hand_to_hoop_distance": 1.0746366699336862,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8013163766275206,
+    "pitch_deg": 0.406123377565653,
+    "roll_deg": -0.028132292166112533,
+    "yaw_deg": 0.009172431272569254
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.030593821485270983,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6919082315701925,
+    "release_ball_position": [
+      0.5101369857795411,
+      0.08316524048375913,
+      1.5116666601753237
+    ],
+    "release_ball_velocity": [
+      4.766681445753356,
+      -0.18908079009332898,
+      0.8297515645709745
+    ],
+    "release_pelvis_position": [
+      0.614016058833529,
+      0.0030841454784112793,
+      0.7928577596176358
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5859869399182531,
+    "release_hand_separation": 0.09035373482341501,
+    "crossing_ball_position": [
+      2.2253389536261747,
+      0.01714407600902434,
+      1.1983520408015662
+    ],
+    "crossing_xy_error": 0.030593821485270983,
+    "airborne_horizontal_distance": 1.7164721333780995,
+    "minimum_hand_to_hoop_distance": 1.0745766506155536,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8008822451844434,
+    "pitch_deg": 0.6805701147558754,
+    "roll_deg": -0.048812711404401604,
+    "yaw_deg": -0.04295853014617209
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02784308176320871,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.696304478764958,
+    "release_ball_position": [
+      0.5057601364000007,
+      0.08366701420937007,
+      1.5110277646247359
+    ],
+    "release_ball_velocity": [
+      4.755116707038686,
+      -0.16035701091801904,
+      0.8759144946654224
+    ],
+    "release_pelvis_position": [
+      0.6117274375329098,
+      0.003558332147112455,
+      0.7928299444054675
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5882765484680073,
+    "release_hand_separation": 0.09038152492482293,
+    "crossing_ball_position": [
+      2.202855632132229,
+      0.027696255472502217,
+      1.196829880746476
+    ],
+    "crossing_xy_error": 0.02784308176320871,
+    "airborne_horizontal_distance": 1.6980182117598734,
+    "minimum_hand_to_hoop_distance": 1.0780495054744843,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.801535222778721,
+    "pitch_deg": 0.5296448348672413,
+    "roll_deg": 0.0074149597460351725,
+    "yaw_deg": 0.016910831182410706
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.022614195554923132,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6961815870774402,
+    "release_ball_position": [
+      0.5058895005323639,
+      0.08379493978790936,
+      1.510948095024086
+    ],
+    "release_ball_velocity": [
+      4.724735269254103,
+      -0.1701796735554034,
+      0.8639373815994112
+    ],
+    "release_pelvis_position": [
+      0.6134973148402904,
+      0.0036402863404810764,
+      0.79285382350452
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5865068615368827,
+    "release_hand_separation": 0.09034433407406589,
+    "crossing_ball_position": [
+      2.222717593109803,
+      0.020219463947533357,
+      1.1999428481112144
+    ],
+    "crossing_xy_error": 0.03041242770691213,
+    "airborne_horizontal_distance": 1.718004813902283,
+    "minimum_hand_to_hoop_distance": 1.0760783581249656,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8002551304652762,
+    "pitch_deg": 0.724741884922949,
+    "roll_deg": -0.006873132138978137,
+    "yaw_deg": -0.01321526301866221
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03159606053794324,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6962272603960813,
+    "release_ball_position": [
+      0.5058426114185638,
+      0.08377148456200885,
+      1.5103542614459675
+    ],
+    "release_ball_velocity": [
+      4.799072523301744,
+      -0.15656255674779346,
+      0.9231527717429995
+    ],
+    "release_pelvis_position": [
+      0.6144674139535291,
+      0.00315952520767579,
+      0.792894454689937
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.585535734070585,
+    "release_hand_separation": 0.0904532125452779,
+    "crossing_ball_position": [
+      2.2045411323559323,
+      0.031268021338794055,
+      1.1981546394761224
+    ],
+    "crossing_xy_error": 0.03159606053794324,
+    "airborne_horizontal_distance": 1.6995097171494005,
+    "minimum_hand_to_hoop_distance": 1.0786789806644534,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8014207061862506,
+    "pitch_deg": 0.35821176397150634,
+    "roll_deg": -0.005289506151342792,
+    "yaw_deg": 0.03165913924272989
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.018475172483576285,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.695162331989325,
+    "release_ball_position": [
+      0.5069154740875712,
+      0.08390542241936287,
+      1.5115365392612945
+    ],
+    "release_ball_velocity": [
+      4.762002557307124,
+      -0.17915038423919558,
+      0.8185388312601336
+    ],
+    "release_pelvis_position": [
+      0.6101221568461235,
+      0.003521799638368502,
+      0.7928435786615717
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5898817437860955,
+    "release_hand_separation": 0.09033037249462222,
+    "crossing_ball_position": [
+      2.227498161359453,
+      0.015608919003075492,
+      1.1993033787678726
+    ],
+    "crossing_xy_error": 0.03161941224303642,
+    "airborne_horizontal_distance": 1.7219376284054604,
+    "minimum_hand_to_hoop_distance": 1.080528780886504,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8025968954952061,
+    "pitch_deg": 0.814655694537727,
+    "roll_deg": -0.06792672295064507,
+    "yaw_deg": -0.03965143601027671
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02334346469433813,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6952092173295594,
+    "release_ball_position": [
+      0.5068635305451323,
+      0.08380445287097135,
+      1.5109480613941844
+    ],
+    "release_ball_velocity": [
+      4.724731107174559,
+      -0.17017745475968207,
+      0.8639433216454647
+    ],
+    "release_pelvis_position": [
+      0.6144718222756156,
+      0.003649905169576441,
+      0.7928538427617716
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5855323787818887,
+    "release_hand_separation": 0.09034438133957885,
+    "crossing_ball_position": [
+      2.2248380482513403,
+      0.020135799968709994,
+      1.198204483188661
+    ],
+    "crossing_xy_error": 0.0319746631149697,
+    "airborne_horizontal_distance": 1.7191539026074039,
+    "minimum_hand_to_hoop_distance": 1.0751072943369027,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8002551321726533,
+    "pitch_deg": 0.7247410507979205,
+    "roll_deg": -0.006871432826177357,
+    "yaw_deg": -0.013213488433431
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.019818377765362973,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6952288669188145,
+    "release_ball_position": [
+      0.5067852642600292,
+      0.08261216561661881,
+      1.5112151821944355
+    ],
+    "release_ball_velocity": [
+      4.729760532375284,
+      -0.1789714313593933,
+      0.8696324992357674
+    ],
+    "release_pelvis_position": [
+      0.6139650354933248,
+      0.002834218994159244,
+      0.7928223999919974
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5860374968565523,
+    "release_hand_separation": 0.0905759616562637,
+    "crossing_ball_position": [
+      2.19948131875173,
+      0.019811589209685482,
+      1.1983287748941156
+    ],
+    "crossing_xy_error": 0.019818377765362973,
+    "airborne_horizontal_distance": 1.6938606333724195,
+    "minimum_hand_to_hoop_distance": 1.0766950624477956,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8012261803645274,
+    "pitch_deg": 0.5694005524006703,
+    "roll_deg": -0.009684304395152308,
+    "yaw_deg": 0.006803519934448561
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.023176865343414815,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6943171653553264,
+    "release_ball_position": [
+      0.5077249191585509,
+      0.08316073340690439,
+      1.5108312728567066
+    ],
+    "release_ball_velocity": [
+      4.708715087490208,
+      -0.17223440874900964,
+      0.8879811791362877
+    ],
+    "release_pelvis_position": [
+      0.6165788925890305,
+      0.003180763710906588,
+      0.7928300567126033
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5834243021541528,
+    "release_hand_separation": 0.09047547920148494,
+    "crossing_ball_position": [
+      2.1956013650453903,
+      0.022755638810696276,
+      1.1991432232163217
+    ],
+    "crossing_xy_error": 0.023176865343414815,
+    "airborne_horizontal_distance": 1.6889569775553093,
+    "minimum_hand_to_hoop_distance": 1.074497673724669,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011973631667239,
+    "pitch_deg": 0.5905166961551838,
+    "roll_deg": -0.03433069777099852,
+    "yaw_deg": -0.008579666548887624
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03161262547608274,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6961592750849739,
+    "release_ball_position": [
+      0.5059108405161706,
+      0.08377473471253515,
+      1.5103540639750859
+    ],
+    "release_ball_velocity": [
+      4.799091386394563,
+      -0.15655544381115327,
+      0.9231716376883092
+    ],
+    "release_pelvis_position": [
+      0.6145364730824304,
+      0.0031627665303085185,
+      0.792894467614085
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5854666815414398,
+    "release_hand_separation": 0.09045321794735445,
+    "crossing_ball_position": [
+      2.204615829960367,
+      0.03127382616930737,
+      1.198161118437298
+    ],
+    "crossing_xy_error": 0.03161262547608274,
+    "airborne_horizontal_distance": 1.6995161036484685,
+    "minimum_hand_to_hoop_distance": 1.0786104350055317,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.801420711802243,
+    "pitch_deg": 0.35821024566702936,
+    "roll_deg": -0.00528922564995303,
+    "yaw_deg": 0.031659133432014354
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.030248513411854187,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6926882329206259,
+    "release_ball_position": [
+      0.5093265568335503,
+      0.08256368717330792,
+      1.5111210405723574
+    ],
+    "release_ball_velocity": [
+      4.7294702227750545,
+      -0.1540328928748566,
+      0.8866693888977734
+    ],
+    "release_pelvis_position": [
+      0.616357630897329,
+      0.002922026756379306,
+      0.7928125166744042
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5836450648606482,
+    "release_hand_separation": 0.09066377893055359,
+    "crossing_ball_position": [
+      2.192018321075167,
+      0.02917645223751502,
+      1.19979566372092
+    ],
+    "crossing_xy_error": 0.030248513411854187,
+    "airborne_horizontal_distance": 1.6835384671282845,
+    "minimum_hand_to_hoop_distance": 1.0756220120758133,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8026991140770939,
+    "pitch_deg": 0.5453873539999307,
+    "roll_deg": -0.0473874327691419,
+    "yaw_deg": 0.011439530127779464
+  },
+  {
+    "success": false,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.32230146834069484,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6765112154958484,
+    "release_ball_position": [
+      0.5260550211218491,
+      0.09272574276862747,
+      1.508579925162647
+    ],
+    "release_ball_velocity": [
+      4.4581088431511855,
+      -0.17124568301946186,
+      0.5099119437580169
+    ],
+    "release_pelvis_position": [
+      0.6138541377915184,
+      0.003343082733651923,
+      0.7928553874887216
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5861493852734212,
+    "release_hand_separation": 0.08991070377695469,
+    "crossing_ball_position": [
+      1.8804452868180854,
+      0.041988352882580716,
+      1.1980663394646713
+    ],
+    "crossing_xy_error": 0.32230146834069484,
+    "airborne_horizontal_distance": 1.3553402799832854,
+    "minimum_hand_to_hoop_distance": 1.0859215258662585,
+    "touched_backboard": false,
+    "direct_shot": false,
+    "policy_step": 423,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8039591302810459,
+    "pitch_deg": 0.7821678960187124,
+    "roll_deg": -0.13274825191414116,
+    "yaw_deg": 0.16721573266992015
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.0230882374720281,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.696560214454946,
+    "release_ball_position": [
+      0.5055135464017063,
+      0.08385833198489939,
+      1.5110482133140852
+    ],
+    "release_ball_velocity": [
+      4.724607204841786,
+      -0.16817364024072337,
+      0.873220503002512
+    ],
+    "release_pelvis_position": [
+      0.613334758191332,
+      0.003854992130504417,
+      0.792871377256535
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.586669924882956,
+    "release_hand_separation": 0.09049484909745882,
+    "crossing_ball_position": [
+      2.208877290140425,
+      0.02131338615348286,
+      1.1977614950563062
+    ],
+    "crossing_xy_error": 0.0230882374720281,
+    "airborne_horizontal_distance": 1.704511634965464,
+    "minimum_hand_to_hoop_distance": 1.0776536541496515,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022370045048001,
+    "pitch_deg": 0.7041670488413745,
+    "roll_deg": -0.06797482040423272,
+    "yaw_deg": -0.014493366820173487
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03724231577400022,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.7000496787739896,
+    "release_ball_position": [
+      0.502017509454376,
+      0.08381152725028405,
+      1.5097900588130126
+    ],
+    "release_ball_velocity": [
+      4.744910954632444,
+      -0.14959065329952512,
+      0.9738945775621262
+    ],
+    "release_pelvis_position": [
+      0.6156319148238243,
+      0.0034252250145243826,
+      0.7929738178253178
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5843717876468333,
+    "release_hand_separation": 0.09059610687491075,
+    "crossing_ball_position": [
+      2.2176301948160613,
+      0.03280497393625056,
+      1.1947623446305349
+    ],
+    "crossing_xy_error": 0.03724231577400022,
+    "airborne_horizontal_distance": 1.7163707509320096,
+    "minimum_hand_to_hoop_distance": 1.0782037435053664,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8005124806377055,
+    "pitch_deg": 0.4795753030741241,
+    "roll_deg": -0.03142748981939228,
+    "yaw_deg": -0.020396534252329235
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03345240389575763,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6957101351700663,
+    "release_ball_position": [
+      0.5063140770803612,
+      0.08283029048805568,
+      1.511003866251397
+    ],
+    "release_ball_velocity": [
+      4.737213251281104,
+      -0.15144856082579977,
+      0.8999070930258157
+    ],
+    "release_pelvis_position": [
+      0.6141476298750722,
+      0.003121432759702869,
+      0.7928371080661181
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.58585544207955,
+    "release_hand_separation": 0.09048791990190622,
+    "crossing_ball_position": [
+      2.1875239798407775,
+      0.031038882830919833,
+      1.1985276899910127
+    ],
+    "crossing_xy_error": 0.03345240389575763,
+    "airborne_horizontal_distance": 1.6820074574884607,
+    "minimum_hand_to_hoop_distance": 1.078045306372494,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8018178894847325,
+    "pitch_deg": 0.4831843423218946,
+    "roll_deg": -0.019736861948268423,
+    "yaw_deg": 0.0023936249032341108
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.023737823987753967,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6985308506264176,
+    "release_ball_position": [
+      0.5035367954391458,
+      0.08378332829876223,
+      1.5110481127067235
+    ],
+    "release_ball_velocity": [
+      4.724606087916761,
+      -0.1681736404032109,
+      0.873228435113923
+    ],
+    "release_pelvis_position": [
+      0.6113583711835232,
+      0.0037795673171498677,
+      0.7928714066412822
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5886461248301254,
+    "release_hand_separation": 0.09049495970075903,
+    "crossing_ball_position": [
+      2.2125903996465954,
+      0.02012377013416228,
+      1.197275718095111
+    ],
+    "crossing_xy_error": 0.023737823987753967,
+    "airborne_horizontal_distance": 1.7102388024484143,
+    "minimum_hand_to_hoop_distance": 1.0794714870164737,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.802051504439887,
+    "pitch_deg": 0.7214649398576176,
+    "roll_deg": -0.06981354729454699,
+    "yaw_deg": -0.020625575347347554
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.039878837511547666,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6982110094167955,
+    "release_ball_position": [
+      0.5038614386588018,
+      0.08387260122245978,
+      1.5098829218066718
+    ],
+    "release_ball_velocity": [
+      4.758483791251983,
+      -0.13238466254525194,
+      0.9420782279356791
+    ],
+    "release_pelvis_position": [
+      0.6145406196580746,
+      0.003738923799184967,
+      0.7924394234989104
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5854637890110828,
+    "release_hand_separation": 0.0906279055118195,
+    "crossing_ball_position": [
+      2.197580081222846,
+      0.03980534730892821,
+      1.1991109245900695
+    ],
+    "crossing_xy_error": 0.039878837511547666,
+    "airborne_horizontal_distance": 1.69429181755578,
+    "minimum_hand_to_hoop_distance": 1.0759240738940556,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8034588446451104,
+    "pitch_deg": 0.6427576756579882,
+    "roll_deg": -0.07268934861908705,
+    "yaw_deg": -0.005504316396348428
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03717929417446281,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6978564659329922,
+    "release_ball_position": [
+      0.5042369764598956,
+      0.08428728791812647,
+      1.5100657836822737
+    ],
+    "release_ball_velocity": [
+      4.799859489895357,
+      -0.14645036661067662,
+      0.9412492730721358
+    ],
+    "release_pelvis_position": [
+      0.613485150351426,
+      0.0035401681776400175,
+      0.7927958901594092
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.586518799430427,
+    "release_hand_separation": 0.0904048861201653,
+    "crossing_ball_position": [
+      2.2121778443014266,
+      0.0351283364747245,
+      1.1990866887042306
+    ],
+    "crossing_xy_error": 0.03717929417446281,
+    "airborne_horizontal_distance": 1.7086481822043695,
+    "minimum_hand_to_hoop_distance": 1.0776634216845251,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8018159555102577,
+    "pitch_deg": 0.4784342862490167,
+    "roll_deg": 0.0016568688551181219,
+    "yaw_deg": 0.010962654997930123
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.04582930263267801,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.699751203595376,
+    "release_ball_position": [
+      0.502291112182701,
+      0.08329877760254323,
+      1.5093716422643269
+    ],
+    "release_ball_velocity": [
+      4.73880451857102,
+      -0.12022771475661868,
+      0.975291767414933
+    ],
+    "release_pelvis_position": [
+      0.6153326145705582,
+      0.0032439556266634275,
+      0.7923966763179006
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5846707057593672,
+    "release_hand_separation": 0.0907498076908216,
+    "crossing_ball_position": [
+      2.2158034493748735,
+      0.0430183213021313,
+      1.1947995180333364
+    ],
+    "crossing_xy_error": 0.04582930263267801,
+    "airborne_horizontal_distance": 1.7139857189806311,
+    "minimum_hand_to_hoop_distance": 1.0748571232443276,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8029413638190662,
+    "pitch_deg": 0.6759853812618072,
+    "roll_deg": -0.07762808798228445,
+    "yaw_deg": -0.03181689839786309
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.028958946669948075,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6976230829550862,
+    "release_ball_position": [
+      0.504413065053464,
+      0.08312086272736807,
+      1.5110000617523516
+    ],
+    "release_ball_velocity": [
+      4.714196127066353,
+      -0.15760176854555194,
+      0.8940902071713778
+    ],
+    "release_pelvis_position": [
+      0.6123936118187616,
+      0.0037328339789525584,
+      0.7927126788134115
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5876107765580934,
+    "release_hand_separation": 0.09061516142701063,
+    "crossing_ball_position": [
+      2.2090287082250777,
+      0.0275155050838489,
+      1.1970202599835682
+    ],
+    "crossing_xy_error": 0.028958946669948075,
+    "airborne_horizontal_distance": 1.7055223383890457,
+    "minimum_hand_to_hoop_distance": 1.0789904261724215,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.800369507587916,
+    "pitch_deg": 0.5593710889694765,
+    "roll_deg": -0.027316096000451633,
+    "yaw_deg": -0.014824498482467478
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.021483524540893292,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6980320949047838,
+    "release_ball_position": [
+      0.5040374473840757,
+      0.08380939953971185,
+      1.5110480770804418
+    ],
+    "release_ball_velocity": [
+      4.7246024117995,
+      -0.16817206493700768,
+      0.8732299311422401
+    ],
+    "release_pelvis_position": [
+      0.6118592339030186,
+      0.0038057832036109576,
+      0.7928713913945242
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5881453261351433,
+    "release_hand_separation": 0.09049494344158591,
+    "crossing_ball_position": [
+      2.2059684080833346,
+      0.02063782768728222,
+      1.1996202442379695
+    ],
+    "crossing_xy_error": 0.021483524540893292,
+    "airborne_horizontal_distance": 1.7031029453550388,
+    "minimum_hand_to_hoop_distance": 1.079124010014729,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022369530353831,
+    "pitch_deg": 0.7041698225877225,
+    "roll_deg": -0.06798158616314243,
+    "yaw_deg": -0.014502292996193364
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.035748747484907833,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6986284688934934,
+    "release_ball_position": [
+      0.503403483888666,
+      0.08305983899777908,
+      1.5110239914324453
+    ],
+    "release_ball_velocity": [
+      4.754088989077006,
+      -0.16437483340288384,
+      0.9003410854366072
+    ],
+    "release_pelvis_position": [
+      0.6114077209615578,
+      0.0033934850122165775,
+      0.7927724505449503
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5885959035453543,
+    "release_hand_separation": 0.09046698453636516,
+    "crossing_ball_position": [
+      2.1777800505773732,
+      0.02800440669601133,
+      1.1959587250348225
+    ],
+    "crossing_xy_error": 0.035748747484907833,
+    "airborne_horizontal_distance": 1.6752814652177697,
+    "minimum_hand_to_hoop_distance": 1.0799665459110457,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022626583728536,
+    "pitch_deg": 0.4621476029937403,
+    "roll_deg": -0.014535587967778058,
+    "yaw_deg": 0.04533380077946446
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.035712408942888386,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.698488875034643,
+    "release_ball_position": [
+      0.5035464754622065,
+      0.08312579443076011,
+      1.5110240568969795
+    ],
+    "release_ball_velocity": [
+      4.754088360123842,
+      -0.16437335109152335,
+      0.9003400658375231
+    ],
+    "release_pelvis_position": [
+      0.6115507037127114,
+      0.003459835086770783,
+      0.7927724534458392
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5884530642528947,
+    "release_hand_separation": 0.09046698387585435,
+    "crossing_ball_position": [
+      2.1779228273071984,
+      0.02807088524425804,
+      1.1959584326524106
+    ],
+    "crossing_xy_error": 0.035712408942888386,
+    "airborne_horizontal_distance": 1.6752812332988387,
+    "minimum_hand_to_hoop_distance": 1.0798255981260667,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022627605786044,
+    "pitch_deg": 0.46214459892882126,
+    "roll_deg": -0.014533247726839784,
+    "yaw_deg": 0.04534100955165138
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.0329767040954706,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6935086185580617,
+    "release_ball_position": [
+      0.5085380050073691,
+      0.08323317022667556,
+      1.510674647396197
+    ],
+    "release_ball_velocity": [
+      4.730101554113429,
+      -0.14659861520006834,
+      0.8986104974532907
+    ],
+    "release_pelvis_position": [
+      0.6168923693824604,
+      0.003165086915321559,
+      0.7928287028429759
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5831107945733496,
+    "release_hand_separation": 0.09051594868843754,
+    "crossing_ball_position": [
+      2.1951717468457206,
+      0.03262132714158663,
+      1.1967293676662438
+    ],
+    "crossing_xy_error": 0.0329767040954706,
+    "airborne_horizontal_distance": 1.6873929411278537,
+    "minimum_hand_to_hoop_distance": 1.0761977692320142,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011073069087454,
+    "pitch_deg": 0.4385144155659605,
+    "roll_deg": -0.03262253545631806,
+    "yaw_deg": -0.002394812876184082
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.030275660956252157,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6971747651494118,
+    "release_ball_position": [
+      0.504907230258192,
+      0.08403978479866359,
+      1.5104112099698075
+    ],
+    "release_ball_velocity": [
+      4.786280639947009,
+      -0.16001158466165294,
+      0.9230593349064167
+    ],
+    "release_pelvis_position": [
+      0.6140782836234545,
+      0.0036114338145452228,
+      0.7928699671920225
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5859258283188797,
+    "release_hand_separation": 0.09036282378703357,
+    "crossing_ball_position": [
+      2.1992241405473125,
+      0.030265718039518018,
+      1.1981913318161497
+    ],
+    "crossing_xy_error": 0.030275660956252157,
+    "airborne_horizontal_distance": 1.695170033579962,
+    "minimum_hand_to_hoop_distance": 1.0782084360847568,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8021869461947129,
+    "pitch_deg": 0.5096634419881629,
+    "roll_deg": 0.0006548469997812026,
+    "yaw_deg": 0.03771848578310797
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02040912838254981,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.696601293596672,
+    "release_ball_position": [
+      0.5054222895710598,
+      0.08283919815710249,
+      1.5112152562739
+    ],
+    "release_ball_velocity": [
+      4.729756866161965,
+      -0.1789631780188931,
+      0.8696399518987522
+    ],
+    "release_pelvis_position": [
+      0.6126026936758497,
+      0.0030625406179201143,
+      0.7928224254655275
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5874002605770876,
+    "release_hand_separation": 0.09057601032822019,
+    "crossing_ball_position": [
+      2.205025608776838,
+      0.01978069204445518,
+      1.1968987501809683
+    ],
+    "crossing_xy_error": 0.02040912838254981,
+    "airborne_horizontal_distance": 1.7007727119895992,
+    "minimum_hand_to_hoop_distance": 1.0777965556329614,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8010394164792195,
+    "pitch_deg": 0.5999648491492036,
+    "roll_deg": -0.013116887811464256,
+    "yaw_deg": 0.000440473235824762
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02025587958074007,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6962702394782063,
+    "release_ball_position": [
+      0.5057549689579428,
+      0.08286434775432283,
+      1.5112153658407372
+    ],
+    "release_ball_velocity": [
+      4.729764742706138,
+      -0.1789638367671808,
+      0.8696380159095174
+    ],
+    "release_pelvis_position": [
+      0.6129350465996204,
+      0.0030878327916572163,
+      0.7928224589346938
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5870679572794288,
+    "release_hand_separation": 0.09057605398834433,
+    "crossing_ball_position": [
+      2.1977644258038382,
+      0.02013213514764138,
+      1.1996662532371924
+    ],
+    "crossing_xy_error": 0.02025587958074007,
+    "airborne_horizontal_distance": 1.6931719737092483,
+    "minimum_hand_to_hoop_distance": 1.077336279641808,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8012310696125668,
+    "pitch_deg": 0.5803893080548173,
+    "roll_deg": -0.011391488128485337,
+    "yaw_deg": 0.006532856023696889
+  },
+  {
+    "success": false,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.36734688771228374,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6716440024385835,
+    "release_ball_position": [
+      0.5309675438070612,
+      0.09340412765746423,
+      1.5080593177679316
+    ],
+    "release_ball_velocity": [
+      4.3715637771854015,
+      -0.1833003949687366,
+      0.4632825388882742
+    ],
+    "release_pelvis_position": [
+      0.6152734603179458,
+      0.002632088199903291,
+      0.7928416127354763
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5847287255113887,
+    "release_hand_separation": 0.0896632727637506,
+    "crossing_ball_position": [
+      1.8348158793938831,
+      0.03980319043793054,
+      1.1984469954606958
+    ],
+    "crossing_xy_error": 0.36734688771228374,
+    "airborne_horizontal_distance": 1.3049496322400103,
+    "minimum_hand_to_hoop_distance": 1.0850394335736901,
+    "touched_backboard": false,
+    "direct_shot": false,
+    "policy_step": 423,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8040877914373461,
+    "pitch_deg": 0.800041884055877,
+    "roll_deg": -0.1320975083108617,
+    "yaw_deg": 0.1950972744829945
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.039939137103599295,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6984604298658026,
+    "release_ball_position": [
+      0.5036139090097443,
+      0.08391699538667127,
+      1.5098829632646795
+    ],
+    "release_ball_velocity": [
+      4.758481824894984,
+      -0.1323841700146435,
+      0.9420766674660868
+    ],
+    "release_pelvis_position": [
+      0.6142930509119945,
+      0.003783568724384607,
+      0.7924394201624585
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5857114629648998,
+    "release_hand_separation": 0.09062789691524234,
+    "crossing_ball_position": [
+      2.197331872601472,
+      0.03984991554276277,
+      1.1991104106177213
+    ],
+    "crossing_xy_error": 0.039939137103599295,
+    "airborne_horizontal_distance": 1.6942911342857456,
+    "minimum_hand_to_hoop_distance": 1.0761722503277813,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8034588991487603,
+    "pitch_deg": 0.642754716560531,
+    "roll_deg": -0.07268689581963089,
+    "yaw_deg": -0.005497225528230802
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03546773659264347,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6993195028308639,
+    "release_ball_position": [
+      0.5027404522016122,
+      0.08364687745843552,
+      1.5106573319236885
+    ],
+    "release_ball_velocity": [
+      4.769157642400205,
+      -0.14757396892355365,
+      0.9166704963436785
+    ],
+    "release_pelvis_position": [
+      0.6108875649183525,
+      0.003498222229671818,
+      0.7928239649390842
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5891162855152836,
+    "release_hand_separation": 0.09060348735605955,
+    "crossing_ball_position": [
+      2.191197402949999,
+      0.03435803580213006,
+      1.1961171638306163
+    ],
+    "crossing_xy_error": 0.03546773659264347,
+    "airborne_horizontal_distance": 1.68917620881966,
+    "minimum_hand_to_hoop_distance": 1.0795082902453745,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022437515680018,
+    "pitch_deg": 0.5278141799434206,
+    "roll_deg": -0.014183484244917567,
+    "yaw_deg": 0.034419173710373736
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.021688573410900032,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6924805035855965,
+    "release_ball_position": [
+      0.5096004359549555,
+      0.0839021387908396,
+      1.511536540514821
+    ],
+    "release_ball_velocity": [
+      4.762002584144306,
+      -0.17915041044392793,
+      0.8185386690513548
+    ],
+    "release_pelvis_position": [
+      0.6128070989172669,
+      0.003518491247275602,
+      0.7928435804297234
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5871968009758841,
+    "release_hand_separation": 0.0903303720768171,
+    "crossing_ball_position": [
+      2.2211148069377487,
+      0.01597981695077483,
+      1.1986386051129045
+    ],
+    "crossing_xy_error": 0.026479985305861892,
+    "airborne_horizontal_distance": 1.7128616067519207,
+    "minimum_hand_to_hoop_distance": 1.0778516743830946,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8028992746216024,
+    "pitch_deg": 0.7911014934974784,
+    "roll_deg": -0.06243552515648578,
+    "yaw_deg": -0.03326043066329926
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.046782267492815804,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6969093024883142,
+    "release_ball_position": [
+      0.5051310257119044,
+      0.08318858615816804,
+      1.5093714778940035
+    ],
+    "release_ball_velocity": [
+      4.73879066747558,
+      -0.12022511555533727,
+      0.9752960335879252
+    ],
+    "release_pelvis_position": [
+      0.6181732910449248,
+      0.0031332624592116365,
+      0.7923967027182831
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5818298121154764,
+    "release_hand_separation": 0.09074971196679409,
+    "crossing_ball_position": [
+      2.2186385163599223,
+      0.04290904636169728,
+      1.1948008891961424
+    ],
+    "crossing_xy_error": 0.046782267492815804,
+    "airborne_horizontal_distance": 1.7139808522364193,
+    "minimum_hand_to_hoop_distance": 1.0720218222282722,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8029411803293768,
+    "pitch_deg": 0.6759925730444473,
+    "roll_deg": -0.07763963102919025,
+    "yaw_deg": -0.031838626007965304
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02654605351547115,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6958633677081547,
+    "release_ball_position": [
+      0.5061956666935626,
+      0.08354305720272624,
+      1.5112012782174387
+    ],
+    "release_ball_velocity": [
+      4.742083975866357,
+      -0.1726353668801928,
+      0.8616443413055389
+    ],
+    "release_pelvis_position": [
+      0.6128400130390772,
+      0.0033921639744306765,
+      0.7929023902898638
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5871636119147348,
+    "release_hand_separation": 0.09046081728946499,
+    "crossing_ball_position": [
+      2.213367186175482,
+      0.02293493603645464,
+      1.198398469210916
+    ],
+    "crossing_xy_error": 0.02654605351547115,
+    "airborne_horizontal_distance": 1.708247037545071,
+    "minimum_hand_to_hoop_distance": 1.0778496870397787,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8007518244158291,
+    "pitch_deg": 0.6092191515104145,
+    "roll_deg": -0.0027555018295305064,
+    "yaw_deg": -0.000596254663532644
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.020023334965415175,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6967016765780252,
+    "release_ball_position": [
+      0.5053206944933216,
+      0.08281685088243443,
+      1.511093278922719
+    ],
+    "release_ball_velocity": [
+      4.725038432358396,
+      -0.17439050418588373,
+      0.8704031572037325
+    ],
+    "release_pelvis_position": [
+      0.6132722629470716,
+      0.002805022627823283,
+      0.7929096365116205
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5867302164152073,
+    "release_hand_separation": 0.09041634261227834,
+    "crossing_ball_position": [
+      2.20150763587689,
+      0.019966496367663813,
+      1.1992508837246039
+    ],
+    "crossing_xy_error": 0.020023334965415175,
+    "airborne_horizontal_distance": 1.6973509675911984,
+    "minimum_hand_to_hoop_distance": 1.078374455535257,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.802407052140676,
+    "pitch_deg": 0.6977336980832244,
+    "roll_deg": -0.09896477586790962,
+    "yaw_deg": -0.0547044163518286
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.022327243071589915,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6936241035888346,
+    "release_ball_position": [
+      0.5084717054393167,
+      0.08422964417418327,
+      1.5110857031071405
+    ],
+    "release_ball_velocity": [
+      4.7561734203972295,
+      -0.17783215454372114,
+      0.8644098822169127
+    ],
+    "release_pelvis_position": [
+      0.6145456005017524,
+      0.003670767792814447,
+      0.7929336049877039
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5854586489166276,
+    "release_hand_separation": 0.09042112367106049,
+    "crossing_ball_position": [
+      2.2024087942368165,
+      0.022196925316415796,
+      1.1996998005813135
+    ],
+    "crossing_xy_error": 0.022327243071589915,
+    "airborne_horizontal_distance": 1.6950725409293357,
+    "minimum_hand_to_hoop_distance": 1.0766001033911254,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8013072725670979,
+    "pitch_deg": 0.5429007405408823,
+    "roll_deg": -0.039837184161212874,
+    "yaw_deg": -0.023289589131834924
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.031551039370172874,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6970255250662645,
+    "release_ball_position": [
+      0.5050462719419944,
+      0.08383014057424863,
+      1.510354316156014
+    ],
+    "release_ball_velocity": [
+      4.799078433695212,
+      -0.15655949480728626,
+      0.9231563810341467
+    ],
+    "release_pelvis_position": [
+      0.6136712215661126,
+      0.0032185433063316765,
+      0.7928944868121472
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.586332043523223,
+    "release_hand_separation": 0.09045323436267017,
+    "crossing_ball_position": [
+      2.2037468190115197,
+      0.03132777414105756,
+      1.198155973520292
+    ],
+    "crossing_xy_error": 0.031551039370172874,
+    "airborne_horizontal_distance": 1.6995117084313922,
+    "minimum_hand_to_hoop_distance": 1.0794750362015149,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8014208152913574,
+    "pitch_deg": 0.3582077038868181,
+    "roll_deg": -0.005288245065415574,
+    "yaw_deg": 0.03166529838421996
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03517207578652363,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6981468859079927,
+    "release_ball_position": [
+      0.5039133570995515,
+      0.08362383567918392,
+      1.5106575071031114
+    ],
+    "release_ball_velocity": [
+      4.769140020679109,
+      -0.14757888305998806,
+      0.9166546087940611
+    ],
+    "release_pelvis_position": [
+      0.6120596511235815,
+      0.0034751180210454576,
+      0.7928239500693959
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5879441514219013,
+    "release_hand_separation": 0.09060340986967987,
+    "crossing_ball_position": [
+      2.1923642639270065,
+      0.03433322661441165,
+      1.1961117119394322
+    ],
+    "crossing_xy_error": 0.03517207578652363,
+    "airborne_horizontal_distance": 1.6891702190449698,
+    "minimum_hand_to_hoop_distance": 1.0783380957765196,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022437339684805,
+    "pitch_deg": 0.5278161610157874,
+    "roll_deg": -0.014184295725428248,
+    "yaw_deg": 0.0344170256001641
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.019996260115779093,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6952672220073688,
+    "release_ball_position": [
+      0.5067552362397539,
+      0.08278359747612939,
+      1.511215398422201
+    ],
+    "release_ball_velocity": [
+      4.729767291085478,
+      -0.17896821770975152,
+      0.8696298773130513
+    ],
+    "release_pelvis_position": [
+      0.6139348572969225,
+      0.003006672039387891,
+      0.7928224343021743
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5860679925446093,
+    "release_hand_separation": 0.09057597589912644,
+    "crossing_ball_position": [
+      2.199415174856167,
+      0.019987706175773102,
+      1.1984058756708809
+    ],
+    "crossing_xy_error": 0.019996260115779093,
+    "airborne_horizontal_distance": 1.6938243686289098,
+    "minimum_hand_to_hoop_distance": 1.076729228407962,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8012264365730857,
+    "pitch_deg": 0.5693886234179447,
+    "roll_deg": -0.009668263677254459,
+    "yaw_deg": 0.006833042721949598
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.01992454159923986,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6955851370914183,
+    "release_ball_position": [
+      0.5064315318845362,
+      0.08267285485795024,
+      1.5112151907915345
+    ],
+    "release_ball_velocity": [
+      4.7297568306137565,
+      -0.17896999195350238,
+      0.86963253974218
+    ],
+    "release_pelvis_position": [
+      0.6136114988845609,
+      0.0028952848539311954,
+      0.7928223824417414
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5863911431755018,
+    "release_hand_separation": 0.09057592777376385,
+    "crossing_ball_position": [
+      2.198897868709191,
+      0.01989403590420151,
+      1.1987853845723202
+    ],
+    "crossing_xy_error": 0.01992454159923986,
+    "airborne_horizontal_distance": 1.693630267028165,
+    "minimum_hand_to_hoop_distance": 1.0770491529758006,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8012262551448901,
+    "pitch_deg": 0.5693970593703148,
+    "roll_deg": -0.009678583605834935,
+    "yaw_deg": 0.006814066600970827
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.028758628399299217,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.69323272751543,
+    "release_ball_position": [
+      0.5087764601531021,
+      0.08246215978901929,
+      1.5111209512136108
+    ],
+    "release_ball_velocity": [
+      4.729472055675938,
+      -0.1540362499737194,
+      0.8866709873682419
+    ],
+    "release_pelvis_position": [
+      0.6158075105099187,
+      0.002819890398591279,
+      0.7928125192723063
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5841949992152615,
+    "release_hand_separation": 0.09066377584020612,
+    "crossing_ball_position": [
+      2.1994426081419434,
+      0.028753226283767728,
+      1.1964739977666656
+    ],
+    "crossing_xy_error": 0.028758628399299217,
+    "airborne_horizontal_distance": 1.6915190431957006,
+    "minimum_hand_to_hoop_distance": 1.0760786680780985,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8024186994247057,
+    "pitch_deg": 0.5540710407856378,
+    "roll_deg": -0.03828494309553575,
+    "yaw_deg": 0.00790349298436472
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.023189994281318144,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6941848997653914,
+    "release_ball_position": [
+      0.507860852970549,
+      0.0832320952728601,
+      1.5108313837185894
+    ],
+    "release_ball_velocity": [
+      4.708717874781233,
+      -0.17223323776890345,
+      0.8879798069376649
+    ],
+    "release_pelvis_position": [
+      0.6167146753499757,
+      0.003252547703552436,
+      0.7928300802432261
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5832886655056613,
+    "release_hand_separation": 0.09047550679536634,
+    "crossing_ball_position": [
+      2.1958154358526625,
+      0.022809323919493626,
+      1.1990250743931374
+    ],
+    "crossing_xy_error": 0.023189994281318144,
+    "airborne_horizontal_distance": 1.6890356968314055,
+    "minimum_hand_to_hoop_distance": 1.0743787564351095,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8013966098373491,
+    "pitch_deg": 0.6106143563943631,
+    "roll_deg": -0.06832924295366724,
+    "yaw_deg": -0.04153501176573181
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.046201215294918184,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.698178675560115,
+    "release_ball_position": [
+      0.5038555460596759,
+      0.08309515927287985,
+      1.5093714768211903
+    ],
+    "release_ball_velocity": [
+      4.738795881515775,
+      -0.12023041223368273,
+      0.9752877773735856
+    ],
+    "release_pelvis_position": [
+      0.6168970307106163,
+      0.0030392290685970717,
+      0.7923966520267979
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5831058866311487,
+    "release_hand_separation": 0.09074964467942154,
+    "crossing_ball_position": [
+      2.2173648630698852,
+      0.04281371071621244,
+      1.194797905213874
+    ],
+    "crossing_xy_error": 0.046201215294918184,
+    "airborne_horizontal_distance": 1.713982722952194,
+    "minimum_hand_to_hoop_distance": 1.0732919525790408,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8029410888366041,
+    "pitch_deg": 0.6759993497949391,
+    "roll_deg": -0.07764982390717005,
+    "yaw_deg": -0.03185669100651119
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.023436421586887968,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6949325974583271,
+    "release_ball_position": [
+      0.5071620123625054,
+      0.08423810027694811,
+      1.5110856447803007
+    ],
+    "release_ball_velocity": [
+      4.756168737649673,
+      -0.17783045134478137,
+      0.8644131439859121
+    ],
+    "release_pelvis_position": [
+      0.6132361589853584,
+      0.0036792717208123217,
+      0.7929335900942105
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.586768106621738,
+    "release_hand_separation": 0.0904211275713703,
+    "crossing_ball_position": [
+      2.208263039997412,
+      0.02193143923228748,
+      1.1979817358372598
+    ],
+    "crossing_xy_error": 0.023436421586887968,
+    "airborne_horizontal_distance": 1.7022417061719144,
+    "minimum_hand_to_hoop_distance": 1.077611626915131,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011236476725747,
+    "pitch_deg": 0.5747757920330799,
+    "roll_deg": -0.043343371594975665,
+    "yaw_deg": -0.031010226335637485
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.015623588715510514,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6914185692068886,
+    "release_ball_position": [
+      0.510624643758428,
+      0.08311246586125748,
+      1.5116147247660512
+    ],
+    "release_ball_velocity": [
+      4.720326284925597,
+      -0.1853647814232639,
+      0.8360099232203522
+    ],
+    "release_pelvis_position": [
+      0.6150424890783128,
+      0.003367908614330413,
+      0.7927908341371515
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5849610891865784,
+    "release_hand_separation": 0.09019092446204226,
+    "crossing_ball_position": [
+      2.227575748748156,
+      0.013834480936854188,
+      1.1987401310565178
+    ],
+    "crossing_xy_error": 0.03085149561712669,
+    "airborne_horizontal_distance": 1.718348199906129,
+    "minimum_hand_to_hoop_distance": 1.0740680621635916,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.800190185730795,
+    "pitch_deg": 0.7955396226189271,
+    "roll_deg": -0.05268653588391838,
+    "yaw_deg": -0.03275590429486029
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02344420986929179,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6925754544303937,
+    "release_ball_position": [
+      0.5094542334457427,
+      0.082865433841446,
+      1.5111140033534904
+    ],
+    "release_ball_velocity": [
+      4.721168967058467,
+      -0.17191832789084457,
+      0.8758845135880219
+    ],
+    "release_pelvis_position": [
+      0.6173317456843351,
+      0.0031136898984430034,
+      0.7928692351678477
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5826713171986715,
+    "release_hand_separation": 0.09053421853721443,
+    "crossing_ball_position": [
+      2.207027144095633,
+      0.02236627421486676,
+      1.197223709320294
+    ],
+    "crossing_xy_error": 0.02344420986929179,
+    "airborne_horizontal_distance": 1.6986506219019446,
+    "minimum_hand_to_hoop_distance": 1.073630525722697,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8007810145843752,
+    "pitch_deg": 0.607492013501638,
+    "roll_deg": -0.018873827919056042,
+    "yaw_deg": -0.007122771565089595
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.026283683505801025,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6983287028936538,
+    "release_ball_position": [
+      0.5037259754457658,
+      0.08351536801703592,
+      1.5112011130982457
+    ],
+    "release_ball_velocity": [
+      4.742078200251607,
+      -0.17263393459553772,
+      0.861650344510621
+    ],
+    "release_pelvis_position": [
+      0.6103705544358244,
+      0.0033641906494762982,
+      0.792902370721861
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5896330054397445,
+    "release_hand_separation": 0.09046083017525482,
+    "crossing_ball_position": [
+      2.215639750841323,
+      0.021124161811879424,
+      1.1990418093149862
+    ],
+    "crossing_xy_error": 0.026283683505801025,
+    "airborne_horizontal_distance": 1.713050331134729,
+    "minimum_hand_to_hoop_distance": 1.0800096345694512,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8005806742116198,
+    "pitch_deg": 0.6414439040494674,
+    "roll_deg": -0.006490286921952169,
+    "yaw_deg": -0.0054739654962564005
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.0288546710292794,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.698380711836494,
+    "release_ball_position": [
+      0.5037044518709223,
+      0.0841335589150201,
+      1.5107282091295229
+    ],
+    "release_ball_velocity": [
+      4.755418825656789,
+      -0.1639081418338644,
+      0.8954194645163485
+    ],
+    "release_pelvis_position": [
+      0.6114078839044809,
+      0.0036390693023613256,
+      0.7929209267161629
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5885962841912438,
+    "release_hand_separation": 0.09037567404064095,
+    "crossing_ball_position": [
+      2.1923705806472893,
+      0.027827755938063286,
+      1.1959372952033234
+    ],
+    "crossing_xy_error": 0.0288546710292794,
+    "airborne_horizontal_distance": 1.6896045803457804,
+    "minimum_hand_to_hoop_distance": 1.0803427500234717,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8029959913527943,
+    "pitch_deg": 0.5809977845280629,
+    "roll_deg": -0.09170676045811482,
+    "yaw_deg": -0.01481009131689417
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03216524462332426,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6939762137873988,
+    "release_ball_position": [
+      0.5081264318435906,
+      0.0843756022271233,
+      1.5103021127047058
+    ],
+    "release_ball_velocity": [
+      4.773010136506954,
+      -0.1619698308297681,
+      0.904344881628403
+    ],
+    "release_pelvis_position": [
+      0.616601149358615,
+      0.0034391701447429725,
+      0.7928906617419785
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.583402585605993,
+    "release_hand_separation": 0.09023682812366582,
+    "crossing_ball_position": [
+      2.188966716480506,
+      0.030213732249703012,
+      1.1966358944615485
+    ],
+    "crossing_xy_error": 0.03216524462332426,
+    "airborne_horizontal_distance": 1.68171268967614,
+    "minimum_hand_to_hoop_distance": 1.0756282764285359,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.803629771298571,
+    "pitch_deg": 0.6238180767196352,
+    "roll_deg": -0.05846427269712663,
+    "yaw_deg": 0.04246773286093783
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.030303045830196607,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6952709017349148,
+    "release_ball_position": [
+      0.5068233248373502,
+      0.08423880907435365,
+      1.510972288516552
+    ],
+    "release_ball_velocity": [
+      4.772821952299423,
+      -0.1697686568945464,
+      0.8518085867266465
+    ],
+    "release_pelvis_position": [
+      0.6125507545378407,
+      0.0034878502608828243,
+      0.7929055018080117
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5874530771074218,
+    "release_hand_separation": 0.0903656724882082,
+    "crossing_ball_position": [
+      2.217190435509356,
+      0.024955230184986674,
+      1.1979334021056467
+    ],
+    "crossing_xy_error": 0.030303045830196607,
+    "airborne_horizontal_distance": 1.711394225768697,
+    "minimum_hand_to_hoop_distance": 1.077862615593897,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.80101442817284,
+    "pitch_deg": 0.6113843550323793,
+    "roll_deg": -0.05121553957332715,
+    "yaw_deg": -0.03529791364598774
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.034947742435209574,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6968841363704652,
+    "release_ball_position": [
+      0.5051790800675923,
+      0.08365298336105915,
+      1.5106574714311867
+    ],
+    "release_ball_velocity": [
+      4.769140213678526,
+      -0.14757906544663654,
+      0.916655543782132
+    ],
+    "release_pelvis_position": [
+      0.6133254926933572,
+      0.0035044120742601524,
+      0.7928239133827134
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.586678377315568,
+    "release_hand_separation": 0.09060345813928118,
+    "crossing_ball_position": [
+      2.1936300529902084,
+      0.03436231186067365,
+      1.1961120063188657
+    ],
+    "crossing_xy_error": 0.034947742435209574,
+    "airborne_horizontal_distance": 1.6891702869338805,
+    "minimum_hand_to_hoop_distance": 1.0770759202621334,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022437651967118,
+    "pitch_deg": 0.5278155052603953,
+    "roll_deg": -0.014183337059198577,
+    "yaw_deg": 0.03442006950913307
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.024651495071901213,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6934146148310751,
+    "release_ball_position": [
+      0.5086577747881659,
+      0.0837528204836091,
+      1.5113096049627088
+    ],
+    "release_ball_velocity": [
+      4.7408069640832835,
+      -0.18566067515150064,
+      0.8477348339953734
+    ],
+    "release_pelvis_position": [
+      0.6150038448051753,
+      0.003706136795316442,
+      0.792860020707446
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5850004881489226,
+    "release_hand_separation": 0.09034655183922874,
+    "crossing_ball_position": [
+      2.230318257229646,
+      0.018518505897203733,
+      1.19763711705715
+    ],
+    "crossing_xy_error": 0.03552649408691693,
+    "airborne_horizontal_distance": 1.7228959146159086,
+    "minimum_hand_to_hoop_distance": 1.0751296900529062,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8002005985452225,
+    "pitch_deg": 0.7061605284935031,
+    "roll_deg": -0.024476406316564,
+    "yaw_deg": -0.008221178210766966
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02675038906417815,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6894199376486274,
+    "release_ball_position": [
+      0.5126631060570122,
+      0.0838685403683712,
+      1.5115384513668642
+    ],
+    "release_ball_velocity": [
+      4.764938926477495,
+      -0.1783183752967852,
+      0.8275837410919249
+    ],
+    "release_pelvis_position": [
+      0.6164643232618422,
+      0.0034423339831773634,
+      0.7928906332157709
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5835394182545086,
+    "release_hand_separation": 0.09020233403213054,
+    "crossing_ball_position": [
+      2.2193149739387157,
+      0.018507163392363583,
+      1.1978487614430628
+    ],
+    "crossing_xy_error": 0.02675038906417815,
+    "airborne_horizontal_distance": 1.707903014735997,
+    "minimum_hand_to_hoop_distance": 1.0720915980710157,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011626309758756,
+    "pitch_deg": 0.6778503170671719,
+    "roll_deg": -0.04410506616882629,
+    "yaw_deg": -0.032672813648700776
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02899915526092961,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6966316485904314,
+    "release_ball_position": [
+      0.505458849846195,
+      0.08419763318588432,
+      1.5109722228414155
+    ],
+    "release_ball_velocity": [
+      4.772819036146222,
+      -0.1697685251300582,
+      0.8518110533404488
+    ],
+    "release_pelvis_position": [
+      0.6111863893090282,
+      0.0034464249594619366,
+      0.7929055031891218
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5888173486470636,
+    "release_hand_separation": 0.09036567408899435,
+    "crossing_ball_position": [
+      2.214588680175097,
+      0.025062350580028092,
+      1.1996968730068986
+    ],
+    "crossing_xy_error": 0.02899915526092961,
+    "airborne_horizontal_distance": 1.7101525541801748,
+    "minimum_hand_to_hoop_distance": 1.079222263223862,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8010143859679099,
+    "pitch_deg": 0.6113866594312507,
+    "roll_deg": -0.05122096503687102,
+    "yaw_deg": -0.03530626297628964
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03257660669341197,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6982381548043413,
+    "release_ball_position": [
+      0.5038264696796977,
+      0.08371490592490588,
+      1.5100681907613613
+    ],
+    "release_ball_velocity": [
+      4.7886070414422255,
+      -0.1547468413562491,
+      0.93670986556835
+    ],
+    "release_pelvis_position": [
+      0.6141032709575648,
+      0.0031643335086273777,
+      0.7928116669752849
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5858998859303979,
+    "release_hand_separation": 0.0905982006994524,
+    "crossing_ball_position": [
+      2.2078934865644437,
+      0.03160582499341225,
+      1.197460333489969
+    ],
+    "crossing_xy_error": 0.03257660669341197,
+    "airborne_horizontal_distance": 1.7048635588662227,
+    "minimum_hand_to_hoop_distance": 1.079512905555149,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.801306533916944,
+    "pitch_deg": 0.40067204454529226,
+    "roll_deg": 0.029521874590710283,
+    "yaw_deg": 0.05513890411505276
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02137937609916775,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6982223010133755,
+    "release_ball_position": [
+      0.5038459460393628,
+      0.08378788034112736,
+      1.5110481130688351
+    ],
+    "release_ball_velocity": [
+      4.724607299544484,
+      -0.16817540919241614,
+      0.8732205505720732
+    ],
+    "release_pelvis_position": [
+      0.6116669359768063,
+      0.0037840341309106997,
+      0.7928713552625214
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5883375715456747,
+    "release_hand_separation": 0.09049484237642548,
+    "crossing_ball_position": [
+      2.2056029140128586,
+      0.020632136994363434,
+      1.1998526367701348
+    ],
+    "crossing_xy_error": 0.02137937609916775,
+    "airborne_horizontal_distance": 1.7029284852758872,
+    "minimum_hand_to_hoop_distance": 1.0793159420853717,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8022369226305689,
+    "pitch_deg": 0.7041529753856518,
+    "roll_deg": -0.0679554401007633,
+    "yaw_deg": -0.014527634495112993
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03852867572313874,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6957600924751473,
+    "release_ball_position": [
+      0.5063043118719406,
+      0.08364931110139542,
+      1.5100891535983294
+    ],
+    "release_ball_velocity": [
+      4.782631123685158,
+      -0.14594698369441828,
+      0.9470581230325307
+    ],
+    "release_pelvis_position": [
+      0.6171832220079265,
+      0.003273254255234078,
+      0.7928345646514258
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.582820162522145,
+    "release_hand_separation": 0.09067572194730152,
+    "crossing_ball_position": [
+      2.217253367884712,
+      0.03444967560970026,
+      1.1959440472953302
+    ],
+    "crossing_xy_error": 0.03852867572313874,
+    "airborne_horizontal_distance": 1.7116562962240724,
+    "minimum_hand_to_hoop_distance": 1.0763590347808305,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011012994164436,
+    "pitch_deg": 0.4399002419176342,
+    "roll_deg": -0.010539349252631192,
+    "yaw_deg": 0.016124143685298298
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02158367076755093,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6940957443065283,
+    "release_ball_position": [
+      0.5079209738523652,
+      0.08263752264414771,
+      1.5110930817512618
+    ],
+    "release_ball_velocity": [
+      4.7250310896428385,
+      -0.17439376348545882,
+      0.8704058477119923
+    ],
+    "release_pelvis_position": [
+      0.6158726992351017,
+      0.0026246702681153654,
+      0.7929096220974545
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5841294751132873,
+    "release_hand_separation": 0.09041632059321263,
+    "crossing_ball_position": [
+      2.1985762266912294,
+      0.021536659754178792,
+      1.1992627852164304
+    ],
+    "crossing_xy_error": 0.02158367076755093,
+    "airborne_horizontal_distance": 1.6917589956602985,
+    "minimum_hand_to_hoop_distance": 1.0759056416028006,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8025952072049108,
+    "pitch_deg": 0.6791507059035682,
+    "roll_deg": -0.095908918350277,
+    "yaw_deg": -0.04633601446003245
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.0316565059288929,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6970416300858449,
+    "release_ball_position": [
+      0.5050469966857087,
+      0.08417013009544869,
+      1.510728223391925
+    ],
+    "release_ball_velocity": [
+      4.755424225816458,
+      -0.16390399876319778,
+      0.8954246567210363
+    ],
+    "release_pelvis_position": [
+      0.6127507180500044,
+      0.0036758589638817233,
+      0.7929209610338512
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5872535383453708,
+    "release_hand_separation": 0.09037567615663633,
+    "crossing_ball_position": [
+      2.186326506888998,
+      0.028551181302520743,
+      1.1955758154170497
+    ],
+    "crossing_xy_error": 0.0316565059288929,
+    "airborne_horizontal_distance": 1.6821992328182303,
+    "minimum_hand_to_hoop_distance": 1.0790747737130408,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8033428553306616,
+    "pitch_deg": 0.5835475851066901,
+    "roll_deg": -0.06784185943762906,
+    "yaw_deg": 0.0048891475183958
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.021878373148229994,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6957962587719744,
+    "release_ball_position": [
+      0.506231866419932,
+      0.08291236900316712,
+      1.511093215759773
+    ],
+    "release_ball_velocity": [
+      4.725033398398983,
+      -0.17438719983328296,
+      0.8704046804084368
+    ],
+    "release_pelvis_position": [
+      0.6141836020976815,
+      0.0029009558547564407,
+      0.792909593431081
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5858190512794188,
+    "release_hand_separation": 0.09041630431627588,
+    "crossing_ball_position": [
+      2.2034951950030024,
+      0.02159738001481151,
+      1.1983049721510912
+    ],
+    "crossing_xy_error": 0.021878373148229994,
+    "airborne_horizontal_distance": 1.6983704938639055,
+    "minimum_hand_to_hoop_distance": 1.0774677553194039,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8024071558368855,
+    "pitch_deg": 0.6977269702458047,
+    "roll_deg": -0.09895245178561925,
+    "yaw_deg": -0.054685422831717914
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02337099145470599,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6950854899214771,
+    "release_ball_position": [
+      0.5070096084894711,
+      0.08425172042967084,
+      1.5110856295359443
+    ],
+    "release_ball_velocity": [
+      4.756164445159928,
+      -0.17782834763791416,
+      0.8644174056572956
+    ],
+    "release_pelvis_position": [
+      0.6130840126897986,
+      0.0036929764179001387,
+      0.7929336137567651
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5869202843418238,
+    "release_hand_separation": 0.09042114089791482,
+    "crossing_ball_position": [
+      2.2080093249647494,
+      0.02195572716138057,
+      1.198175951766506
+    ],
+    "crossing_xy_error": 0.02337099145470599,
+    "airborne_horizontal_distance": 1.7021400724459372,
+    "minimum_hand_to_hoop_distance": 1.0777639011222206,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011236605406866,
+    "pitch_deg": 0.5747742527423724,
+    "roll_deg": -0.04334196253841023,
+    "yaw_deg": -0.03100779166337925
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.020187518495355636,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.693521194749709,
+    "release_ball_position": [
+      0.5085598482822503,
+      0.08393003171402724,
+      1.51153809060161
+    ],
+    "release_ball_velocity": [
+      4.761952805251128,
+      -0.17920165573271374,
+      0.8184467469503651
+    ],
+    "release_pelvis_position": [
+      0.6117613387037236,
+      0.0035474791438790294,
+      0.792843585434794
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5882426231040598,
+    "release_hand_separation": 0.0903288191647817,
+    "crossing_ball_position": [
+      2.225201294078424,
+      0.01571735722685902,
+      1.1983451480422598
+    ],
+    "crossing_xy_error": 0.029700850853534466,
+    "airborne_horizontal_distance": 1.7179961648344475,
+    "minimum_hand_to_hoop_distance": 1.076846129618239,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.7994717231785937,
+    "pitch_deg": 0.6854718217078645,
+    "roll_deg": -0.011903786851959692,
+    "yaw_deg": -0.010962970025075909
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.021599960964566182,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6970641524426697,
+    "release_ball_position": [
+      0.5049813991805555,
+      0.08329874177951165,
+      1.5111912119645972
+    ],
+    "release_ball_velocity": [
+      4.734424566867274,
+      -0.1761446978988976,
+      0.8702611087451273
+    ],
+    "release_pelvis_position": [
+      0.612122630442728,
+      0.0033856637768247245,
+      0.7928493177107624
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5878809790004198,
+    "release_hand_separation": 0.09061515072391055,
+    "crossing_ball_position": [
+      2.1989249540692315,
+      0.021573191463423312,
+      1.1992505661890294
+    ],
+    "crossing_xy_error": 0.021599960964566182,
+    "airborne_horizontal_distance": 1.6950677894145438,
+    "minimum_hand_to_hoop_distance": 1.0787078750525616,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8007799545473411,
+    "pitch_deg": 0.5627957366698751,
+    "roll_deg": -0.05515437007168615,
+    "yaw_deg": -0.03155922229504844
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.021779883191874762,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6891848642995415,
+    "release_ball_position": [
+      0.5128797511582996,
+      0.08349114759648964,
+      1.5115384147394355
+    ],
+    "release_ball_velocity": [
+      4.767232824286391,
+      -0.1850266090349118,
+      0.8108372327209283
+    ],
+    "release_pelvis_position": [
+      0.6151857348164455,
+      0.002997906497350269,
+      0.792810155844284
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5848171006689251,
+    "release_hand_separation": 0.09022313163818106,
+    "crossing_ball_position": [
+      2.2353780193058075,
+      0.014877022510320559,
+      1.1989434581216334
+    ],
+    "crossing_xy_error": 0.03837877080854283,
+    "airborne_horizontal_distance": 1.7238643165668535,
+    "minimum_hand_to_hoop_distance": 1.07356230235411,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011637653849957,
+    "pitch_deg": 0.7738217834100947,
+    "roll_deg": -0.10206739054324826,
+    "yaw_deg": -0.09487676291674597
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02378099700380611,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6942087766280247,
+    "release_ball_position": [
+      0.5078837491945064,
+      0.08417821905569288,
+      1.5110855426228884
+    ],
+    "release_ball_velocity": [
+      4.75616249889782,
+      -0.17782954553110983,
+      0.8644197233960746
+    ],
+    "release_pelvis_position": [
+      0.6139582418399697,
+      0.0036190483173862455,
+      0.7929336119714356
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5860458871476841,
+    "release_hand_separation": 0.09042114516047599,
+    "crossing_ball_position": [
+      2.209437452652811,
+      0.021828199786537304,
+      1.1970744766895718
+    ],
+    "crossing_xy_error": 0.02378099700380611,
+    "airborne_horizontal_distance": 1.7026956658943888,
+    "minimum_hand_to_hoop_distance": 1.0768900537730535,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8011235742415892,
+    "pitch_deg": 0.5747782170771073,
+    "roll_deg": -0.04334981884253943,
+    "yaw_deg": -0.031021771613893134
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.01978226547865498,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6940038601785155,
+    "release_ball_position": [
+      0.5080108461756997,
+      0.08259407751551852,
+      1.5112150557325112
+    ],
+    "release_ball_velocity": [
+      4.729757515143006,
+      -0.17897048401657892,
+      0.8696371558403259
+    ],
+    "release_pelvis_position": [
+      0.6151907386186115,
+      0.002815895038159446,
+      0.792822388032541
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5848117630258454,
+    "release_hand_separation": 0.09057597917336406,
+    "crossing_ball_position": [
+      2.201427899183066,
+      0.01973066474782298,
+      1.1967869730177747
+    ],
+    "crossing_xy_error": 0.01978226547865498,
+    "airborne_horizontal_distance": 1.694583466247961,
+    "minimum_hand_to_hoop_distance": 1.0754719720827248,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8012261695891728,
+    "pitch_deg": 0.5694017781995235,
+    "roll_deg": -0.0096857927371371,
+    "yaw_deg": 0.006800389148427946
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.021674106247949042,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6936356263318444,
+    "release_ball_position": [
+      0.5083890818980746,
+      0.08278971275961639,
+      1.5110932447153234
+    ],
+    "release_ball_velocity": [
+      4.725036812523528,
+      -0.17439058863862034,
+      0.8704032936845006
+    ],
+    "release_pelvis_position": [
+      0.6163406880825627,
+      0.002777727556501388,
+      0.7929096308775451
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5836617479730923,
+    "release_hand_separation": 0.09041633243179308,
+    "crossing_ball_position": [
+      2.1993241991270116,
+      0.02166356791545316,
+      1.1987196294890932
+    ],
+    "crossing_xy_error": 0.021674106247949042,
+    "airborne_horizontal_distance": 1.692039590630653,
+    "minimum_hand_to_hoop_distance": 1.0754425155020224,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8025954017791649,
+    "pitch_deg": 0.6791386414925529,
+    "roll_deg": -0.09589251456449059,
+    "yaw_deg": -0.04630703401477557
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.022429261039700693,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6965829998012014,
+    "release_ball_position": [
+      0.505488858696862,
+      0.08382044627642792,
+      1.510948112697935
+    ],
+    "release_ball_velocity": [
+      4.724730276623979,
+      -0.17017643321348147,
+      0.8639444940129032
+    ],
+    "release_pelvis_position": [
+      0.6130973774535387,
+      0.003666081855931848,
+      0.7928538684623447
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.586906857254392,
+    "release_hand_separation": 0.09034439832285314,
+    "crossing_ball_position": [
+      2.2291240149631544,
+      0.019888587970724795,
+      1.1980198697173998
+    ],
+    "crossing_xy_error": 0.03526704097373763,
+    "airborne_horizontal_distance": 1.7248204064259987,
+    "minimum_hand_to_hoop_distance": 1.0762854110645579,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.800082470728109,
+    "pitch_deg": 0.7520114011741516,
+    "roll_deg": -0.008183632299796961,
+    "yaw_deg": -0.011899749827027583
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.040034897098079975,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.7005487278354783,
+    "release_ball_position": [
+      0.5015182033590719,
+      0.08381862694096029,
+      1.509882947294606
+    ],
+    "release_ball_velocity": [
+      4.758475725852555,
+      -0.1323879103035684,
+      0.9420720261951974
+    ],
+    "release_pelvis_position": [
+      0.6121970988433992,
+      0.0036846546199946367,
+      0.7924394074650367
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.587807176454681,
+    "release_hand_separation": 0.09062790191741008,
+    "crossing_ball_position": [
+      2.195234066888659,
+      0.03975020587659989,
+      1.1991087393657212
+    ],
+    "crossing_xy_error": 0.040034897098079975,
+    "airborne_horizontal_distance": 1.6942890698186308,
+    "minimum_hand_to_hoop_distance": 1.07826023808609,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8034587802454004,
+    "pitch_deg": 0.6427621165053491,
+    "roll_deg": -0.07269242742012105,
+    "yaw_deg": -0.005512863093981411
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.0318482704155882,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.697334219094854,
+    "release_ball_position": [
+      0.5047562808209307,
+      0.08421510490555434,
+      1.5107284756231911
+    ],
+    "release_ball_velocity": [
+      4.7554190357091874,
+      -0.16390688578360363,
+      0.8954123698651866
+    ],
+    "release_pelvis_position": [
+      0.6124592794946943,
+      0.003721124002264274,
+      0.7929210025445595
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5875450815729126,
+    "release_hand_separation": 0.09037574984953164,
+    "crossing_ball_position": [
+      2.1859748921423683,
+      0.028593857348147747,
+      1.1956415979286057
+    ],
+    "crossing_xy_error": 0.0318482704155882,
+    "airborne_horizontal_distance": 1.6821384432422395,
+    "minimum_hand_to_hoop_distance": 1.079408803996804,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8032258749605403,
+    "pitch_deg": 0.5715882043331565,
+    "roll_deg": -0.08722357195276488,
+    "yaw_deg": 0.0019011343246614612
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.029090795127357495,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.699050180789798,
+    "release_ball_position": [
+      0.5030338055924163,
+      0.08412640417661385,
+      1.510728295733086
+    ],
+    "release_ball_velocity": [
+      4.755414298895678,
+      -0.1639085320893081,
+      0.8954152609649211
+    ],
+    "release_pelvis_position": [
+      0.6107371073284888,
+      0.003631929457812618,
+      0.7929209501682134
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5892670426753983,
+    "release_hand_separation": 0.09037568798688518,
+    "crossing_ball_position": [
+      2.1914535342640344,
+      0.027807054582710666,
+      1.1963024281250427
+    ],
+    "crossing_xy_error": 0.029090795127357495,
+    "airborne_horizontal_distance": 1.689358768677104,
+    "minimum_hand_to_hoop_distance": 1.0809454547066275,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8031582089183454,
+    "pitch_deg": 0.5968624540106574,
+    "roll_deg": -0.06980046366755746,
+    "yaw_deg": -0.0037645290447152705
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.04651520012187076,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6975110299551026,
+    "release_ball_position": [
+      0.5045270220537168,
+      0.08315694723349841,
+      1.509371500439729
+    ],
+    "release_ball_velocity": [
+      4.738794916942247,
+      -0.12022854217026065,
+      0.9752882217189309
+    ],
+    "release_pelvis_position": [
+      0.6175685975393722,
+      0.0031013611122245465,
+      0.7923966512023697
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.582434441591265,
+    "release_hand_separation": 0.0907496387658211,
+    "crossing_ball_position": [
+      2.21803600026939,
+      0.04287617679621467,
+      1.1947980891128547
+    ],
+    "crossing_xy_error": 0.04651520012187076,
+    "airborne_horizontal_distance": 1.7139823683144297,
+    "minimum_hand_to_hoop_distance": 1.0726233970852501,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8029410220229729,
+    "pitch_deg": 0.6760068510102629,
+    "roll_deg": -0.07765127460864889,
+    "yaw_deg": -0.03183729909707935
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02015716992509718,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6969840295825596,
+    "release_ball_position": [
+      0.5050454293866882,
+      0.08296867008277652,
+      1.5110935087845587
+    ],
+    "release_ball_velocity": [
+      4.7250487779202945,
+      -0.17439076743004836,
+      0.8703924750883758
+    ],
+    "release_pelvis_position": [
+      0.6129962396912539,
+      0.002957661705682669,
+      0.7929096149470654
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.587006516368747,
+    "release_hand_separation": 0.09041629733204316,
+    "crossing_ball_position": [
+      2.2009967916456565,
+      0.02013250868134401,
+      1.1996348935035457
+    ],
+    "crossing_xy_error": 0.02015716992509718,
+    "airborne_horizontal_distance": 1.6971150244835256,
+    "minimum_hand_to_hoop_distance": 1.0786530999428305,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8024072320340939,
+    "pitch_deg": 0.6977226586565389,
+    "roll_deg": -0.09894577013038279,
+    "yaw_deg": -0.05467431704678454
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02668079291903462,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.7004254675002506,
+    "release_ball_position": [
+      0.5016076036067689,
+      0.08312664071826299,
+      1.5109333288094393
+    ],
+    "release_ball_velocity": [
+      4.744987408819979,
+      -0.16224724987499173,
+      0.891724939928154
+    ],
+    "release_pelvis_position": [
+      0.6096429785072642,
+      0.003477132039120242,
+      0.7927500752119532
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5903608226620978,
+    "release_hand_separation": 0.0906974450758312,
+    "crossing_ball_position": [
+      2.1968949605025423,
+      0.026499498872764263,
+      1.199148134945792
+    ],
+    "crossing_xy_error": 0.02668079291903462,
+    "airborne_horizontal_distance": 1.696232842402318,
+    "minimum_hand_to_hoop_distance": 1.0820719117800544,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8009755913382708,
+    "pitch_deg": 0.47031505782123345,
+    "roll_deg": 0.024717083721353963,
+    "yaw_deg": 0.042289968508964416
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.022366343260568123,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.696679094701764,
+    "release_ball_position": [
+      0.5053915759766362,
+      0.08379880444879556,
+      1.5109480721624435
+    ],
+    "release_ball_velocity": [
+      4.7247282954651775,
+      -0.1701764094847228,
+      0.8639459059707333
+    ],
+    "release_pelvis_position": [
+      0.6130001869713883,
+      0.003644316558704502,
+      0.7928538675852704
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.587003997347212,
+    "release_hand_separation": 0.09034439387216031,
+    "crossing_ball_position": [
+      2.2289069966481434,
+      0.019893379425432126,
+      1.1981897534576138
+    ],
+    "crossing_xy_error": 0.03509075377047307,
+    "airborne_horizontal_distance": 1.7246997734794018,
+    "minimum_hand_to_hoop_distance": 1.0763817887225573,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8000824561929127,
+    "pitch_deg": 0.7520119092699665,
+    "roll_deg": -0.008187854433368289,
+    "yaw_deg": -0.01190391684699103
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.023330281039723906,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6952400794203817,
+    "release_ball_position": [
+      0.5068335902015881,
+      0.0838238367266633,
+      1.5109480946887597
+    ],
+    "release_ball_velocity": [
+      4.724728599636556,
+      -0.17017592555528507,
+      0.863945237652131
+    ],
+    "release_pelvis_position": [
+      0.6144421863371932,
+      0.003669487099306061,
+      0.7928538644102153
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5855620598395865,
+    "release_hand_separation": 0.09034439057419474,
+    "crossing_ball_position": [
+      2.22476787083762,
+      0.020152794615683808,
+      1.1982696943114854
+    ],
+    "crossing_xy_error": 0.03193090284741353,
+    "airborne_horizontal_distance": 1.7191137816293427,
+    "minimum_hand_to_hoop_distance": 1.0751375539076091,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8002551376519461,
+    "pitch_deg": 0.7247399092107694,
+    "roll_deg": -0.006867958965573052,
+    "yaw_deg": -0.013209838722332449
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03017160304298688,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6926768454079475,
+    "release_ball_position": [
+      0.5093343992381419,
+      0.08249078361093669,
+      1.5111208153251952
+    ],
+    "release_ball_velocity": [
+      4.729485970726748,
+      -0.15403295317783847,
+      0.8866830955774798
+    ],
+    "release_pelvis_position": [
+      0.6163660189278435,
+      0.0028485993257962596,
+      0.7928125217872545
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.583636543063012,
+    "release_hand_separation": 0.09066382936199001,
+    "crossing_ball_position": [
+      2.1920425511126793,
+      0.029103344092891646,
+      1.1997781437680604
+    ],
+    "crossing_xy_error": 0.03017160304298688,
+    "airborne_horizontal_distance": 1.683554853006968,
+    "minimum_hand_to_hoop_distance": 1.0756394655194654,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8026408297161315,
+    "pitch_deg": 0.5373759666826142,
+    "roll_deg": -0.03708871035180791,
+    "yaw_deg": 0.0171786727432533
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.020568627268915552,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6968349023687614,
+    "release_ball_position": [
+      0.5052002663086138,
+      0.08308157784015238,
+      1.5112155053214817
+    ],
+    "release_ball_velocity": [
+      4.72976102323239,
+      -0.17895964441080467,
+      0.8696349201184306
+    ],
+    "release_pelvis_position": [
+      0.6123805789920879,
+      0.003306378921008812,
+      0.7928224271971204
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5876228639393763,
+    "release_hand_separation": 0.0905759837698025,
+    "crossing_ball_position": [
+      2.204616431584758,
+      0.020043876549979755,
+      1.1972519789492146
+    ],
+    "crossing_xy_error": 0.020568627268915552,
+    "airborne_horizontal_distance": 1.7005849154293424,
+    "minimum_hand_to_hoop_distance": 1.07802388420297,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8010397197713994,
+    "pitch_deg": 0.5999494729121284,
+    "roll_deg": -0.013089958361040087,
+    "yaw_deg": 0.0004847232184681702
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.02036810721961133,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6922782428649357,
+    "release_ball_position": [
+      0.5097506522365564,
+      0.08284198005411784,
+      1.5113524192763907
+    ],
+    "release_ball_velocity": [
+      4.726141271059115,
+      -0.18692236790076736,
+      0.8628999398512649
+    ],
+    "release_pelvis_position": [
+      0.6165202278210726,
+      0.003156787779410502,
+      0.7928772547544454
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5834829188244854,
+    "release_hand_separation": 0.09033348821794975,
+    "crossing_ball_position": [
+      2.211116922581829,
+      0.01706674614621112,
+      1.1993183074725509
+    ],
+    "crossing_xy_error": 0.02036810721961133,
+    "airborne_horizontal_distance": 1.7026372388927193,
+    "minimum_hand_to_hoop_distance": 1.0741212895677974,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8000839930553113,
+    "pitch_deg": 0.5942546537143352,
+    "roll_deg": -0.01980678370721221,
+    "yaw_deg": -0.0001278205765396524
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.031729499439778694,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6968493562035294,
+    "release_ball_position": [
+      0.5052489312804757,
+      0.08435966288672617,
+      1.5107285815759364
+    ],
+    "release_ball_velocity": [
+      4.755426278976988,
+      -0.16390233856568626,
+      0.8954136806023621
+    ],
+    "release_pelvis_position": [
+      0.6129518596026603,
+      0.003866430367653718,
+      0.7929210205354754
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5870528501667618,
+    "release_hand_separation": 0.09037578003323468,
+    "crossing_ball_position": [
+      2.1865575610447774,
+      0.02874129380584711,
+      1.1955448081965394
+    ],
+    "crossing_xy_error": 0.031729499439778694,
+    "airborne_horizontal_distance": 1.682228317292017,
+    "minimum_hand_to_hoop_distance": 1.0789210434243985,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8032261022383176,
+    "pitch_deg": 0.5715801798681995,
+    "roll_deg": -0.0872151133918685,
+    "yaw_deg": 0.0019225587062219952
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.023326317063824552,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.693654930157431,
+    "release_ball_position": [
+      0.5083733444139492,
+      0.08286302285895673,
+      1.5113524464062438
+    ],
+    "release_ball_velocity": [
+      4.726142765023652,
+      -0.18692196680765782,
+      0.8629004391828967
+    ],
+    "release_pelvis_position": [
+      0.615142921369493,
+      0.003177955956542223,
+      0.7928772653827977
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5848602648464902,
+    "release_hand_separation": 0.09033350132222598,
+    "crossing_ball_position": [
+      2.2159580992027044,
+      0.01701341052225345,
+      1.1983628516280065
+    ],
+    "crossing_xy_error": 0.023326317063824552,
+    "airborne_horizontal_distance": 1.7088539628159767,
+    "minimum_hand_to_hoop_distance": 1.0751694967419165,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.7998983491358258,
+    "pitch_deg": 0.6313594497975288,
+    "roll_deg": -0.022527130250523605,
+    "yaw_deg": -0.00576026100742725
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.018363767997346774,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.69530397772729,
+    "release_ball_position": [
+      0.5067736412737103,
+      0.08390515486238978,
+      1.5115365895774395
+    ],
+    "release_ball_velocity": [
+      4.762001334179573,
+      -0.17915033408896974,
+      0.8185408834053323
+    ],
+    "release_pelvis_position": [
+      0.609980572951812,
+      0.0035216471257258413,
+      0.7928436096185117
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5900233269952762,
+    "release_hand_separation": 0.09033038004351553,
+    "crossing_ball_position": [
+      2.2271269075876154,
+      0.01562732167353782,
+      1.1996297856367886
+    ],
+    "crossing_xy_error": 0.031306266113275846,
+    "airborne_horizontal_distance": 1.7217076474889363,
+    "minimum_hand_to_hoop_distance": 1.0806702240921597,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 427,
+    "has_fallen": false,
+    "pelvis_height_m": 0.802596883213202,
+    "pitch_deg": 0.8146550487741447,
+    "roll_deg": -0.06792701913831456,
+    "yaw_deg": -0.03965156524538309
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.027665089784326902,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6975800706034516,
+    "release_ball_position": [
+      0.5044809759872838,
+      0.08362616409345501,
+      1.5110277361747284
+    ],
+    "release_ball_velocity": [
+      4.755121921351847,
+      -0.16035805759122873,
+      0.8759165313123172
+    ],
+    "release_pelvis_position": [
+      0.610448236341643,
+      0.003517234321133379,
+      0.7928299542275615
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.589555654982443,
+    "release_hand_separation": 0.09038156075806036,
+    "crossing_ball_position": [
+      2.200815564884044,
+      0.02765306577388452,
+      1.1983654334307912
+    ],
+    "crossing_xy_error": 0.027665089784326902,
+    "airborne_horizontal_distance": 1.6972577957467252,
+    "minimum_hand_to_hoop_distance": 1.0793243487158626,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8015351699790315,
+    "pitch_deg": 0.5296472506563765,
+    "roll_deg": 0.007411753870853854,
+    "yaw_deg": 0.016903835010974297
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03775411297961693,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6988847393136517,
+    "release_ball_position": [
+      0.5031808845962149,
+      0.08375110192188383,
+      1.5097899877228471
+    ],
+    "release_ball_velocity": [
+      4.744909057790289,
+      -0.1495908844766473,
+      0.9738939798327957
+    ],
+    "release_pelvis_position": [
+      0.6167949559257734,
+      0.0033643620306220015,
+      0.7929738012282105
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5832086187593686,
+    "release_hand_separation": 0.09059608603232884,
+    "crossing_ball_position": [
+      2.2187929058091367,
+      0.03274446118241378,
+      1.1947620548830775
+    ],
+    "crossing_xy_error": 0.03775411297961693,
+    "airborne_horizontal_distance": 1.7163700896746632,
+    "minimum_hand_to_hoop_distance": 1.0770420246607393,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8005123889056626,
+    "pitch_deg": 0.479579167977961,
+    "roll_deg": -0.031433186686663644,
+    "yaw_deg": -0.02040848669980924
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.029121406949632177,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.69943639747439,
+    "release_ball_position": [
+      0.5026409145997998,
+      0.0840012158848202,
+      1.5107280453965881
+    ],
+    "release_ball_velocity": [
+      4.755420603021125,
+      -0.16391081447863606,
+      0.8954231813415948
+    ],
+    "release_pelvis_position": [
+      0.610344500358944,
+      0.003505957762840723,
+      0.7929209130279423
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5896593658010167,
+    "release_hand_separation": 0.09037566172239524,
+    "crossing_ball_position": [
+      2.1909390408827965,
+      0.02767589858708201,
+      1.1964746488408944
+    ],
+    "crossing_xy_error": 0.029121406949632177,
+    "airborne_horizontal_distance": 1.6892374328611617,
+    "minimum_hand_to_hoop_distance": 1.0813339042595527,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.803158019705263,
+    "pitch_deg": 0.5968696877136963,
+    "roll_deg": -0.06980955367432458,
+    "yaw_deg": -0.0037880736885864503
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.031704175236357816,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6971974176729652,
+    "release_ball_position": [
+      0.5048892093975387,
+      0.0841337158271261,
+      1.5107283360665766
+    ],
+    "release_ball_velocity": [
+      4.755414735563513,
+      -0.16390919194846043,
+      0.8954139756285326
+    ],
+    "release_pelvis_position": [
+      0.6125923953228648,
+      0.0036392888538902095,
+      0.79292096081654
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.58741177638638,
+    "release_hand_separation": 0.09037570005494037,
+    "crossing_ball_position": [
+      2.1861364696320007,
+      0.0285124052502282,
+      1.1956052505176553
+    ],
+    "crossing_xy_error": 0.031704175236357816,
+    "airborne_horizontal_distance": 1.6821670785734026,
+    "minimum_hand_to_hoop_distance": 1.0792231117279534,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8033565987409956,
+    "pitch_deg": 0.5852329893429634,
+    "roll_deg": -0.06774333661406748,
+    "yaw_deg": 0.009909169816356804
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.03133589672702102,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6972319967050504,
+    "release_ball_position": [
+      0.5048301234693485,
+      0.08363934685582218,
+      1.510353996183368
+    ],
+    "release_ball_velocity": [
+      4.7990839050134,
+      -0.1565618557014434,
+      0.9231662895108607
+    ],
+    "release_pelvis_position": [
+      0.6134554964690713,
+      0.0030265818874379772,
+      0.7928944558136456
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5865473903675626,
+    "release_hand_separation": 0.09045319880239196,
+    "crossing_ball_position": [
+      2.20353254819143,
+      0.031136145024099438,
+      1.198159157308004
+    ],
+    "crossing_xy_error": 0.03133589672702102,
+    "airborne_horizontal_distance": 1.6995136109955875,
+    "minimum_hand_to_hoop_distance": 1.07968531498735,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8014204772385595,
+    "pitch_deg": 0.35821769171091267,
+    "roll_deg": -0.005292373850991492,
+    "yaw_deg": 0.03164476459300769
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.04560532055775585,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6999191272811964,
+    "release_ball_position": [
+      0.502114561607605,
+      0.08312687526623423,
+      1.5093714771089048
+    ],
+    "release_ball_velocity": [
+      4.738793486832519,
+      -0.12022928559908166,
+      0.9752860883691592
+    ],
+    "release_pelvis_position": [
+      0.6151560837489777,
+      0.00307111619380167,
+      0.7923966309721873
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5848468918581862,
+    "release_hand_separation": 0.09074960862583821,
+    "crossing_ball_position": [
+      2.215623040412045,
+      0.04284583843804761,
+      1.1947972918190102
+    ],
+    "crossing_xy_error": 0.04560532055775585,
+    "airborne_horizontal_distance": 1.713981875301679,
+    "minimum_hand_to_hoop_distance": 1.0750291176700029,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8029411074796572,
+    "pitch_deg": 0.6759981095627426,
+    "roll_deg": -0.077646306497558,
+    "yaw_deg": -0.03185062480890421
+  },
+  {
+    "success": true,
+    "curriculum_radius": 0.1,
+    "crossed_hoop_plane": true,
+    "hoop_xy_error": 0.020088713269352097,
+    "released": true,
+    "release_step": 408,
+    "release_distance_to_hoop_xy": 1.6953406556048065,
+    "release_ball_position": [
+      0.5066857190500984,
+      0.08286546010040605,
+      1.5112153574415104
+    ],
+    "release_ball_velocity": [
+      4.729764594932072,
+      -0.17896366910221362,
+      0.8696385941463683
+    ],
+    "release_pelvis_position": [
+      0.6138658366267449,
+      0.0030889509249962823,
+      0.7928224572119605
+    ],
+    "release_pelvis_distance_to_hoop_xy": 1.5861371711921997,
+    "release_hand_separation": 0.09057606014805047,
+    "crossing_ball_position": [
+      2.19929143540068,
+      0.020076213214319908,
+      1.1985162867123742
+    ],
+    "crossing_xy_error": 0.020088713269352097,
+    "airborne_horizontal_distance": 1.693769937313562,
+    "minimum_hand_to_hoop_distance": 1.07680007219789,
+    "touched_backboard": false,
+    "direct_shot": true,
+    "policy_step": 426,
+    "has_fallen": false,
+    "pelvis_height_m": 0.8012265561136666,
+    "pitch_deg": 0.5693829522266122,
+    "roll_deg": -0.009660423526436184,
+    "yaw_deg": 0.0068470916014901784
+  }
+]
