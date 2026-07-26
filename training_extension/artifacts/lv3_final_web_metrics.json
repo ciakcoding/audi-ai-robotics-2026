@@ -1,0 +1,50 @@
+{
+  "policy": "PPO parameter-residual policy, selected at 12,288 shots",
+  "seed": 100000,
+  "post_shot_seconds": 10.0,
+  "primary_display_metrics": {
+    "hoop_crossing_speed": {
+      "value": 4.956507940006413,
+      "unit": "m/s",
+      "display": "4.96 m/s"
+    },
+    "max_rim_impact_force": {
+      "value": 10.453503125223756,
+      "unit": "N",
+      "display": "10.45 N"
+    },
+    "max_torso_tilt": {
+      "pitch_deg": 2.094222144558371,
+      "roll_deg": 0.610656829341342,
+      "yaw_deg": 0.4704132294312261,
+      "display": "2.1\u00b0 / 0.6\u00b0 / 0.5\u00b0"
+    },
+    "final_ball_to_target_distance": {
+      "value": 1.3282717985055557,
+      "unit": "m",
+      "display": "1.33 m"
+    }
+  },
+  "legacy_rl_metrics": {
+    "hoop_crossing_xy_error": {
+      "value": 3.6799076305218907,
+      "unit": "cm",
+      "display": "3.68 cm"
+    },
+    "touched_backboard": false,
+    "fell_over": false,
+    "airborne_distance": {
+      "value": 1.6742626255613664,
+      "unit": "m",
+      "display": "1.67 m"
+    },
+    "release_step": 408,
+    "episode_reward": 10.21855354309082
+  },
+  "display_order": [
+    "hoop_crossing_speed",
+    "max_rim_impact_force",
+    "max_torso_tilt",
+    "final_ball_to_target_distance"
+  ]
+}

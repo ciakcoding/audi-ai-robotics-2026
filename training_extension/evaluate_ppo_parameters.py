@@ -48,6 +48,24 @@ def main():
                 "reward": float(reward[0]),
                 "success": bool(info["success"]),
                 "crossing_xy_error": info["crossing_xy_error"],
+                "hoop_crossing_speed_m_s": info[
+                    "hoop_crossing_speed_m_s"
+                ],
+                "max_rim_impact_force_n": info[
+                    "max_rim_impact_force_n"
+                ],
+                "max_torso_tilt_pitch_deg": info[
+                    "max_torso_tilt_pitch_deg"
+                ],
+                "max_torso_tilt_roll_deg": info[
+                    "max_torso_tilt_roll_deg"
+                ],
+                "max_torso_tilt_yaw_deg": info[
+                    "max_torso_tilt_yaw_deg"
+                ],
+                "ball_to_target_distance_m": info[
+                    "ball_to_target_distance_m"
+                ],
                 "airborne_horizontal_distance": info[
                     "airborne_horizontal_distance"
                 ],
@@ -67,12 +85,37 @@ def main():
         for row in records
         if row["crossing_xy_error"] is not None
     ]
+    crossing_speeds = [
+        row["hoop_crossing_speed_m_s"]
+        for row in records
+        if row["hoop_crossing_speed_m_s"] is not None
+    ]
     summary = {
         "episodes": len(records),
         "successes": sum(int(row["success"]) for row in records),
         "success_rate": float(np.mean([row["success"] for row in records])),
         "mean_crossing_error": float(np.mean(errors)) if errors else None,
         "max_crossing_error": float(np.max(errors)) if errors else None,
+        "mean_hoop_crossing_speed_m_s": (
+            float(np.mean(crossing_speeds)) if crossing_speeds else None
+        ),
+        "max_rim_impact_force_n": float(
+            np.max([row["max_rim_impact_force_n"] for row in records])
+        ),
+        "max_torso_tilt_pitch_deg": float(
+            np.max([row["max_torso_tilt_pitch_deg"] for row in records])
+        ),
+        "max_torso_tilt_roll_deg": float(
+            np.max([row["max_torso_tilt_roll_deg"] for row in records])
+        ),
+        "max_torso_tilt_yaw_deg": float(
+            np.max([row["max_torso_tilt_yaw_deg"] for row in records])
+        ),
+        "mean_ball_to_target_distance_m": float(
+            np.mean(
+                [row["ball_to_target_distance_m"] for row in records]
+            )
+        ),
         "backboard_contacts": sum(
             int(row["touched_backboard"]) for row in records
         ),

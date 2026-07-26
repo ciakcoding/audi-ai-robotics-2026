@@ -31,6 +31,12 @@ class TrainingExtensionContractTest(unittest.TestCase):
         self.assertIn("success", info)
         self.assertIn("crossed_hoop_plane", info)
         self.assertIn("touched_backboard", info)
+        self.assertIn("hoop_crossing_speed_m_s", info)
+        self.assertIn("max_rim_impact_force_n", info)
+        self.assertIn("max_torso_tilt_pitch_deg", info)
+        self.assertIn("max_torso_tilt_roll_deg", info)
+        self.assertIn("max_torso_tilt_yaw_deg", info)
+        self.assertIn("ball_to_target_distance_m", info)
         env.close()
 
     def test_wide_curriculum_uses_virtual_gate(self):

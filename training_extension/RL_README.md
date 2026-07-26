@@ -94,6 +94,19 @@ Playback now continues for 10 seconds after the normal hoop-crossing scoring
 terminal. The console reports falls before crossing and during recovery
 separately. Override the extension with `--post-shot-seconds`.
 
+Presentation/web metrics matching the names used by the teammate's v031
+baseline viewer:
+
+```powershell
+python -m training_extension.export_final_web_metrics
+```
+
+This writes `training_extension/artifacts/lv3_final_web_metrics.json`. Its
+`primary_display_metrics` block contains hoop-crossing speed, maximum rim
+impact force, maximum torso tilt (pitch/roll/yaw), and final
+ball-to-target distance. The previous RL-only values remain available in
+`legacy_rl_metrics`.
+
 Extended recovery evaluation:
 
 ```powershell

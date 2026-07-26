@@ -102,6 +102,26 @@ def main():
             if not viewer.is_running():
                 break
 
+            print("\n--- FINAL DISPLAY METRICS (same definitions as v031) ---")
+            print(
+                "Hoop-crossing speed="
+                f"{scoring_info['hoop_crossing_speed_m_s']:.2f} m/s"
+            )
+            print(
+                "Max rim impact force="
+                f"{info['max_rim_impact_force_n']:.2f} N"
+            )
+            print(
+                "Max torso tilt (pitch / roll / yaw)="
+                f"{info['max_torso_tilt_pitch_deg']:.1f}° / "
+                f"{info['max_torso_tilt_roll_deg']:.1f}° / "
+                f"{info['max_torso_tilt_yaw_deg']:.1f}°"
+            )
+            print(
+                "Final ball-to-target distance="
+                f"{info['ball_to_target_distance_m']:.2f} m"
+            )
+            print("--- LEGACY RL METRICS (retained) ---")
             print(
                 "Ball reached target: "
                 f"{'YES' if scoring_info['success'] else 'NO'} | "

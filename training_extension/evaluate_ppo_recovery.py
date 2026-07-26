@@ -35,7 +35,7 @@ def _evaluate_seed_batch(
         vector_env.seed(seed)
         observation = vector_env.reset()
         residual, _ = model.predict(observation, deterministic=True)
-        _, _, done, infos = vector_env.step(residual)
+        _, reward, done, infos = vector_env.step(residual)
         if not bool(done[0]):
             raise RuntimeError("Parameter environment must finish in one step")
 
@@ -75,8 +75,34 @@ def _evaluate_seed_batch(
         records.append(
             {
                 "seed": seed,
+                "episode_reward": float(reward[0]),
                 "success": bool(scoring_info["success"]),
                 "crossing_xy_error": scoring_info["crossing_xy_error"],
+                "airborne_horizontal_distance_m": float(
+                    scoring_info["airborne_horizontal_distance"]
+                ),
+                "release_step": int(scoring_info["release_step"]),
+                "touched_backboard": bool(
+                    scoring_info["touched_backboard"]
+                ),
+                "hoop_crossing_speed_m_s": scoring_info[
+                    "hoop_crossing_speed_m_s"
+                ],
+                "max_rim_impact_force_n": float(
+                    recovery_info["max_rim_impact_force_n"]
+                ),
+                "max_torso_tilt_pitch_deg": float(
+                    recovery_info["max_torso_tilt_pitch_deg"]
+                ),
+                "max_torso_tilt_roll_deg": float(
+                    recovery_info["max_torso_tilt_roll_deg"]
+                ),
+                "max_torso_tilt_yaw_deg": float(
+                    recovery_info["max_torso_tilt_yaw_deg"]
+                ),
+                "final_ball_to_target_distance_m": float(
+                    recovery_info["ball_to_target_distance_m"]
+                ),
                 "fall_before_crossing": bool(scoring_info["has_fallen"]),
                 "fall_during_recovery": post_shot_fall,
                 "first_fall_after_crossing_s": first_fall_time,
@@ -148,6 +174,11 @@ def main():
         for row in records
         if row["first_fall_after_crossing_s"] is not None
     ]
+    crossing_speeds = [
+        row["hoop_crossing_speed_m_s"]
+        for row in records
+        if row["hoop_crossing_speed_m_s"] is not None
+    ]
     summary = {
         "episodes": len(records),
         "seed_start": args.seed,
@@ -155,7 +186,33 @@ def main():
         "successes": sum(int(row["success"]) for row in records),
         "success_rate": float(np.mean([row["success"] for row in records])),
         "mean_crossing_error": float(errors.mean()),
+        "mean_episode_reward": float(
+            np.mean([row["episode_reward"] for row in records])
+        ),
         "max_crossing_error": float(errors.max()),
+        "mean_hoop_crossing_speed_m_s": float(
+            np.mean(crossing_speeds)
+        ),
+        "max_rim_impact_force_n": max(
+            row["max_rim_impact_force_n"] for row in records
+        ),
+        "max_torso_tilt_pitch_deg": max(
+            row["max_torso_tilt_pitch_deg"] for row in records
+        ),
+        "max_torso_tilt_roll_deg": max(
+            row["max_torso_tilt_roll_deg"] for row in records
+        ),
+        "max_torso_tilt_yaw_deg": max(
+            row["max_torso_tilt_yaw_deg"] for row in records
+        ),
+        "mean_final_ball_to_target_distance_m": float(
+            np.mean(
+                [
+                    row["final_ball_to_target_distance_m"]
+                    for row in records
+                ]
+            )
+        ),
         "falls_before_crossing": sum(
             int(row["fall_before_crossing"]) for row in records
         ),
