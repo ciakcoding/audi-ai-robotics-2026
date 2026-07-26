@@ -317,10 +317,10 @@ class SimulationRunner:
 
     def _build_camera(self) -> mujoco.MjvCamera:
         cam = mujoco.MjvCamera()
-        cam.lookat[:] = [0.35, 0.0, 0.9]
-        cam.distance = 2.6
-        cam.azimuth = 140
-        cam.elevation = -20
+        cam.lookat[:] = [0.5, 0.0, 0.85]
+        cam.distance = 2.3
+        cam.azimuth = 272
+        cam.elevation = -12
         return cam
 
     def _frame(self) -> np.ndarray:
