@@ -332,37 +332,6 @@ function renderResult(baseline, rl) {
       <td class="val">${baseline.seed}</td>
       <td class="val">${rl.seed}</td>
     </tr>
-    <tr class="section"><td colspan="3">RL policy's additional metrics (not computed by the baseline script)</td></tr>
-    <tr>
-      <td class="metric-name">Hoop-crossing XY error</td>
-      <td class="val na">n/a</td>
-      <td>${na(rl.crossing_error_cm, v => v.toFixed(2) + ' cm')}</td>
-    </tr>
-    <tr>
-      <td class="metric-name">Touched backboard</td>
-      <td class="val na">n/a</td>
-      ${boolTd(rl.touched_backboard, false)}
-    </tr>
-    <tr>
-      <td class="metric-name">Fell over</td>
-      <td class="val na">n/a</td>
-      ${boolTd(rl.has_fallen, false)}
-    </tr>
-    <tr>
-      <td class="metric-name">Airborne distance</td>
-      <td class="val na">n/a</td>
-      <td class="val">${rl.airborne_distance_m.toFixed(2)} m</td>
-    </tr>
-    <tr>
-      <td class="metric-name">Release step</td>
-      <td class="val na">n/a</td>
-      <td class="val">${rl.release_step ?? '—'}</td>
-    </tr>
-    <tr>
-      <td class="metric-name">Episode reward</td>
-      <td class="val na">n/a</td>
-      <td class="val">${rl.reward_sum.toFixed(2)}</td>
-    </tr>
   `;
   table.style.display = 'table';
 }
