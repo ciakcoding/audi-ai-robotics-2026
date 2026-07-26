@@ -47,7 +47,10 @@ def main():
     vector_env.norm_reward = False
     model = PPO.load(args.model, env=vector_env, device="cpu")
     env = shot_env.base
-    print("播放内容：冻结 PPO 12,288 参数残差策略（完整走路与直接投篮）")
+    print(
+        "Playback: frozen PPO 12,288 parameter-residual policy "
+        "(full walking motion and direct shot)"
+    )
 
     with mujoco.viewer.launch_passive(env.model, env.data) as viewer:
         episode = 0
@@ -74,12 +77,15 @@ def main():
             if not viewer.is_running():
                 break
             print(
-                "球是否达到目标："
+                "Ball reached target: "
                 f"{'YES' if info['success'] else 'NO'} | "
-                f"穿越误差={info['crossing_xy_error'] * 100:.2f} cm | "
-                f"飞行距离={info['airborne_horizontal_distance']:.2f} m | "
-                f"碰板={'YES' if info['touched_backboard'] else 'NO'} | "
-                f"跌倒={'YES' if info['has_fallen'] else 'NO'}"
+                f"Distance from hoop centre at crossing="
+                f"{info['crossing_xy_error'] * 100:.2f} cm | "
+                f"Airborne distance="
+                f"{info['airborne_horizontal_distance']:.2f} m | "
+                f"Backboard contact="
+                f"{'YES' if info['touched_backboard'] else 'NO'} | "
+                f"Robot fell={'YES' if info['has_fallen'] else 'NO'}"
             )
             end_hold = time.perf_counter() + args.hold_seconds
             while viewer.is_running() and time.perf_counter() < end_hold:
