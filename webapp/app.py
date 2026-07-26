@@ -18,7 +18,7 @@ from fastapi.staticfiles import StaticFiles
 from PIL import Image
 from starlette.websockets import WebSocketState
 
-from webapp.runner import SimulationRunner, StreamDone, StreamFrame
+from webapp.runner import ComparisonDone, SimulationRunner, StreamDone, StreamFrame
 
 APP_DIR = Path(__file__).resolve().parent
 JPEG_QUALITY = 80
@@ -59,26 +59,31 @@ def run_simulation():
     }
 
 
-@app.websocket("/ws/run")
-async def run_simulation_live(websocket: WebSocket):
-    """Streams the episode frame-by-frame as JPEGs while it runs, then a
-    final JSON metrics message, so the browser can play it back live on a
-    <canvas> instead of waiting for a finished video."""
-    await websocket.accept()
-    seed = random.randint(0, 1_000_000)
+def _metrics_json(m) -> dict:
+    return {
+        "landing_error_cm": m.landing_error_cm,
+        "success": m.success,
+        "has_fallen": m.has_fallen,
+        "reward_sum": m.reward_sum,
+        "steps": m.steps,
+        "release_time_s": m.release_time_s,
+        "seed": m.seed,
+    }
+
+
+async def _stream_events(websocket: WebSocket, make_event_iter) -> None:
+    """Runs make_event_iter() (a StreamEvent generator) on a worker thread
+    under the shared-env lock, forwarding frames as binary JPEGs and the
+    final metrics as one JSON message."""
     loop = asyncio.get_event_loop()
+    queue: asyncio.Queue = asyncio.Queue(maxsize=4)
 
     def blocking_run():
-        # Runs on a worker thread; holds the shared-env lock for the whole
-        # episode so /run and /ws/run never touch the MuJoCo env at once.
-        # The generator paces itself in real time via time.sleep, so frames
-        # are produced roughly at env.control_dt.
         with _lock:
-            for event in get_runner().run_episode_stream(seed=seed):
+            for event in make_event_iter():
                 asyncio.run_coroutine_threadsafe(queue.put(event), loop).result()
         asyncio.run_coroutine_threadsafe(queue.put(None), loop).result()
 
-    queue: asyncio.Queue = asyncio.Queue(maxsize=4)
     worker = loop.run_in_executor(None, blocking_run)
     try:
         while True:
@@ -88,17 +93,13 @@ async def run_simulation_live(websocket: WebSocket):
             if isinstance(event, StreamFrame):
                 await websocket.send_bytes(_encode_jpeg(event.image))
             elif isinstance(event, StreamDone):
-                m = event.metrics
+                await websocket.send_json({"type": "done", **_metrics_json(event.metrics)})
+            elif isinstance(event, ComparisonDone):
                 await websocket.send_json(
                     {
                         "type": "done",
-                        "landing_error_cm": m.landing_error_cm,
-                        "success": m.success,
-                        "has_fallen": m.has_fallen,
-                        "reward_sum": m.reward_sum,
-                        "steps": m.steps,
-                        "release_time_s": m.release_time_s,
-                        "seed": m.seed,
+                        "baseline": _metrics_json(event.metrics.baseline),
+                        "rl": _metrics_json(event.metrics.rl),
                     }
                 )
     except WebSocketDisconnect:
@@ -107,6 +108,26 @@ async def run_simulation_live(websocket: WebSocket):
         await worker
         if websocket.client_state == WebSocketState.CONNECTED:
             await websocket.close()
+
+
+@app.websocket("/ws/run")
+async def run_simulation_live(websocket: WebSocket):
+    """Streams a single RL-policy episode frame-by-frame as JPEGs, then a
+    final JSON metrics message, so the browser can play it back live on a
+    <canvas> instead of waiting for a finished video."""
+    await websocket.accept()
+    seed = random.randint(0, 1_000_000)
+    await _stream_events(websocket, lambda: get_runner().run_episode_stream(seed=seed))
+
+
+@app.websocket("/ws/compare")
+async def run_comparison_live(websocket: WebSocket):
+    """Streams the scripted baseline and the RL policy side by side (one
+    composite frame per tick, baseline left / RL right) on the same seed,
+    then a final JSON message with both sides' metrics."""
+    await websocket.accept()
+    seed = random.randint(0, 1_000_000)
+    await _stream_events(websocket, lambda: get_runner().run_comparison_stream(seed=seed))
 
 
 app.mount("/videos", StaticFiles(directory=APP_DIR / "videos"), name="videos")

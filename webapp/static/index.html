@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Audi AI Robotics — G1 Ball-Throw Demo</title>
+<title>Audi AI Robotics — Level 2: Baseline vs RL Policy</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
   :root {
@@ -15,6 +15,7 @@
     --muted: #8c8c8c;
     --ok: #2fbf71;
     --bad: var(--audi-red-bright);
+    --baseline-chip: #3a3d44;
   }
   * { box-sizing: border-box; }
   body {
@@ -30,7 +31,7 @@
   }
   .card {
     width: 100%;
-    max-width: 760px;
+    max-width: 1020px;
     background: var(--panel);
     border: 1px solid var(--panel-border);
     border-radius: 4px;
@@ -51,32 +52,27 @@
     gap: 0.85rem;
     margin-bottom: 1.75rem;
   }
-  .rings {
-    display: flex;
-  }
   .rings svg { display: block; }
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.15;
-  }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
   .brand-text .make {
     font-size: 0.72rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--muted);
   }
-  .brand-text .project {
-    font-size: 1.05rem;
+  .brand-text .project { font-size: 1.05rem; font-weight: 700; }
+  .level-badge {
+    margin-left: auto;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--audi-red-bright);
+    border: 1px solid var(--audi-red);
+    border-radius: 2px;
+    padding: 0.25rem 0.6rem;
   }
-  h1 {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin: 0 0 0.3rem;
-    color: var(--text);
-  }
+  h1 { font-size: 1.15rem; font-weight: 600; margin: 0 0 0.3rem; }
   p.sub { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.88rem; }
   button {
     background: var(--audi-red);
@@ -93,6 +89,8 @@
   }
   button:hover:not(:disabled) { background: var(--audi-red-bright); }
   button:disabled { opacity: 0.45; cursor: progress; }
+  .status { margin-top: 1rem; color: var(--muted); font-size: 0.85rem; min-height: 1.2em; }
+
   .stage-wrap {
     margin-top: 1.5rem;
     border-radius: 4px;
@@ -102,11 +100,25 @@
     border: 1px solid var(--panel-border);
     position: relative;
   }
-  .stage-wrap.live::after {
-    content: "LIVE";
+  canvas { width: 100%; display: block; }
+  .chip {
     position: absolute;
     top: 0.6rem;
-    left: 0.6rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    color: white;
+  }
+  .chip.baseline { left: 0.6rem; background: var(--baseline-chip); }
+  .chip.rl { right: 0.6rem; background: var(--audi-red); }
+  .live-badge {
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
     background: var(--audi-red-bright);
     color: white;
     font-size: 0.65rem;
@@ -114,26 +126,59 @@
     letter-spacing: 0.08em;
     padding: 0.2rem 0.5rem;
     border-radius: 2px;
-  }
-  canvas { width: 100%; display: block; }
-  .metrics {
     display: none;
+  }
+  .stage-wrap.live .live-badge { display: block; }
+
+  .headline {
+    display: none;
+    margin-top: 1.5rem;
+    border: 1px solid var(--audi-red);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(90deg, rgba(187,10,48,0.16), rgba(187,10,48,0.03));
+    text-align: center;
+  }
+  .headline .headline-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--audi-red-bright);
+  }
+  .headline .headline-value.good { color: var(--ok); }
+  .headline .headline-value.bad { color: var(--bad); }
+  .headline .headline-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.15rem;
+  }
+
+  table.compare {
+    display: none;
+    width: 100%;
     margin-top: 1.25rem;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.75rem;
+    border-collapse: collapse;
+    font-size: 0.92rem;
   }
-  .metric {
-    border: 1px solid var(--panel-border);
-    border-left: 3px solid var(--audi-red);
-    border-radius: 3px;
-    padding: 0.75rem 1rem;
-    background: #101010;
+  table.compare th, table.compare td {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--panel-border);
+    text-align: left;
   }
-  .metric .label { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .metric .value { font-size: 1.3rem; font-weight: 700; margin-top: 0.2rem; }
-  .value.ok { color: var(--ok); }
-  .value.bad { color: var(--bad); }
-  .status { margin-top: 1rem; color: var(--muted); font-size: 0.85rem; min-height: 1.2em; }
+  table.compare th {
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  table.compare th.col-rl { color: var(--audi-red-bright); }
+  table.compare td.metric-name { color: var(--muted); }
+  table.compare td.val { font-weight: 700; }
+  table.compare td.val.ok { color: var(--ok); }
+  table.compare td.val.bad { color: var(--bad); }
+  table.compare tr:last-child td { border-bottom: none; }
 </style>
 </head>
 <body>
@@ -151,16 +196,36 @@
         <span class="make">Audi AI Robotics</span>
         <span class="project">Development Camp 2026</span>
       </span>
+      <span class="level-badge">Level 02</span>
     </div>
 
-    <h1>G1 Ball-Throw Policy — Live Simulation</h1>
-    <p class="sub">Runs the trained residual PPO policy live in MuJoCo and streams it to the browser frame by frame.</p>
+    <h1>Level 02 — Ball Throw + Balance: Scripted Baseline vs RL Policy</h1>
+    <p class="sub">Runs both controllers live, from the same starting conditions, and streams them side by side. This is the Level 02 task (throw to a fixed target while balancing) — Level 03 (walk + throw) will get its own page later.</p>
     <button id="runBtn">Run Simulation</button>
     <div class="status" id="status"></div>
+
     <div class="stage-wrap" id="stageWrap">
-      <canvas id="stage" width="640" height="480"></canvas>
+      <span class="chip baseline">Scripted baseline</span>
+      <span class="chip rl">RL policy (residual PPO)</span>
+      <span class="live-badge">LIVE</span>
+      <canvas id="stage" width="968" height="360"></canvas>
     </div>
-    <div class="metrics" id="metrics"></div>
+
+    <div class="headline" id="headline">
+      <div class="headline-value" id="headlineValue">—</div>
+      <div class="headline-label">Landing-error change vs. the scripted baseline (lower is better)</div>
+    </div>
+
+    <table class="compare" id="compareTable">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Scripted baseline</th>
+          <th class="col-rl">RL policy</th>
+        </tr>
+      </thead>
+      <tbody id="compareBody"></tbody>
+    </table>
   </div>
 
 <script>
@@ -169,31 +234,94 @@ const statusEl = document.getElementById('status');
 const stageWrap = document.getElementById('stageWrap');
 const canvas = document.getElementById('stage');
 const ctx = canvas.getContext('2d');
-const metricsEl = document.getElementById('metrics');
-
-function metricCard(label, value, cls) {
-  return `<div class="metric"><div class="label">${label}</div><div class="value ${cls || ''}">${value}</div></div>`;
-}
+const headline = document.getElementById('headline');
+const headlineValue = document.getElementById('headlineValue');
+const compareTable = document.getElementById('compareTable');
+const compareBody = document.getElementById('compareBody');
 
 function wsUrl(path) {
   const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
   return `${proto}//${location.host}${path}`;
 }
 
+function errText(v) {
+  return v === null || v === undefined ? 'no landing' : `${v.toFixed(2)} cm`;
+}
+
+function boolCell(v, goodWhenTrue) {
+  const cls = v === goodWhenTrue ? 'ok' : 'bad';
+  return `<td class="val ${cls}">${v ? 'Yes' : 'No'}</td>`;
+}
+
+function renderComparison(baseline, rl) {
+  compareBody.innerHTML = `
+    <tr>
+      <td class="metric-name">Landing error</td>
+      <td class="val">${errText(baseline.landing_error_cm)}</td>
+      <td class="val">${errText(rl.landing_error_cm)}</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Success</td>
+      ${boolCell(baseline.success, true)}
+      ${boolCell(rl.success, true)}
+    </tr>
+    <tr>
+      <td class="metric-name">Fell over</td>
+      ${boolCell(baseline.has_fallen, false)}
+      ${boolCell(rl.has_fallen, false)}
+    </tr>
+    <tr>
+      <td class="metric-name">Episode reward</td>
+      <td class="val">${baseline.reward_sum.toFixed(2)}</td>
+      <td class="val">${rl.reward_sum.toFixed(2)}</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Release time</td>
+      <td class="val">${baseline.release_time_s?.toFixed(2) ?? '—'} s</td>
+      <td class="val">${rl.release_time_s?.toFixed(2) ?? '—'} s</td>
+    </tr>
+    <tr>
+      <td class="metric-name">Seed</td>
+      <td class="val">${baseline.seed}</td>
+      <td class="val">${rl.seed}</td>
+    </tr>
+  `;
+  compareTable.style.display = 'table';
+
+  headlineValue.classList.remove('good', 'bad');
+  if (baseline.landing_error_cm != null && rl.landing_error_cm != null && baseline.landing_error_cm > 0) {
+    // Positive = RL error is lower than baseline (better); negative = RL error is higher (worse).
+    const change = ((baseline.landing_error_cm - rl.landing_error_cm) / baseline.landing_error_cm) * 100;
+    if (Math.abs(change) < 0.05) {
+      headlineValue.textContent = 'No change';
+    } else if (change > 0) {
+      headlineValue.textContent = `${change.toFixed(1)}% lower error (RL better)`;
+      headlineValue.classList.add('good');
+    } else {
+      headlineValue.textContent = `${Math.abs(change).toFixed(1)}% higher error (RL worse)`;
+      headlineValue.classList.add('bad');
+    }
+    headline.style.display = 'block';
+  } else {
+    headline.style.display = 'none';
+  }
+}
+
 runBtn.addEventListener('click', () => {
   runBtn.disabled = true;
   statusEl.textContent = 'Connecting…';
-  metricsEl.style.display = 'none';
+  headline.style.display = 'none';
+  compareTable.style.display = 'none';
   stageWrap.style.display = 'block';
   stageWrap.classList.add('live');
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const socket = new WebSocket(wsUrl('/ws/run'));
+  const socket = new WebSocket(wsUrl('/ws/compare'));
   socket.binaryType = 'arraybuffer';
 
   socket.addEventListener('open', () => {
-    statusEl.textContent = 'Streaming live from MuJoCo…';
+    statusEl.textContent = 'Streaming baseline (left) and RL policy (right) live from MuJoCo…';
   });
 
   socket.addEventListener('message', async (event) => {
@@ -201,14 +329,7 @@ runBtn.addEventListener('click', () => {
       const msg = JSON.parse(event.data);
       if (msg.type === 'done') {
         stageWrap.classList.remove('live');
-        const errText = msg.landing_error_cm === null ? 'no landing' : `${msg.landing_error_cm.toFixed(2)} cm`;
-        metricsEl.innerHTML =
-          metricCard('Landing error', errText) +
-          metricCard('Success', msg.success ? 'Yes' : 'No', msg.success ? 'ok' : 'bad') +
-          metricCard('Fell over', msg.has_fallen ? 'Yes' : 'No', msg.has_fallen ? 'bad' : 'ok') +
-          metricCard('Episode reward', msg.reward_sum.toFixed(2)) +
-          metricCard('Seed', msg.seed);
-        metricsEl.style.display = 'grid';
+        renderComparison(msg.baseline, msg.rl);
         statusEl.textContent = 'Done.';
       }
       return;

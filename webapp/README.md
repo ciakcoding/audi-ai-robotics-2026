@@ -1,47 +1,68 @@
-# G1 Ball-Throw Demo — Web GUI
+# G1 Ball-Throw Demo — Web GUI (Level 02)
 
-A small local website that lets you watch the trained Task 2 policy throw
-the ball, live, without touching a terminal. Click **Run Simulation** and
-the browser shows the Unitree G1 arm swinging and releasing the ball in
-real time, followed by the episode's metrics.
+**This entire app is Level 02 only**: throw the ball to a fixed target
+while the G1 balances (pelvis stays up, no locomotion). It is *not* Level 03
+(walk forward while throwing) — that task was descoped from this repo
+(see the "Remove Level 3 walk+throw experiments" commit) but is expected to
+come back later. When it does, it will need its own env, its own trained
+policy, and almost certainly its own page/route here — the code in this
+directory (`WebPPOThrowEnv`, the baseline-vs-RL comparison, the metrics
+shown) is written specifically around the Level 02 task and does not
+generalize to walking. Don't try to repoint it at a Level 03 env without
+rethinking the comparison logic and metrics from scratch.
+
+A small local website that runs the scripted Task 1 baseline and the
+trained Task 2 RL policy side by side, live, without touching a terminal.
+Click **Run Simulation** and the browser shows both controllers throwing
+the ball from the same starting conditions in real time — baseline on the
+left, RL policy on the right — followed by a metrics comparison table.
 
 ## What's actually happening
 
 1. **You click "Run Simulation".** The browser opens a WebSocket connection
-   to the FastAPI backend at `/ws/run`.
-2. **The backend runs one fresh episode of the real simulation.** It loads
-   the exact same environment and policy the project's evaluation scripts
-   use:
-   - Environment: `envs/ppo_throw_env.py` (`PPOThrowEnv`) — the residual
-     control wrapper around the frozen Task 1 baseline.
-   - Policy: `outputs/models/selected/best/best_model.zip`, loaded with
-     Stable-Baselines3's `PPO.load(...)`.
-   - Loop: `env.reset(seed=<random>)`, then repeated
-     `model.predict(obs, deterministic=True)` → `env.step(action)` until the
-     episode ends — identical to `evaluation/evaluate_ppo.py`.
-   - A new random seed is picked per click, so every run is a genuinely new
-     episode (slightly different initial arm noise), not a replay.
-3. **Each simulation step is rendered and streamed immediately.** After
-   every `env.step()`, MuJoCo's offscreen renderer (`mujoco.Renderer`)
-   captures a frame, it's JPEG-encoded, and sent to the browser over the
-   WebSocket as soon as it's ready — paced to real time (`env.control_dt`,
-   20 ms/step) so playback speed matches the physics, not sped up or
-   choppy.
-4. **The browser draws frames onto a `<canvas>`** as they arrive — this is
-   why it feels "live" rather than "wait, then play a video." There is no
-   pre-rendered file involved in this path.
-5. **After release, a short extra tail** (60 physics steps, no policy
-   action) keeps streaming so you can watch the ball actually land/bounce,
-   even though the episode technically terminates at first contact.
-6. **When the episode ends**, the backend sends one final JSON message with
-   the real metrics pulled from the same `info` dict the eval scripts use:
-   landing error (cm), success, whether the robot fell, summed reward,
-   step count, release time, and the seed used.
+   to the FastAPI backend at `/ws/compare`.
+2. **The backend runs two fresh episodes in lockstep, on the same seed.**
+   Both sides use `envs/ppo_throw_env.py` (`PPOThrowEnv`), the residual
+   control wrapper around the frozen Task 1 baseline:
+   - **Baseline side:** stepped with a zero residual action every tick.
+     Since `PPOThrowEnv.step()` applies
+     `baseline_swing + residual_scale * residual`, feeding zeros reproduces
+     the scripted swing exactly — the same representation
+     `evaluation/compare_baseline_ppo.py` uses for "baseline".
+   - **RL side:** stepped with `outputs/models/selected/best/best_model.zip`
+     (loaded via Stable-Baselines3's `PPO.load(...)`),
+     `model.predict(obs, deterministic=True)` each tick — identical to
+     `evaluation/evaluate_ppo.py`.
+   - Both envs call `reset(seed=<same random seed>)`, so any difference in
+     outcome comes from the policy, not from different initial noise. A new
+     random seed is picked per click, so every run is a genuinely new pair
+     of episodes, not a replay.
+3. **Each tick, both sides are rendered and composited into one frame.**
+   MuJoCo's offscreen renderer (`mujoco.Renderer`) captures a frame from
+   each side's own `MjData`, they're concatenated left/right into a single
+   image, JPEG-encoded, and sent to the browser over the WebSocket — paced
+   to real time (`env.control_dt`, 20 ms/step).
+4. **The browser draws the composite frame onto one `<canvas>`** as it
+   arrives — no pre-rendered file involved, and both sides are always
+   perfectly in sync since they came from the same tick.
+5. **Once a side finishes** (ball lands, robot falls, or episode times out),
+   it keeps advancing physics-only (no policy calls, metrics frozen at that
+   moment) so it doesn't freeze mid-frame while the other side finishes. A
+   shared extra tail (60 steps) after both are done lets you watch the
+   ball(s) settle.
+6. **When both episodes end**, the backend sends one final JSON message
+   with each side's real metrics — pulled from the same `info` dict the
+   eval scripts use: landing error (cm), success, whether the robot fell,
+   summed reward, release time, seed. The page then shows a comparison
+   table plus a headline "landing-error reduction" stat computed from the
+   two.
 
-There's also a `POST /run` REST endpoint that does the same simulation but
-writes an MP4 to `webapp/videos/` and returns its URL instead of streaming —
-kept around as a fallback/download-friendly option; the page itself uses the
-live WebSocket path by default.
+There are also two single-policy endpoints kept around as simpler
+alternatives/API surface, not wired into the current page:
+- `POST /run` — runs the RL policy once, writes an MP4 to `webapp/videos/`,
+  and returns its URL — useful if you want a downloadable clip (e.g. to
+  embed in a slide deck) instead of a live view.
+- `WS /ws/run` — the original single-policy live stream (RL only).
 
 ## Why it points at `assets/unitree_g1/scene_throw.xml`
 
@@ -62,10 +83,10 @@ official evaluation report.
 
 ```text
 webapp/
-  app.py          FastAPI app: POST /run, WS /ws/run, static file mounts
-  runner.py       SimulationRunner: loads env + policy once, runs episodes
+  app.py          FastAPI app: POST /run, WS /ws/run, WS /ws/compare, static mounts
+  runner.py       SimulationRunner: loads envs + policy once, runs episodes
   static/
-    index.html    The GUI (Audi red/black themed) — canvas + metrics panel
+    index.html    The GUI (Audi red/black themed) — side-by-side canvas + comparison table
   videos/         Generated MP4s from POST /run (gitignored)
 ```
 

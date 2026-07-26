@@ -45,6 +45,10 @@ RENDER_WIDTH = 640
 RENDER_HEIGHT = 480
 TAIL_STEPS = 60  # extra post-episode physics steps so the viewer sees the bounce
 
+PANEL_WIDTH = 480
+PANEL_HEIGHT = 360
+PANEL_GAP = 8
+
 
 class WebPPOThrowEnv(PPOThrowEnv):
     """PPOThrowEnv on the self-contained assets/unitree_g1 mesh copy.
@@ -94,6 +98,12 @@ class EpisodeMetrics:
 
 
 @dataclass
+class ComparisonMetrics:
+    baseline: EpisodeMetrics
+    rl: EpisodeMetrics
+
+
+@dataclass
 class StreamFrame:
     image: np.ndarray
 
@@ -103,7 +113,71 @@ class StreamDone:
     metrics: EpisodeMetrics
 
 
-StreamEvent = Union[StreamFrame, StreamDone]
+@dataclass
+class ComparisonDone:
+    metrics: ComparisonMetrics
+
+
+StreamEvent = Union[StreamFrame, StreamDone, ComparisonDone]
+
+
+def _metrics_from_info(info: dict, reward_sum: float, steps: int, seed: int) -> EpisodeMetrics:
+    landing_error = info.get("landing_error_xy")
+    return EpisodeMetrics(
+        landing_error_cm=None if landing_error is None else float(landing_error) * 100.0,
+        success=bool(info.get("success", False)),
+        has_fallen=bool(info.get("has_fallen", False)),
+        reward_sum=reward_sum,
+        steps=steps,
+        release_time_s=info.get("release_time"),
+        seed=seed,
+    )
+
+
+class _CompareSlot:
+    """One side (baseline or RL) of the side-by-side comparison.
+
+    policy=None means "no residual" -- PPOThrowEnv.step(zeros) applies the
+    scripted baseline swing exactly (residual_scale * 0 == 0), which is how
+    evaluation/compare_baseline_ppo.py represents the baseline too.
+    """
+
+    def __init__(self, env: "WebPPOThrowEnv", renderer: mujoco.Renderer, camera: mujoco.MjvCamera, policy):
+        self.env = env
+        self.renderer = renderer
+        self.camera = camera
+        self.policy = policy
+        self.obs = None
+        self.done = False
+        self.info: dict = {}
+        self.reward_sum = 0.0
+
+    def reset(self, seed: int) -> None:
+        self.obs, _ = self.env.reset(seed=seed)
+        self.done = False
+        self.info = {}
+        self.reward_sum = 0.0
+
+    def step(self) -> None:
+        if self.done:
+            for _ in range(self.env.frame_skip):
+                mujoco.mj_step(self.env.model, self.env.data)
+            return
+        if self.policy is None:
+            action = np.zeros(7, dtype=np.float32)
+        else:
+            action, _ = self.policy.predict(self.obs, deterministic=True)
+        self.obs, reward, terminated, truncated, self.info = self.env.step(action)
+        self.reward_sum += float(reward)
+        if terminated or truncated:
+            self.done = True
+
+    def render(self) -> np.ndarray:
+        self.renderer.update_scene(self.env.data, camera=self.camera)
+        return self.renderer.render()
+
+    def metrics(self, seed: int) -> EpisodeMetrics:
+        return _metrics_from_info(self.info, self.reward_sum, self.env.step_count, seed)
 
 
 class SimulationRunner:
@@ -114,6 +188,22 @@ class SimulationRunner:
         self.model = PPO.load(MODEL_PATH, device="cpu")
         self.renderer = mujoco.Renderer(self.env.model, height=RENDER_HEIGHT, width=RENDER_WIDTH)
         self.camera = self._build_camera()
+
+        panel_camera = self._build_camera()
+        baseline_env = WebPPOThrowEnv(residual_scale=RESIDUAL_SCALE)
+        rl_env = WebPPOThrowEnv(residual_scale=RESIDUAL_SCALE)
+        self.baseline_slot = _CompareSlot(
+            env=baseline_env,
+            renderer=mujoco.Renderer(baseline_env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH),
+            camera=panel_camera,
+            policy=None,
+        )
+        self.rl_slot = _CompareSlot(
+            env=rl_env,
+            renderer=mujoco.Renderer(rl_env.model, height=PANEL_HEIGHT, width=PANEL_WIDTH),
+            camera=panel_camera,
+            policy=self.model,
+        )
 
     def _build_camera(self) -> mujoco.MjvCamera:
         cam = mujoco.MjvCamera()
@@ -151,15 +241,15 @@ class SimulationRunner:
         fps = round(1.0 / env.control_dt)
         imageio.mimwrite(video_path, frames, fps=fps, codec="libx264", quality=7)
 
-        landing_error = info.get("landing_error_xy")
+        m = _metrics_from_info(info, reward_sum, env.step_count, seed)
         return EpisodeResult(
             video_url=f"/videos/{video_name}",
-            landing_error_cm=None if landing_error is None else float(landing_error) * 100.0,
-            success=bool(info.get("success", False)),
-            has_fallen=bool(info.get("has_fallen", False)),
-            reward_sum=reward_sum,
-            steps=env.step_count,
-            release_time_s=info.get("release_time"),
+            landing_error_cm=m.landing_error_cm,
+            success=m.success,
+            has_fallen=m.has_fallen,
+            reward_sum=m.reward_sum,
+            steps=m.steps,
+            release_time_s=m.release_time_s,
         )
 
     def run_episode_stream(self, seed: int | None = None) -> Iterator[StreamEvent]:
@@ -196,14 +286,52 @@ class SimulationRunner:
                 mujoco.mj_step(env.model, env.data)
             yield next_frame()
 
-        landing_error = info.get("landing_error_xy")
-        metrics = EpisodeMetrics(
-            landing_error_cm=None if landing_error is None else float(landing_error) * 100.0,
-            success=bool(info.get("success", False)),
-            has_fallen=bool(info.get("has_fallen", False)),
-            reward_sum=reward_sum,
-            steps=env.step_count,
-            release_time_s=info.get("release_time"),
-            seed=seed,
-        )
+        metrics = _metrics_from_info(info, reward_sum, env.step_count, seed)
         yield StreamDone(metrics)
+
+    def run_comparison_stream(self, seed: int | None = None) -> Iterator[StreamEvent]:
+        """Steps the scripted baseline and the RL policy through the same
+        seed in lockstep, one composite frame (baseline left, RL right) per
+        tick, paced to real time. Once a side finishes it keeps stepping
+        physics-only (no policy/info updates) so the ball can be seen
+        landing/rolling while the other side catches up."""
+        seed = DEFAULT_SEED if seed is None else seed
+        self.baseline_slot.reset(seed)
+        self.rl_slot.reset(seed)
+
+        control_dt = self.baseline_slot.env.control_dt
+        main_steps = int(round(self.baseline_slot.env.episode_time / control_dt))
+        start_time = time.monotonic()
+        frame_idx = 0
+
+        def composite_frame() -> np.ndarray:
+            nonlocal frame_idx
+            due_at = start_time + frame_idx * control_dt
+            remaining = due_at - time.monotonic()
+            if remaining > 0:
+                time.sleep(remaining)
+            frame_idx += 1
+            gap = np.full((PANEL_HEIGHT, PANEL_GAP, 3), 20, dtype=np.uint8)
+            left = self.baseline_slot.render()
+            right = self.rl_slot.render()
+            return np.concatenate([left, gap, right], axis=1)
+
+        yield StreamFrame(composite_frame())
+        for _ in range(main_steps):
+            self.baseline_slot.step()
+            self.rl_slot.step()
+            yield StreamFrame(composite_frame())
+            if self.baseline_slot.done and self.rl_slot.done:
+                break
+
+        for _ in range(TAIL_STEPS):
+            self.baseline_slot.step()
+            self.rl_slot.step()
+            yield StreamFrame(composite_frame())
+
+        yield ComparisonDone(
+            ComparisonMetrics(
+                baseline=self.baseline_slot.metrics(seed),
+                rl=self.rl_slot.metrics(seed),
+            )
+        )
