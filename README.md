@@ -67,6 +67,7 @@ envs/                 Level 02 Gymnasium envs (baseline, PPO residual, robustnes
 scripts/              Scripted baselines, live viewers, evaluation entry points
 train/                Level 02 PPO training entry point
 evaluation/            Level 02 policy evaluation and baseline-vs-RL comparison
+media/                Level02 and Level03 MuJoCo screenshots and recordings
 training_extension/   Level 03: derived baseline, CEM expert trajectories, RL training/eval
 outputs/               Trained models, logs, plots, evaluation artifacts (mostly gitignored)
 webapp/                FastAPI + HTML/JS/canvas GUI serving both levels' live demos
